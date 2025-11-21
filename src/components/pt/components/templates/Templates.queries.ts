@@ -31,6 +31,17 @@ export const GET_TEMPLATES_LIST = graphql`
               url
               category
             }
+            sets {
+              setNumber
+              variables {
+                variable {
+                  id
+                  name
+                  unit
+                }
+                targetValue
+              }
+            }
           }
         }
       }
@@ -64,6 +75,17 @@ export const TEMPLATES_CREATE = graphql`
           url
           category
         }
+        sets {
+          setNumber
+          variables {
+            variable {
+              id
+              name
+              unit
+            }
+            targetValue
+          }
+        }
       }
     }
   }
@@ -84,6 +106,17 @@ export const TEMPLATES_EDIT = graphql`
           name
           url
           category
+        }
+        sets {
+          setNumber
+          variables {
+            variable {
+              id
+              name
+              unit
+            }
+            targetValue
+          }
         }
       }
     }

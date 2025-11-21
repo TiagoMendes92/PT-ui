@@ -11,6 +11,8 @@ import TemplatesModal from "./TemplatesModal";
 import type { CategoriesQuery } from "../../../../__generated__/CategoriesQuery.graphql";
 import { CATEGORIES_QUERY } from "../categories/Categories.queries";
 import DeleteTemplateModal from "./DeleteTemplateModal";
+import { GET_ALL_EXERCISE_VARIABLES } from "../exercise_variables/Exercise_Variables.queries";
+import type { ExerciseVariablesAllQuery } from "../../../../__generated__/ExerciseVariablesAllQuery.graphql";
 
 const Templates = ({
   queryRef,
@@ -52,6 +54,9 @@ const Loader = () => {
 
   const [catsQueryRef, fetchCategories] =
     useQueryLoader<CategoriesQuery>(CATEGORIES_QUERY);
+  const [exerciseVariablesRef, fetchExerciseCategories] =
+    useQueryLoader<ExerciseVariablesAllQuery>(GET_ALL_EXERCISE_VARIABLES);
+
   const [queryRef, fetchData] = useQueryLoader<TemplatesQuery>(GET_TEMPLATES);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<{
@@ -68,7 +73,10 @@ const Loader = () => {
     });
   }, [searchTerm]);
 
-  useEffect(() => fetchCategories({}), []);
+  useEffect(() => {
+    fetchCategories({});
+    fetchExerciseCategories({});
+  }, []);
 
   const handleTemplateAction = () => {
     setIsModalOpen(null);
@@ -86,7 +94,7 @@ const Loader = () => {
             setIsModalOpen={setIsModalOpen}
             setIsDeleteModalOpen={setIsDeleteModalOpen}
           />
-          {isModalOpen && catsQueryRef
+          {isModalOpen && catsQueryRef && exerciseVariablesRef
             ? createPortal(
                 <Modal
                   title={
@@ -96,6 +104,7 @@ const Loader = () => {
                 >
                   <TemplatesModal
                     catsQueryRef={catsQueryRef}
+                    exerciseVariablesRef={exerciseVariablesRef}
                     searchTerm={searchTerm}
                     template={isModalOpen.template}
                     onSubmit={handleTemplateAction}

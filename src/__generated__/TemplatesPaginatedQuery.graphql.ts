@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e8476624557b0845fc00b7bc78dc3160>>
+ * @generated SignedSource<<dc5ad7e8caf85b672acd26f44a3d797e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -183,6 +183,62 @@ return {
                         ],
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "TemplateExerciseSet",
+                        "kind": "LinkedField",
+                        "name": "sets",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "setNumber",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "TemplateExerciseSetVariable",
+                            "kind": "LinkedField",
+                            "name": "variables",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "ExerciseVariable",
+                                "kind": "LinkedField",
+                                "name": "variable",
+                                "plural": false,
+                                "selections": [
+                                  (v2/*: any*/),
+                                  (v3/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "unit",
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "targetValue",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
                       (v2/*: any*/)
                     ],
                     "storageKey": null
@@ -263,16 +319,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ecc1428c55db5fbf58918bf55394df92",
+    "cacheID": "1e812064fac6a88e46283019cf01face",
     "id": null,
     "metadata": {},
     "name": "TemplatesPaginatedQuery",
     "operationKind": "query",
-    "text": "query TemplatesPaginatedQuery(\n  $after: String\n  $first: Int\n  $searchTerm: String\n) {\n  ...Templates_2s884C\n}\n\nfragment Templates_2s884C on Query {\n  templates(first: $first, after: $after, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        description\n        createdAt\n        updatedAt\n        exercises {\n          orderPosition\n          exercise {\n            id\n            name\n            url\n            category\n          }\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
+    "text": "query TemplatesPaginatedQuery(\n  $after: String\n  $first: Int\n  $searchTerm: String\n) {\n  ...Templates_2s884C\n}\n\nfragment Templates_2s884C on Query {\n  templates(first: $first, after: $after, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        description\n        createdAt\n        updatedAt\n        exercises {\n          orderPosition\n          exercise {\n            id\n            name\n            url\n            category\n          }\n          sets {\n            setNumber\n            variables {\n              variable {\n                id\n                name\n                unit\n              }\n              targetValue\n            }\n          }\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "238a9732395ae7c1ca17b75a7182f516";
+(node as any).hash = "f658a50a9b6d1e7062cb45e018fa17e8";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<39efe1167dcfe2b71b153624eda56828>>
+ * @generated SignedSource<<5cd2e2536aa8d80146b9afd84a077218>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,15 @@ export type CreateTemplateInput = {
 export type TemplateExerciseInput = {
   exerciseId: string;
   orderPosition: number;
+  sets: ReadonlyArray<TemplateExerciseSetInput>;
+};
+export type TemplateExerciseSetInput = {
+  setNumber: number;
+  variables: ReadonlyArray<TemplateExerciseSetVariableInput>;
+};
+export type TemplateExerciseSetVariableInput = {
+  targetValue?: string | null | undefined;
+  variableId: string;
 };
 export type TemplatesCreateMutation$variables = {
   connections: ReadonlyArray<string>;
@@ -34,6 +43,17 @@ export type TemplatesCreateMutation$data = {
         readonly url: string;
       };
       readonly orderPosition: number;
+      readonly sets: ReadonlyArray<{
+        readonly setNumber: number;
+        readonly variables: ReadonlyArray<{
+          readonly targetValue: string | null | undefined;
+          readonly variable: {
+            readonly id: string;
+            readonly name: string;
+            readonly unit: string | null | undefined;
+          };
+        }>;
+      }>;
     }>;
     readonly id: string;
     readonly name: string;
@@ -131,6 +151,62 @@ v9 = {
     }
   ],
   "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "TemplateExerciseSet",
+  "kind": "LinkedField",
+  "name": "sets",
+  "plural": true,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "setNumber",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "TemplateExerciseSetVariable",
+      "kind": "LinkedField",
+      "name": "variables",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "ExerciseVariable",
+          "kind": "LinkedField",
+          "name": "variable",
+          "plural": false,
+          "selections": [
+            (v3/*: any*/),
+            (v4/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "unit",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "targetValue",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -164,7 +240,8 @@ return {
             "plural": true,
             "selections": [
               (v8/*: any*/),
-              (v9/*: any*/)
+              (v9/*: any*/),
+              (v10/*: any*/)
             ],
             "storageKey": null
           }
@@ -207,6 +284,7 @@ return {
             "selections": [
               (v8/*: any*/),
               (v9/*: any*/),
+              (v10/*: any*/),
               (v3/*: any*/)
             ],
             "storageKey": null
@@ -238,16 +316,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "66aabf9cf38050be108f1c2190d01379",
+    "cacheID": "be4e58fc03ef7d6ac6d09f19a8f741eb",
     "id": null,
     "metadata": {},
     "name": "TemplatesCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation TemplatesCreateMutation(\n  $input: CreateTemplateInput!\n) {\n  createTemplate(input: $input) {\n    id\n    name\n    description\n    createdAt\n    updatedAt\n    exercises {\n      orderPosition\n      exercise {\n        id\n        name\n        url\n        category\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation TemplatesCreateMutation(\n  $input: CreateTemplateInput!\n) {\n  createTemplate(input: $input) {\n    id\n    name\n    description\n    createdAt\n    updatedAt\n    exercises {\n      orderPosition\n      exercise {\n        id\n        name\n        url\n        category\n      }\n      sets {\n        setNumber\n        variables {\n          variable {\n            id\n            name\n            unit\n          }\n          targetValue\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "66ea7611e2d72f14c6af2d3cfb74edb1";
+(node as any).hash = "0266fb6c3df33cf0141258dccafa530f";
 
 export default node;

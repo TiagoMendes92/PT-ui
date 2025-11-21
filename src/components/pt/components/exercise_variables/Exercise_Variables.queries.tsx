@@ -1,5 +1,18 @@
 import { graphql } from "relay-runtime";
 
+export const GET_ALL_EXERCISE_VARIABLES = graphql`
+  query ExerciseVariablesAllQuery {
+    allVariables {
+      id
+      name
+      unit
+      createdAt
+      updatedAt
+      description
+    }
+  }
+`;
+
 export const GET_EXERCISE_VARIABLES = graphql`
   query ExerciseVariablesQuery($first: Int, $searchTerm: String) {
     ...ExerciseVariables @arguments(first: $first, searchTerm: $searchTerm)

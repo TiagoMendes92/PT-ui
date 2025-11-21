@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e19ba56c2be1e0c11402b4de4a4a29c2>>
+ * @generated SignedSource<<8e435e713657843df95a2f68fd5fd6a1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -24,6 +24,17 @@ export type Templates$data = {
             readonly url: string;
           };
           readonly orderPosition: number;
+          readonly sets: ReadonlyArray<{
+            readonly setNumber: number;
+            readonly variables: ReadonlyArray<{
+              readonly targetValue: string | null | undefined;
+              readonly variable: {
+                readonly id: string;
+                readonly name: string;
+                readonly unit: string | null | undefined;
+              };
+            }>;
+          }>;
         }>;
         readonly id: string;
         readonly name: string;
@@ -201,6 +212,62 @@ return {
                         }
                       ],
                       "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "TemplateExerciseSet",
+                      "kind": "LinkedField",
+                      "name": "sets",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "setNumber",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "TemplateExerciseSetVariable",
+                          "kind": "LinkedField",
+                          "name": "variables",
+                          "plural": true,
+                          "selections": [
+                            {
+                              "alias": null,
+                              "args": null,
+                              "concreteType": "ExerciseVariable",
+                              "kind": "LinkedField",
+                              "name": "variable",
+                              "plural": false,
+                              "selections": [
+                                (v1/*: any*/),
+                                (v2/*: any*/),
+                                {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "unit",
+                                  "storageKey": null
+                                }
+                              ],
+                              "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "targetValue",
+                              "storageKey": null
+                            }
+                          ],
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
                     }
                   ],
                   "storageKey": null
@@ -273,6 +340,6 @@ return {
 };
 })();
 
-(node as any).hash = "238a9732395ae7c1ca17b75a7182f516";
+(node as any).hash = "f658a50a9b6d1e7062cb45e018fa17e8";
 
 export default node;

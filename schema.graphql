@@ -22,6 +22,7 @@ type Query {
     category: String
     searchTerm: String
   ): ExerciseConnection!
+  allVariables: [ExerciseVariable!]!
   exerciseVariables(
     first: Int = 10
     after: String
@@ -226,7 +227,6 @@ type Template {
   id: ID!
   name: String!
   description: String
-  createdBy: User!
   exercises: [TemplateExercise!]!
   archivedAt: String
   createdAt: String!
@@ -238,7 +238,18 @@ type TemplateExercise {
   template: Template!
   exercise: Exercise!
   orderPosition: Int!
+  sets: [TemplateExerciseSet!]!
   createdAt: String!
+}
+
+type TemplateExerciseSet {
+  setNumber: Int!
+  variables: [TemplateExerciseSetVariable!]!
+}
+
+type TemplateExerciseSetVariable {
+  variable: ExerciseVariable!
+  targetValue: String
 }
 
 type TemplateEdge {
@@ -260,6 +271,17 @@ input CreateTemplateInput {
 input TemplateExerciseInput {
   exerciseId: ID!
   orderPosition: Int!
+  sets: [TemplateExerciseSetInput!]!
+}
+
+input TemplateExerciseSetInput {
+  setNumber: Int!
+  variables: [TemplateExerciseSetVariableInput!]!
+}
+
+input TemplateExerciseSetVariableInput {
+  variableId: ID!
+  targetValue: String
 }
 
 input UpdateTemplateInput {

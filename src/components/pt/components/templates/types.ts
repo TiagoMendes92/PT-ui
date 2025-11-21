@@ -2,6 +2,7 @@ import type { PreloadedQuery } from "react-relay";
 import type { Templates$data } from "../../../../__generated__/Templates.graphql";
 import type { TemplatesQuery } from "../../../../__generated__/TemplatesQuery.graphql";
 import type { CategoriesQuery } from "../../../../__generated__/CategoriesQuery.graphql";
+import type { ExerciseVariablesAllQuery } from "../../../../__generated__/ExerciseVariablesAllQuery.graphql";
 
 export type Template = NonNullable<
   Templates$data["templates"]["edges"]["0"]["node"]
@@ -40,12 +41,24 @@ export type TemplatesModalProps = {
   onSubmit: () => void;
   template: Template | null;
   catsQueryRef: PreloadedQuery<CategoriesQuery>;
+  exerciseVariablesRef: PreloadedQuery<ExerciseVariablesAllQuery>;
+};
+
+export type ExerciseSet = {
+  setNumber: number;
+  variables: SetVariable[];
+};
+
+type SetVariable = {
+  variableId: string;
+  targetValue?: string;
 };
 
 export type SelectedExercise = {
   exerciseId: string;
   orderPosition: number;
   name: string;
+  sets: ExerciseSet[];
 };
 
 export type TemplateFormData = {
@@ -54,6 +67,7 @@ export type TemplateFormData = {
   exercises: {
     exerciseId: string;
     orderPosition: number;
+    sets: ExerciseSet[];
   }[];
 };
 

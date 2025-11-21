@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0766fedec8149953273fe2229d4150c0>>
+ * @generated SignedSource<<f03512b0db9cb8db6a5e4666dd1805b9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -172,6 +172,62 @@ return {
                         ],
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "TemplateExerciseSet",
+                        "kind": "LinkedField",
+                        "name": "sets",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "setNumber",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "TemplateExerciseSetVariable",
+                            "kind": "LinkedField",
+                            "name": "variables",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "ExerciseVariable",
+                                "kind": "LinkedField",
+                                "name": "variable",
+                                "plural": false,
+                                "selections": [
+                                  (v2/*: any*/),
+                                  (v3/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "unit",
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "targetValue",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
                       (v2/*: any*/)
                     ],
                     "storageKey": null
@@ -252,12 +308,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "62c28af23b5c8a376bc2262f591b1c84",
+    "cacheID": "076cd918c5d65f1f5cba51a915f9ac84",
     "id": null,
     "metadata": {},
     "name": "TemplatesQuery",
     "operationKind": "query",
-    "text": "query TemplatesQuery(\n  $first: Int\n  $searchTerm: String\n) {\n  ...Templates_A49pD\n}\n\nfragment Templates_A49pD on Query {\n  templates(first: $first, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        description\n        createdAt\n        updatedAt\n        exercises {\n          orderPosition\n          exercise {\n            id\n            name\n            url\n            category\n          }\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
+    "text": "query TemplatesQuery(\n  $first: Int\n  $searchTerm: String\n) {\n  ...Templates_A49pD\n}\n\nfragment Templates_A49pD on Query {\n  templates(first: $first, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        description\n        createdAt\n        updatedAt\n        exercises {\n          orderPosition\n          exercise {\n            id\n            name\n            url\n            category\n          }\n          sets {\n            setNumber\n            variables {\n              variable {\n                id\n                name\n                unit\n              }\n              targetValue\n            }\n          }\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
