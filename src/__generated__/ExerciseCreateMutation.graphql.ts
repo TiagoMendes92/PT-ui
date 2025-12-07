@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<45d899fbf6b4dad1ad1d4184f73cb9d7>>
+ * @generated SignedSource<<db87f2b10dd1e32459938766b44431c5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,13 +17,22 @@ export type ExerciseInput = {
 export type ExerciseCreateMutation$variables = {
   connections: ReadonlyArray<string>;
   exercise: ExerciseInput;
+  file?: any | null | undefined;
 };
 export type ExerciseCreateMutation$data = {
   readonly addExercise: {
+    readonly allCategories: ReadonlyArray<{
+      readonly id: string;
+      readonly name: string;
+    }>;
     readonly category: string;
     readonly createdAt: string;
     readonly id: string;
     readonly name: string;
+    readonly photo: {
+      readonly key: string;
+      readonly url: string;
+    } | null | undefined;
     readonly updatedAt: string;
     readonly url: string;
   } | null | undefined;
@@ -44,47 +53,92 @@ v1 = {
   "kind": "LocalArgument",
   "name": "exercise"
 },
-v2 = [
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "file"
+},
+v3 = [
   {
     "kind": "Variable",
     "name": "exercise",
     "variableName": "exercise"
+  },
+  {
+    "kind": "Variable",
+    "name": "file",
+    "variableName": "file"
   }
 ],
-v3 = {
+v4 = {
   "alias": null,
-  "args": (v2/*: any*/),
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": (v3/*: any*/),
   "concreteType": "Exercise",
   "kind": "LinkedField",
   "name": "addExercise",
   "plural": false,
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "url",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
+    (v4/*: any*/),
+    (v5/*: any*/),
+    (v6/*: any*/),
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "category",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Category",
+      "kind": "LinkedField",
+      "name": "allCategories",
+      "plural": true,
+      "selections": [
+        (v4/*: any*/),
+        (v6/*: any*/)
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Photo",
+      "kind": "LinkedField",
+      "name": "photo",
+      "plural": false,
+      "selections": [
+        (v5/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "key",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -108,13 +162,14 @@ return {
   "fragment": {
     "argumentDefinitions": [
       (v0/*: any*/),
-      (v1/*: any*/)
+      (v1/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
     "name": "ExerciseCreateMutation",
     "selections": [
-      (v3/*: any*/)
+      (v7/*: any*/)
     ],
     "type": "Mutation",
     "abstractKey": null
@@ -123,15 +178,16 @@ return {
   "operation": {
     "argumentDefinitions": [
       (v1/*: any*/),
-      (v0/*: any*/)
+      (v0/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Operation",
     "name": "ExerciseCreateMutation",
     "selections": [
-      (v3/*: any*/),
+      (v7/*: any*/),
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "filters": null,
         "handle": "prependNode",
         "key": "",
@@ -153,16 +209,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e38018d99b4a9af98d3d39f3f82ca5df",
+    "cacheID": "0594d20dfa3d2719d6a21054f90130cf",
     "id": null,
     "metadata": {},
     "name": "ExerciseCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation ExerciseCreateMutation(\n  $exercise: ExerciseInput!\n) {\n  addExercise(exercise: $exercise) {\n    id\n    url\n    name\n    category\n    createdAt\n    updatedAt\n  }\n}\n"
+    "text": "mutation ExerciseCreateMutation(\n  $exercise: ExerciseInput!\n  $file: Upload\n) {\n  addExercise(exercise: $exercise, file: $file) {\n    id\n    url\n    name\n    category\n    allCategories {\n      id\n      name\n    }\n    photo {\n      url\n      key\n    }\n    createdAt\n    updatedAt\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "360f4e243bbc7506837a8fcc7d32513b";
+(node as any).hash = "9d14937c2dc0a18bc8ca066cace66b7c";
 
 export default node;

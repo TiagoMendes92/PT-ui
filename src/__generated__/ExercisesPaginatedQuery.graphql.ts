@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<626264f2bd44508a7c38752f79afcfaf>>
+ * @generated SignedSource<<dce855144243e6b3b7980f143f863ea2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -82,6 +82,13 @@ v3 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -131,13 +138,7 @@ return {
                 "selections": [
                   (v2/*: any*/),
                   (v3/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "url",
-                    "storageKey": null
-                  },
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -155,6 +156,25 @@ return {
                     "selections": [
                       (v2/*: any*/),
                       (v3/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Photo",
+                    "kind": "LinkedField",
+                    "name": "photo",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "key",
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   },
@@ -249,16 +269,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d3f1c006b467fec4a670f3926e37f5db",
+    "cacheID": "d021b8f610bf0c1f2ee4cf6a08e687e8",
     "id": null,
     "metadata": {},
     "name": "ExercisesPaginatedQuery",
     "operationKind": "query",
-    "text": "query ExercisesPaginatedQuery(\n  $after: String\n  $category: String\n  $first: Int\n  $searchTerm: String\n) {\n  ...Exercise_1a0B9J\n}\n\nfragment Exercise_1a0B9J on Query {\n  exercises(first: $first, after: $after, category: $category, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        url\n        category\n        allCategories {\n          id\n          name\n        }\n        createdAt\n        updatedAt\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
+    "text": "query ExercisesPaginatedQuery(\n  $after: String\n  $category: String\n  $first: Int\n  $searchTerm: String\n) {\n  ...Exercise_1a0B9J\n}\n\nfragment Exercise_1a0B9J on Query {\n  exercises(first: $first, after: $after, category: $category, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        url\n        category\n        allCategories {\n          id\n          name\n        }\n        photo {\n          url\n          key\n        }\n        createdAt\n        updatedAt\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e83af1f35ca7a753c99fd3fbb0f73e1d";
+(node as any).hash = "cc789df60790da346c1bf44848aa1c0b";
 
 export default node;

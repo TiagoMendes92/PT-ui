@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f2da3775cf336442439f7060308ed91b>>
+ * @generated SignedSource<<64f4ed203cb958bc9a3ab306b8d12342>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -69,6 +69,13 @@ v5 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -126,13 +133,7 @@ return {
                 "selections": [
                   (v4/*: any*/),
                   (v5/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "url",
-                    "storageKey": null
-                  },
+                  (v6/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -150,6 +151,25 @@ return {
                     "selections": [
                       (v4/*: any*/),
                       (v5/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Photo",
+                    "kind": "LinkedField",
+                    "name": "photo",
+                    "plural": false,
+                    "selections": [
+                      (v6/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "key",
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   },
@@ -244,12 +264,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "56dd597fbf1e66eb8247b07d53504f2e",
+    "cacheID": "b7270c597ab8fa35a5d0004c90fea730",
     "id": null,
     "metadata": {},
     "name": "ExerciseQuery",
     "operationKind": "query",
-    "text": "query ExerciseQuery(\n  $first: Int\n  $category: String\n  $searchTerm: String\n) {\n  ...Exercise_3e2dmB\n}\n\nfragment Exercise_3e2dmB on Query {\n  exercises(first: $first, category: $category, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        url\n        category\n        allCategories {\n          id\n          name\n        }\n        createdAt\n        updatedAt\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
+    "text": "query ExerciseQuery(\n  $first: Int\n  $category: String\n  $searchTerm: String\n) {\n  ...Exercise_3e2dmB\n}\n\nfragment Exercise_3e2dmB on Query {\n  exercises(first: $first, category: $category, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        url\n        category\n        allCategories {\n          id\n          name\n        }\n        photo {\n          url\n          key\n        }\n        createdAt\n        updatedAt\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();

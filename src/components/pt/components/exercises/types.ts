@@ -45,6 +45,7 @@ export type ExerciseFormData = {
   name: string;
   url: string;
   category: string;
+  photo: File | null;
 };
 
 export type VideoProps = {

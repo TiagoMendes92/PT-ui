@@ -4,7 +4,7 @@ import { ConnectionHandler, useMutation, usePreloadedQuery } from "react-relay";
 import type { CategoriesQuery } from "../../../../__generated__/CategoriesQuery.graphql";
 import { CATEGORIES_QUERY } from "../categories/Categories.queries";
 import type { SelectOption } from "../../../shared/select/types";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "../categories/Categories.styles";
 import {
@@ -31,6 +31,8 @@ import type {
   ExerciseEditMutation,
   ExerciseEditMutation$data,
 } from "../../../../__generated__/ExerciseEditMutation.graphql";
+import PreviewFile from "../../../shared/preview_file/PreviewFiles";
+import ConnectionHandlerPlus from "relay-connection-handler-plus";
 
 const ExerciseSchema = yup.object().shape({
   name: yup
@@ -42,6 +44,19 @@ const ExerciseSchema = yup.object().shape({
     .min(3, "Url tem que ter 3 caracteres")
     .required("Url é obrigatório"),
   category: yup.string().default("").required("Categoria é obrigatória"),
+  photo: yup
+    .mixed<File>()
+    .default(null)
+    .nullable()
+    .test("fileType", "Só imagens em JPEG, PNG ou WebP", (value) => {
+      if (!value) return true;
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      return allowedTypes.includes((value as File).type);
+    })
+    .test("fileSize", "Imagem deve ter menos de 10MB", (value) => {
+      if (!value) return true;
+      return (value as File).size <= 10000000;
+    }),
 });
 
 const ExerciseModal = ({
@@ -94,7 +109,13 @@ const ExerciseModal = ({
       name: exercise?.name || "",
       url: exercise?.url || "",
       category: exercise?.category || "",
+      photo: null,
     },
+  });
+
+  const photo = useWatch<ExerciseFormData, "photo">({
+    control,
+    name: "photo",
   });
 
   const setManualError = (create: boolean, message?: string) => {
@@ -135,14 +156,15 @@ const ExerciseModal = ({
     setShowVideo(url);
   };
 
-  const onSubmitForm = async (values: ExerciseFormData) => {
+  const onSubmitForm = async (formValues: ExerciseFormData) => {
     const url = validateAndGetEmbedUrl();
     if (!url) return;
-
+    const { photo, ...values } = formValues;
     if (!exercise) {
       create({
         variables: {
           exercise: values,
+          file: photo,
           connections: [
             ConnectionHandler.getConnectionID(
               "client:root",
@@ -152,7 +174,16 @@ const ExerciseModal = ({
           ],
         },
         updater: (store) => {
-          store.invalidateStore();
+          const root = store.getRoot();
+          const connectionKey = "ExercisesPaginatedQuery_exercises";
+
+          const connections = ConnectionHandlerPlus.getConnections(
+            root,
+            connectionKey
+          );
+          connections.forEach((connection) => {
+            connection?.invalidateRecord();
+          });
         },
         onCompleted: (response: ExerciseCreateMutation$data, errors) => {
           if (response.addExercise?.id) {
@@ -169,6 +200,7 @@ const ExerciseModal = ({
       edit({
         variables: {
           exercise: { ...values, id: exercise.id },
+          file: photo,
         },
         onCompleted: (response: ExerciseEditMutation$data, errors) => {
           if (response.editExercise?.id) {
@@ -223,6 +255,39 @@ const ExerciseModal = ({
           />
           {errors.category && (
             <Error className="montserrat-bold">{errors.category.message}</Error>
+          )}
+        </FormController>
+
+        <FormController>
+          <label htmlFor="photo" className="montserrat-bold">
+            FOTOGRAFIA (OPCIONAL)
+          </label>
+          {photo || exercise?.photo?.url ? (
+            <PreviewFile
+              width={100}
+              height={"auto"}
+              file={photo || (exercise?.photo?.url as string)}
+            />
+          ) : null}
+          <Controller
+            name="photo"
+            control={control}
+            render={({ field: { onChange, value, ...field } }) => (
+              <Input
+                {...field}
+                id="photo"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  onChange(file || null);
+                }}
+                hasError={!!errors.photo}
+              />
+            )}
+          />
+          {errors.photo && (
+            <Error className="montserrat-bold">{errors.photo.message}</Error>
           )}
         </FormController>
 

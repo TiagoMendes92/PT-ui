@@ -32,6 +32,10 @@ export const GET_EXERCISES_LIST = graphql`
             id
             name
           }
+          photo {
+            url
+            key
+          }
           createdAt
           updatedAt
         }
@@ -50,13 +54,22 @@ export const EXERCISE_CREATE = graphql`
   mutation ExerciseCreateMutation(
     $exercise: ExerciseInput!
     $connections: [ID!]!
+    $file: Upload
   ) {
-    addExercise(exercise: $exercise)
+    addExercise(exercise: $exercise, file: $file)
       @prependNode(connections: $connections, edgeTypeName: "ExerciseEdge") {
       id
       url
       name
       category
+      allCategories {
+        id
+        name
+      }
+      photo {
+        url
+        key
+      }
       createdAt
       updatedAt
     }
@@ -64,12 +77,23 @@ export const EXERCISE_CREATE = graphql`
 `;
 
 export const EXERCISE_EDIT = graphql`
-  mutation ExerciseEditMutation($exercise: ExerciseInputWithId!) {
-    editExercise(exercise: $exercise) {
+  mutation ExerciseEditMutation(
+    $exercise: ExerciseInputWithId!
+    $file: Upload
+  ) {
+    editExercise(exercise: $exercise, file: $file) {
       id
       url
       name
       category
+      allCategories {
+        id
+        name
+      }
+      photo {
+        url
+        key
+      }
       createdAt
       updatedAt
     }

@@ -5,6 +5,8 @@ import { Environment, Network, type FetchFunction } from "relay-runtime";
 import { RelayEnvironmentProvider } from "react-relay";
 import { AuthProvider } from "./components/app/AuthContent.context.tsx";
 import App from "./components/app/App.tsx";
+import ConnectionHandler from "relay-connection-handler-plus";
+import RelayDefaultHandlerProvider from "relay-runtime/lib/handlers/RelayDefaultHandlerProvider";
 
 import "./index.css";
 
@@ -77,7 +79,17 @@ const fetchGraphQL: FetchFunction = async (request, variables) => {
   }
 };
 
+function handlerProvider(handle) {
+  switch (handle) {
+    case "connection":
+      return ConnectionHandler;
+    default:
+      return RelayDefaultHandlerProvider(handle);
+  }
+}
+
 const environment = new Environment({
+  handlerProvider,
   network: Network.create(fetchGraphQL),
 });
 
