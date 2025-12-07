@@ -31,8 +31,6 @@ const LoginSchema = yup.object().shape({
 });
 
 const LoginPage = () => {
-  "use memo";
-
   const [login, isLoggingIn] = useMutation<LoginMutation>(LOGIN_MUTATION);
   const { login: authLogin } = useAuth();
   const navigate = useNavigate();

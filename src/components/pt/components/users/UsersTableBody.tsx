@@ -22,8 +22,6 @@ const UsersTableBody = ({
   setIsResendEmailOpen,
   setIsDeleteModalOpen,
 }: UsersTableBodyProps) => {
-  "use memo";
-
   const query = usePreloadedQuery<UsersQuery>(GET_USERS, queryRef);
 
   const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment<

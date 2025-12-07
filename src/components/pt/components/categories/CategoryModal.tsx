@@ -42,8 +42,6 @@ const CategoryModal = ({
   onSubmit,
   queryRef,
 }: CategoryModalProps) => {
-  "use memo";
-
   const [create, isCreating] =
     useMutation<CategoriesCreateMutation>(CATEGORY_CREATE);
   const [edit, isEditing] = useMutation<CategoriesEditMutation>(CATEGORY_EDIT);

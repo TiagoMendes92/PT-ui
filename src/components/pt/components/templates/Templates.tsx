@@ -21,8 +21,6 @@ const Templates = ({
   setIsModalOpen,
   setIsDeleteModalOpen,
 }: TemplatesProps) => {
-  "use memo";
-
   const [localSearchTerm, setLocalSearchTerm] = useState<string>("");
 
   const handleSearch = () => {
@@ -50,8 +48,6 @@ const Templates = ({
 };
 
 const Loader = () => {
-  "use memo";
-
   const [catsQueryRef, fetchCategories] =
     useQueryLoader<CategoriesQuery>(CATEGORIES_QUERY);
   const [exerciseVariablesRef, fetchExerciseCategories] =

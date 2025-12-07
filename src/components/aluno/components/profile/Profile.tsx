@@ -57,8 +57,6 @@ const userDetailsSchema = yup.object({
 });
 
 const Profile = ({ queryRef, user }: ProfileProps) => {
-  "use memo";
-
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const data = usePreloadedQuery<ProfileQuery>(GET_PROFILE, queryRef);
@@ -336,7 +334,6 @@ const Profile = ({ queryRef, user }: ProfileProps) => {
 };
 
 export const Loader = () => {
-  "use memo";
   const { user } = useAuth();
   const [queryRef, fetchData] = useQueryLoader<ProfileQuery>(GET_PROFILE);
 

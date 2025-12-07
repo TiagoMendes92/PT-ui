@@ -19,8 +19,6 @@ import type {
 } from "../../../../__generated__/UsersActivateMutation.graphql";
 
 const DeleteUserModal = ({ user, action, onDelete }: DeleteUserProps) => {
-  "use memo";
-
   const [archiving, isArchiving] =
     useMutation<UsersDeleteMutation>(USER_DELETE);
   const [deactivating, isDeactivating] =

@@ -5,9 +5,8 @@ const Loader = ({
   size = 40,
   color = "#007bff",
   thickness = 4,
-}: LoaderProps) => {
-  "use memo";
-  return <StyledLoader size={size} color={color} thickness={thickness} />;
-};
+}: LoaderProps) => (
+  <StyledLoader size={size} color={color} thickness={thickness} />
+);
 
 export default Loader;

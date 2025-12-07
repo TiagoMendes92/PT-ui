@@ -1,5 +1,4 @@
 const MainPage = () => {
-  "use memo";
   return <>ALUNO</>;
 };
 

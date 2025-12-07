@@ -28,8 +28,6 @@ const RegisterSchema = yup.object().shape({
 });
 
 const RegisterPage = () => {
-  "use memo";
-
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
   const [setPass, isSettingPass] =

@@ -65,8 +65,6 @@ const Users = ({
 };
 
 const Loader = () => {
-  "use memo";
-
   const [queryRef, fetchData] = useQueryLoader<UsersQuery>(GET_USERS);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchStatus, setSearchStatus] = useState<UserStatus | "">("");

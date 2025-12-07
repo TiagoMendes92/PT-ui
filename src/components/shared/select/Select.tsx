@@ -21,7 +21,6 @@ export const Select = ({
   disabled = false,
   style = {},
 }: CustomSelectProps) => {
-  "use memo";
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({
     top: 0,

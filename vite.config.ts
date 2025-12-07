@@ -6,15 +6,7 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: [
-          ["relay"],
-          [
-            "babel-plugin-react-compiler",
-            {
-              compilationMode: "annotation",
-            },
-          ],
-        ],
+        plugins: [["relay"], ["babel-plugin-react-compiler"]],
       },
     }),
   ],

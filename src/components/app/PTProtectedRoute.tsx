@@ -5,6 +5,5 @@ export const PTProtectedRoute = ({
 }: {
   children: React.ReactNode;
 }) => {
-  "use memo";
   return <ProtectedRoute allowedRoles={["pt"]}>{children}</ProtectedRoute>;
 };

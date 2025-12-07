@@ -20,6 +20,7 @@
     "react-hook-form": "^7.63.0",
     "react-relay": "^20.1.1",
     "react-router-dom": "^7.9.3",
+    "relay-connection-handler-plus": "^0.1.2",
     "relay-runtime": "^20.1.1",
     "styled-components": "^6.1.19",
     "yup": "^1.7.1"
@@ -32,7 +33,7 @@
     "@types/relay-runtime": "^19.0.3",
     "@types/styled-components": "^5.1.34",
     "@vitejs/plugin-react": "^5.0.3",
-    "babel-plugin-react-compiler": "^19.1.0-rc.3",
+    "babel-plugin-react-compiler": "^1.0.0",
     "babel-plugin-relay": "^20.1.1",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",

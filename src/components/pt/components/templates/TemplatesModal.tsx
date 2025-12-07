@@ -78,8 +78,6 @@ const TemplatesModal = ({
   exerciseVariablesRef,
   template,
 }: TemplatesModalProps) => {
-  "use memo";
-
   const [step, setStep] = useState<1 | 2>(1);
   const [create, isCreating] =
     useMutation<TemplatesCreateMutation>(TEMPLATES_CREATE);

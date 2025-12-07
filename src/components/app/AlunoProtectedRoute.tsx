@@ -5,6 +5,5 @@ export const AlunoProtectedRoute = ({
 }: {
   children: React.ReactNode;
 }) => {
-  "use memo";
   return <ProtectedRoute allowedRoles={["aluno"]}>{children}</ProtectedRoute>;
 };

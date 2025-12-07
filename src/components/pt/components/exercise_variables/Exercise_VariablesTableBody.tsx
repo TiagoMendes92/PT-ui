@@ -24,8 +24,6 @@ const Exercise_VariablesTableBody = ({
   setIsModalOpen,
   setIsDeleteModalOpen,
 }: Exercise_VariablesTableBodyProps) => {
-  "use memo";
-
   const query = usePreloadedQuery<ExerciseVariablesQuery>(
     GET_EXERCISE_VARIABLES,
     exerciseVariablesQueryRef

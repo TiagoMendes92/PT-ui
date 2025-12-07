@@ -35,8 +35,6 @@ const UsersModal = ({
   user,
   onSubmit,
 }: UsersModalProps) => {
-  "use memo";
-
   const [create, isCreating] = useMutation<UsersCreateMutation>(USER_CREATE);
   const [edit, isEditing] = useMutation<UsersEditMutation>(USER_EDIT);
 

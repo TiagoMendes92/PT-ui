@@ -21,8 +21,6 @@ const TableHeader = ({
   setSearchTerm,
   setIsModalOpen,
 }: TableHeaderProps) => {
-  "use memo";
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       onSearch();

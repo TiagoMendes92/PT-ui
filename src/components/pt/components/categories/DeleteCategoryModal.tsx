@@ -15,8 +15,6 @@ const DeleteCategoryModal = ({
   category,
   onDelete,
 }: DeleteCategoryModalProps) => {
-  "use memo";
-
   const [deleteCat, isDeletingCat] =
     useMutation<CategoriesDeleteMutation>(CATEGORY_DELETE);
   const [error, setError] = useState<string>("");

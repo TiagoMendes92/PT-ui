@@ -51,8 +51,6 @@ const ExerciseModal = ({
   searchTerm,
   catsQueryRef,
 }: ExerciseModalProps) => {
-  "use memo";
-
   const [showVideo, setShowVideo] = useState<string | null>(null);
   const { categories } = usePreloadedQuery<CategoriesQuery>(
     CATEGORIES_QUERY,

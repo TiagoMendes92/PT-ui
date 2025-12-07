@@ -27,8 +27,6 @@ const ExerciseConfiguration = ({
   onChange,
   exerciseVariablesRef,
 }: ExerciseConfigurationProps) => {
-  "use memo";
-
   const { allVariables } = usePreloadedQuery<ExerciseVariablesAllQuery>(
     GET_ALL_EXERCISE_VARIABLES,
     exerciseVariablesRef

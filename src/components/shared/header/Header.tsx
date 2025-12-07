@@ -12,7 +12,6 @@ import Hamburger from "hamburger-react";
 import { useAuth } from "../../app/AuthContent.context";
 
 const Header = ({ links }: HeaderProps) => {
-  "use memo";
   const [isOpen, setOpen] = useState<boolean>(false);
   const { user, logout } = useAuth();
 

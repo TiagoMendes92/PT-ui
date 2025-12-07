@@ -23,8 +23,6 @@ const TemplatesGrid = ({
   setIsModalOpen,
   setIsDeleteModalOpen,
 }: TemplatesGridProps) => {
-  "use memo";
-
   const query = usePreloadedQuery<TemplatesQuery>(GET_TEMPLATES, queryRef);
 
   const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment<

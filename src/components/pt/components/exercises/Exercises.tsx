@@ -24,8 +24,6 @@ const Exercises = ({
   setSearchTerm,
   setIsDeleteModalOpen,
 }: ExercisesProps) => {
-  "use memo";
-
   const { categories } = usePreloadedQuery<CategoriesQuery>(
     CATEGORIES_QUERY,
     catsQueryRef
@@ -71,8 +69,6 @@ const Exercises = ({
 };
 
 const Loader = () => {
-  "use memo";
-
   const [catsQueryRef, fetchCategories] =
     useQueryLoader<CategoriesQuery>(CATEGORIES_QUERY);
   const [exercisesQueryRef, fetcExercises] =

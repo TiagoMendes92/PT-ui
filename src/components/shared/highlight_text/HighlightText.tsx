@@ -1,7 +1,6 @@
 import type { HighlightTextProps } from "./types";
 
 const HighlightText = ({ text, searchTerm }: HighlightTextProps) => {
-  "use memo";
   if (!searchTerm.trim()) {
     return <span>{text}</span>;
   }

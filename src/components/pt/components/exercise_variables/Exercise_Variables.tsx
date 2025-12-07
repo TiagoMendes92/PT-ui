@@ -18,8 +18,6 @@ const Exercise_Variables = ({
   setIsDeleteModalOpen,
   exerciseVariablesQueryRef,
 }: Exercise_VariablesProps) => {
-  "use memo";
-
   const [localSearchTerm, setLocalSearchTerm] = useState<string>("");
 
   const handleSearch = () => {
@@ -56,8 +54,6 @@ const Exercise_Variables = ({
 };
 
 const Loader = () => {
-  "use memo";
-
   const [exerciseVariablesQueryRef, fetcExerciseVariables] =
     useQueryLoader<ExerciseVariablesQuery>(GET_EXERCISE_VARIABLES);
 

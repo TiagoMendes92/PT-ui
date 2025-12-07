@@ -26,8 +26,6 @@ const CategoriesTableBody = ({
   setIsModalOpen,
   setIsDeleteModalOpen,
 }: CategoriesTableBodyProps) => {
-  "use memo";
-
   const { categories: cats } = usePreloadedQuery<CategoriesQuery>(
     CATEGORIES_QUERY,
     queryRef

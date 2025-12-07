@@ -21,8 +21,6 @@ const ExercisesTableBody = ({
   setIsDeleteModalOpen,
   exercisesQueryRef,
 }: ExercisesTableBodyProps) => {
-  "use memo";
-
   const query = usePreloadedQuery<ExerciseQuery>(
     GET_EXERCISES,
     exercisesQueryRef

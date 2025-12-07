@@ -39,8 +39,6 @@ const ExercisePicker = ({
   catsQueryRef,
   onChange,
 }: ExercisePickerProps) => {
-  "use memo";
-
   const [selectedExercises, setSelectedExercises] =
     useState<SelectedExercise[]>(initialValues);
   const [searchTerm, setSearchTerm] = useState<string>("");

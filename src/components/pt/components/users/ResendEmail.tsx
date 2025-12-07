@@ -11,8 +11,6 @@ import { useState } from "react";
 import Loader from "../../../shared/loader/Loader";
 
 const ResendEmail = ({ user, onResend }: ResendEmailProps) => {
-  "use memo";
-
   const [send, isSending] = useMutation<UsersResendEmailMutation>(RESEND_EMAIL);
   const [error, setError] = useState<string>("");
 

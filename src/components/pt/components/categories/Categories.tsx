@@ -18,7 +18,6 @@ const Categories = ({
   setIsModalOpen,
   setIsDeleteModalOpen,
 }: CategoriesProps) => {
-  "use memo";
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [cats, setCats] = useState<Category[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -93,8 +92,6 @@ const Categories = ({
 };
 
 const Loader = () => {
-  "use memo";
-
   const [isModalOpen, setIsModalOpen] = useState<{
     category: Category | null;
   } | null>(null);

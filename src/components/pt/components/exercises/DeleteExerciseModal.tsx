@@ -14,8 +14,6 @@ const DeleteExerciseModal = ({
   exercise,
   onDelete,
 }: DeleteExerciseModalProps) => {
-  "use memo";
-
   const [delExercise, isDeletingExercise] =
     useMutation<ExerciseDeleteMutation>(EXERCISE_DELETE);
   const [error, setError] = useState<string>("");
