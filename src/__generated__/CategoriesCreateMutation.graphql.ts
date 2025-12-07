@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c5303b35f1bd6641834b72116e8ca62e>>
+ * @generated SignedSource<<4561c83cca0110d6103945c9af9199ea>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,7 @@ export type CategoryInput = {
 };
 export type CategoriesCreateMutation$variables = {
   cat: CategoryInput;
+  file?: any | null | undefined;
 };
 export type CategoriesCreateMutation$data = {
   readonly addCategory: {
@@ -32,6 +33,11 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "cat"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "file"
   }
 ],
 v1 = [
@@ -42,6 +48,11 @@ v1 = [
         "kind": "Variable",
         "name": "cat",
         "variableName": "cat"
+      },
+      {
+        "kind": "Variable",
+        "name": "file",
+        "variableName": "file"
       }
     ],
     "concreteType": "Category",
@@ -78,16 +89,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "1130699d39ec1bfc1d1e96803370e080",
+    "cacheID": "fc2a6e7fba05d3d4f56de0b1726bb1cb",
     "id": null,
     "metadata": {},
     "name": "CategoriesCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoriesCreateMutation(\n  $cat: CategoryInput!\n) {\n  addCategory(cat: $cat) {\n    id\n  }\n}\n"
+    "text": "mutation CategoriesCreateMutation(\n  $cat: CategoryInput!\n  $file: Upload\n) {\n  addCategory(cat: $cat, file: $file) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "1122b95d6b7cf17d623f544bffb670c0";
+(node as any).hash = "cc3b8e318a7e2e757039bd7244357a4f";
 
 export default node;

@@ -159,9 +159,7 @@ const Profile = ({ queryRef, user }: ProfileProps) => {
           onChange={handlePhotoUpload}
           disabled={isUpdatingPhoto}
         />
-        {isUpdatingPhoto && (
-          <p className="mt-2 text-sm text-blue-600">Uploading...</p>
-        )}
+        {isUpdatingPhoto && <p>Uploading...</p>}
       </Photo>
 
       {photoError && (

@@ -21,6 +21,7 @@ export type CategoryModalProps = {
 export type CategoryFormData = {
   name: string;
   parent_category: string;
+  photo: File | null;
 };
 
 export type Category = CategoriesQuery$data["categories"][0];

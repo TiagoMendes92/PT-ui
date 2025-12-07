@@ -8,6 +8,7 @@ import {
   ActionButton,
   Actions,
   CatName,
+  ImageCell,
   SubCatName,
   Table,
 } from "./Categories.styles";
@@ -48,7 +49,7 @@ const CategoriesTableBody = ({
   return (
     <tbody>
       {!categories.length ? (
-        <EmptyCategory />
+        <EmptyCategory nrOfCols={3} />
       ) : (
         categories.map((category) => (
           <Fragment key={category.id}>
@@ -60,6 +61,11 @@ const CategoriesTableBody = ({
                   </button>
                   <HighlightText text={category.name} searchTerm={searchTerm} />
                 </CatName>
+              </td>
+              <td>
+                <ImageCell>
+                  <img src={category.photo?.url} />
+                </ImageCell>
               </td>
               <td>
                 <Actions>
@@ -74,7 +80,7 @@ const CategoriesTableBody = ({
             </tr>
             {openCats.some((c) => c.id === category.id) && (
               <tr>
-                <td colSpan={2} style={{ padding: 0 }}>
+                <td colSpan={3} style={{ padding: 0 }}>
                   <Table>
                     <tbody>
                       {!category?.subcategories?.length ? (
@@ -90,6 +96,11 @@ const CategoriesTableBody = ({
                                   searchTerm={searchTerm}
                                 />
                               </SubCatName>
+                            </td>
+                            <td style={{ width: "150px" }}>
+                              <ImageCell>
+                                <img src={sub.photo?.url} />
+                              </ImageCell>
                             </td>
                             <td style={{ width: "85px" }}>
                               <Actions>

@@ -14,26 +14,38 @@ export const CATEGORIES_QUERY = graphql`
         createdAt
         updatedAt
         parentCategory
+        photo {
+          url
+          key
+        }
+      }
+      photo {
+        url
+        key
       }
     }
   }
 `;
 
 export const CATEGORY_CREATE = graphql`
-  mutation CategoriesCreateMutation($cat: CategoryInput!) {
-    addCategory(cat: $cat) {
+  mutation CategoriesCreateMutation($cat: CategoryInput!, $file: Upload) {
+    addCategory(cat: $cat, file: $file) {
       id
     }
   }
 `;
 
 export const CATEGORY_EDIT = graphql`
-  mutation CategoriesEditMutation($cat: CategoryInputWithId!) {
-    editCategory(cat: $cat) {
+  mutation CategoriesEditMutation($cat: CategoryInputWithId!, $file: Upload) {
+    editCategory(cat: $cat, file: $file) {
       id
       name
       parentCategory
       updatedAt
+      photo {
+        url
+        key
+      }
     }
   }
 `;

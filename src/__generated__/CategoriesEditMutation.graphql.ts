@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<adafe7460bb6a987c691a6bdbdd410af>>
+ * @generated SignedSource<<6658bab248d23d346d74e84731b3ab54>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,12 +16,17 @@ export type CategoryInputWithId = {
 };
 export type CategoriesEditMutation$variables = {
   cat: CategoryInputWithId;
+  file?: any | null | undefined;
 };
 export type CategoriesEditMutation$data = {
   readonly editCategory: {
     readonly id: string;
     readonly name: string;
     readonly parentCategory: string | null | undefined;
+    readonly photo: {
+      readonly key: string;
+      readonly url: string;
+    } | null | undefined;
     readonly updatedAt: string;
   } | null | undefined;
 };
@@ -36,6 +41,11 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "cat"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "file"
   }
 ],
 v1 = [
@@ -46,6 +56,11 @@ v1 = [
         "kind": "Variable",
         "name": "cat",
         "variableName": "cat"
+      },
+      {
+        "kind": "Variable",
+        "name": "file",
+        "variableName": "file"
       }
     ],
     "concreteType": "Category",
@@ -80,6 +95,31 @@ v1 = [
         "kind": "ScalarField",
         "name": "updatedAt",
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Photo",
+        "kind": "LinkedField",
+        "name": "photo",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "url",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "key",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -103,16 +143,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "8ab1c10386c8ffb5c31f4942370d54d6",
+    "cacheID": "4691b634c1a2f9f437b4d7d1cde8161e",
     "id": null,
     "metadata": {},
     "name": "CategoriesEditMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoriesEditMutation(\n  $cat: CategoryInputWithId!\n) {\n  editCategory(cat: $cat) {\n    id\n    name\n    parentCategory\n    updatedAt\n  }\n}\n"
+    "text": "mutation CategoriesEditMutation(\n  $cat: CategoryInputWithId!\n  $file: Upload\n) {\n  editCategory(cat: $cat, file: $file) {\n    id\n    name\n    parentCategory\n    updatedAt\n    photo {\n      url\n      key\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e7f865cd4669965fb39c206b95881f20";
+(node as any).hash = "87d2952d530a7cddee27c5a34012607b";
 
 export default node;

@@ -55,6 +55,15 @@ export const SubCatName = styled("div")`
   }
 `;
 
+export const ImageCell = styled("div")`
+  img {
+    width: 100%;
+    height: 100%;
+    max-height: 100px;
+    object-fit: contain;
+  }
+`;
+
 export const AddButton = styled(Button)`
   width: 45px;
   font-size: 40px;

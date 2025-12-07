@@ -1,7 +1,7 @@
 import type { CategoryFormData, CategoryModalProps } from "./types";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import {
   FormController,
   Input,
@@ -28,6 +28,7 @@ import type {
   CategoriesEditMutation,
   CategoriesEditMutation$data,
 } from "../../../../__generated__/CategoriesEditMutation.graphql";
+import PreviewFile from "../../../shared/preview_file/PreviewFiles";
 
 const CategorySchema = yup.object().shape({
   name: yup
@@ -35,6 +36,19 @@ const CategorySchema = yup.object().shape({
     .min(3, "Categoria tem que ter 3 caracteres")
     .required("Nome é obrigatório"),
   parent_category: yup.string().default(""),
+  photo: yup
+    .mixed<File>()
+    .default(null)
+    .nullable()
+    .test("fileType", "Só imagens em JPEG, PNG ou WebP", (value) => {
+      if (!value) return true;
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      return allowedTypes.includes((value as File).type);
+    })
+    .test("fileSize", "Imagem deve ter menos de 10MB", (value) => {
+      if (!value) return true;
+      return (value as File).size <= 10000000;
+    }),
 });
 
 const CategoryModal = ({
@@ -69,7 +83,13 @@ const CategoryModal = ({
     defaultValues: {
       name: category?.name || "",
       parent_category: category?.parentCategory || "",
+      photo: null,
     },
+  });
+
+  const photo = useWatch<CategoryFormData, "photo">({
+    control,
+    name: "photo",
   });
 
   const setManualError = (create: boolean, message?: string) => {
@@ -79,11 +99,13 @@ const CategoryModal = ({
     });
   };
 
-  const onSubmitForm = async (values: CategoryFormData) => {
+  const onSubmitForm = async (formValues: CategoryFormData) => {
+    const { photo, ...values } = formValues;
     if (!category) {
       create({
         variables: {
           cat: values,
+          file: photo,
         },
         onCompleted: (response: CategoriesCreateMutation$data, errors) => {
           if (response.addCategory?.id) {
@@ -103,6 +125,7 @@ const CategoryModal = ({
             ...values,
             id: category.id,
           },
+          file: photo,
         },
         onCompleted: (response: CategoriesEditMutation$data, errors) => {
           if (response.editCategory?.updatedAt) {
@@ -158,6 +181,39 @@ const CategoryModal = ({
           <Error className="montserrat-bold">
             {errors.parent_category.message}
           </Error>
+        )}
+      </FormController>
+
+      <FormController>
+        <label htmlFor="photo" className="montserrat-bold">
+          FOTOGRAFIA (OPCIONAL)
+        </label>
+        {photo || category?.photo?.url ? (
+          <PreviewFile
+            width={100}
+            height={"auto"}
+            file={photo || (category?.photo?.url as string)}
+          />
+        ) : null}
+        <Controller
+          name="photo"
+          control={control}
+          render={({ field: { onChange, value, ...field } }) => (
+            <Input
+              {...field}
+              id="photo"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                onChange(file || null);
+              }}
+              hasError={!!errors.photo}
+            />
+          )}
+        />
+        {errors.photo && (
+          <Error className="montserrat-bold">{errors.photo.message}</Error>
         )}
       </FormController>
 
