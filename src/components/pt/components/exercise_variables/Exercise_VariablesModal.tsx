@@ -1,4 +1,6 @@
 import { ConnectionHandler, useMutation } from "react-relay";
+import ConnectionHandlerPlus from "relay-connection-handler-plus";
+
 import {
   EXERCISE_VARIABLE_CREATE,
   EXERCISE_VARIABLE_EDIT,
@@ -28,17 +30,21 @@ import {
 import { TextArea } from "../templates/Templates.styles";
 import Select from "../../../shared/select/Select";
 import Loader from "../../../shared/loader/Loader";
+import {
+  DismissButton,
+  ModalActions,
+} from "../../../shared/modal/Modal.styles";
 
 const VariableSchema = yup.object().shape({
   name: yup
     .string()
-    .min(3, "Nome tem que ter 3 caracteres")
-    .required("Nome é obrigatório"),
-  unit: yup.string().default("").required("Unidade é obrigatória"),
+    .required("Nome da variável é obrigatório")
+    .min(3, "Nome da variável tem que ter 3 caracteres"),
+  unit: yup.string().default("").required("Unidade da variável é obrigatória"),
   description: yup
     .string()
     .default("")
-    .max(200, "Descrição tem que ter menos de 200 caracteres"),
+    .max(200, "Descrição da variável tem que ter menos de 200 caracteres"),
 });
 
 export const unitOptions = [
@@ -48,11 +54,11 @@ export const unitOptions = [
   },
   {
     value: "r",
-    label: "repetições",
+    label: "reps",
   },
   {
     value: "kg",
-    label: "Kgs",
+    label: "kgs",
   },
   {
     value: "m",
@@ -68,9 +74,8 @@ const Exercise_VariablesModal = ({
   searchTerm,
   variable,
   onSubmit,
+  onDismiss,
 }: Exercise_VariablesModalProps) => {
-  "use memo";
-
   const [create, isCreating] = useMutation<ExerciseVariablesCreateMutation>(
     EXERCISE_VARIABLE_CREATE
   );
@@ -118,7 +123,17 @@ const Exercise_VariablesModal = ({
           ],
         },
         updater: (store) => {
-          store.invalidateStore();
+          const root = store.getRoot();
+          const connectionKey =
+            "ExerciseVariablesPaginatedQuery_exerciseVariables";
+
+          const connections = ConnectionHandlerPlus.getConnections(
+            root,
+            connectionKey
+          );
+          connections.forEach((connection) => {
+            connection?.invalidateRecord();
+          });
         },
         onCompleted: (
           response: ExerciseVariablesCreateMutation$data,
@@ -158,14 +173,14 @@ const Exercise_VariablesModal = ({
       <Form onSubmit={handleSubmit(onSubmitForm)}>
         <FormController>
           <label htmlFor="name" className="montserrat-bold">
-            NOME
+            Nome da variável
           </label>
           <Input
             id="name"
             type="text"
             className="montserrat"
             hasError={!!errors.name}
-            placeholder="Nome do exercício"
+            placeholder="Escrever nome da variável..."
             {...register("name")}
           />
           {errors.name && (
@@ -175,7 +190,7 @@ const Exercise_VariablesModal = ({
 
         <FormController>
           <label htmlFor="unit" className="montserrat-bold">
-            UNIDADE
+            Unidade da variável
           </label>
           <Controller
             name="unit"
@@ -185,7 +200,7 @@ const Exercise_VariablesModal = ({
                 options={unitOptions}
                 value={field.value}
                 onChange={field.onChange}
-                placeholder="Selecionar unidade"
+                placeholder="Selecionar unidade da variável..."
                 hasError={!!errors.unit}
               />
             )}
@@ -197,13 +212,13 @@ const Exercise_VariablesModal = ({
 
         <FormController>
           <label htmlFor="description" className="montserrat-bold">
-            DESCRIÇÃO
+            Descrição da variável
           </label>
           <TextArea
             id="description"
             className="montserrat"
             hasError={!!errors.description}
-            placeholder="Descrição do exercício"
+            placeholder="Escrever descrição da variável..."
             rows={4}
             {...register("description")}
           />
@@ -219,20 +234,27 @@ const Exercise_VariablesModal = ({
             {errors.root.message}
           </Error>
         )}
-
-        <Button
-          type="submit"
-          disabled={isSubmitting || isLoading}
-          className="montserrat-bold"
-        >
-          {isSubmitting || isLoading ? (
-            <Loader size={25} color="black" />
-          ) : variable ? (
-            "EDITAR"
-          ) : (
-            "CRIAR"
-          )}
-        </Button>
+        <ModalActions>
+          <Button
+            type="submit"
+            disabled={isSubmitting || isLoading}
+            className="montserrat-bold"
+          >
+            {isSubmitting || isLoading ? (
+              <Loader size={15} color="white" />
+            ) : variable ? (
+              "EDITAR VARIÁVEL"
+            ) : (
+              "CRIAR VARIÁVEL"
+            )}
+          </Button>
+          <DismissButton
+            disabled={isSubmitting || isLoading}
+            onClick={onDismiss}
+          >
+            CANCELAR
+          </DismissButton>
+        </ModalActions>
       </Form>
     </>
   );

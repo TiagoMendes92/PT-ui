@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5cd2e2536aa8d80146b9afd84a077218>>
+ * @generated SignedSource<<623df3f7455f6090da0fc6b41c9f386c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -29,6 +29,7 @@ export type TemplateExerciseSetVariableInput = {
 };
 export type TemplatesCreateMutation$variables = {
   connections: ReadonlyArray<string>;
+  file?: any | null | undefined;
   input: CreateTemplateInput;
 };
 export type TemplatesCreateMutation$data = {
@@ -40,6 +41,10 @@ export type TemplatesCreateMutation$data = {
         readonly category: string;
         readonly id: string;
         readonly name: string;
+        readonly photo: {
+          readonly key: string;
+          readonly url: string;
+        } | null | undefined;
         readonly url: string;
       };
       readonly orderPosition: number;
@@ -57,6 +62,10 @@ export type TemplatesCreateMutation$data = {
     }>;
     readonly id: string;
     readonly name: string;
+    readonly photo: {
+      readonly key: string;
+      readonly url: string;
+    } | null | undefined;
     readonly updatedAt: string;
   };
 };
@@ -74,58 +83,94 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "file"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "input"
 },
-v2 = [
+v3 = [
+  {
+    "kind": "Variable",
+    "name": "file",
+    "variableName": "file"
+  },
   {
     "kind": "Variable",
     "name": "input",
     "variableName": "input"
   }
 ],
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "description",
   "storageKey": null
 },
-v6 = {
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Photo",
+  "kind": "LinkedField",
+  "name": "photo",
+  "plural": false,
+  "selections": [
+    (v7/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "key",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v7 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "updatedAt",
   "storageKey": null
 },
-v8 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "orderPosition",
   "storageKey": null
 },
-v9 = {
+v12 = {
   "alias": null,
   "args": null,
   "concreteType": "Exercise",
@@ -133,26 +178,21 @@ v9 = {
   "name": "exercise",
   "plural": false,
   "selections": [
-    (v3/*: any*/),
     (v4/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "url",
-      "storageKey": null
-    },
+    (v5/*: any*/),
+    (v7/*: any*/),
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "category",
       "storageKey": null
-    }
+    },
+    (v8/*: any*/)
   ],
   "storageKey": null
 },
-v10 = {
+v13 = {
   "alias": null,
   "args": null,
   "concreteType": "TemplateExerciseSet",
@@ -183,8 +223,8 @@ v10 = {
           "name": "variable",
           "plural": false,
           "selections": [
-            (v3/*: any*/),
             (v4/*: any*/),
+            (v5/*: any*/),
             {
               "alias": null,
               "args": null,
@@ -212,7 +252,8 @@ return {
   "fragment": {
     "argumentDefinitions": [
       (v0/*: any*/),
-      (v1/*: any*/)
+      (v1/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -220,17 +261,18 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "Template",
         "kind": "LinkedField",
         "name": "createTemplate",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
           (v6/*: any*/),
-          (v7/*: any*/),
+          (v8/*: any*/),
+          (v9/*: any*/),
+          (v10/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -239,9 +281,9 @@ return {
             "name": "exercises",
             "plural": true,
             "selections": [
-              (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/)
+              (v11/*: any*/),
+              (v12/*: any*/),
+              (v13/*: any*/)
             ],
             "storageKey": null
           }
@@ -255,25 +297,27 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v1/*: any*/),
-      (v0/*: any*/)
+      (v2/*: any*/),
+      (v0/*: any*/),
+      (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "TemplatesCreateMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "Template",
         "kind": "LinkedField",
         "name": "createTemplate",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
           (v6/*: any*/),
-          (v7/*: any*/),
+          (v8/*: any*/),
+          (v9/*: any*/),
+          (v10/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -282,10 +326,10 @@ return {
             "name": "exercises",
             "plural": true,
             "selections": [
-              (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/),
-              (v3/*: any*/)
+              (v11/*: any*/),
+              (v12/*: any*/),
+              (v13/*: any*/),
+              (v4/*: any*/)
             ],
             "storageKey": null
           }
@@ -294,7 +338,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "filters": null,
         "handle": "prependNode",
         "key": "",
@@ -316,16 +360,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "be4e58fc03ef7d6ac6d09f19a8f741eb",
+    "cacheID": "98e4fb4e28e3c1160b2cb7c11c33b250",
     "id": null,
     "metadata": {},
     "name": "TemplatesCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation TemplatesCreateMutation(\n  $input: CreateTemplateInput!\n) {\n  createTemplate(input: $input) {\n    id\n    name\n    description\n    createdAt\n    updatedAt\n    exercises {\n      orderPosition\n      exercise {\n        id\n        name\n        url\n        category\n      }\n      sets {\n        setNumber\n        variables {\n          variable {\n            id\n            name\n            unit\n          }\n          targetValue\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation TemplatesCreateMutation(\n  $input: CreateTemplateInput!\n  $file: Upload\n) {\n  createTemplate(input: $input, file: $file) {\n    id\n    name\n    description\n    photo {\n      url\n      key\n    }\n    createdAt\n    updatedAt\n    exercises {\n      orderPosition\n      exercise {\n        id\n        name\n        url\n        category\n        photo {\n          url\n          key\n        }\n      }\n      sets {\n        setNumber\n        variables {\n          variable {\n            id\n            name\n            unit\n          }\n          targetValue\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "0266fb6c3df33cf0141258dccafa530f";
+(node as any).hash = "05c7e97627d6a53f9df23cf239d070ea";
 
 export default node;

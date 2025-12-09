@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dc5ad7e8caf85b672acd26f44a3d797e>>
+ * @generated SignedSource<<c57aeb07607880d725620bc51fa4d8f4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -71,6 +71,32 @@ v3 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Photo",
+  "kind": "LinkedField",
+  "name": "photo",
+  "plural": false,
+  "selections": [
+    (v4/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "key",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -141,6 +167,7 @@ return {
                     "name": "updatedAt",
                     "storageKey": null
                   },
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -166,20 +193,15 @@ return {
                         "selections": [
                           (v2/*: any*/),
                           (v3/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "url",
-                            "storageKey": null
-                          },
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
                             "name": "category",
                             "storageKey": null
-                          }
+                          },
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -319,16 +341,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1e812064fac6a88e46283019cf01face",
+    "cacheID": "a8cb7445973dc0608d4ad9c243484e29",
     "id": null,
     "metadata": {},
     "name": "TemplatesPaginatedQuery",
     "operationKind": "query",
-    "text": "query TemplatesPaginatedQuery(\n  $after: String\n  $first: Int\n  $searchTerm: String\n) {\n  ...Templates_2s884C\n}\n\nfragment Templates_2s884C on Query {\n  templates(first: $first, after: $after, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        description\n        createdAt\n        updatedAt\n        exercises {\n          orderPosition\n          exercise {\n            id\n            name\n            url\n            category\n          }\n          sets {\n            setNumber\n            variables {\n              variable {\n                id\n                name\n                unit\n              }\n              targetValue\n            }\n          }\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
+    "text": "query TemplatesPaginatedQuery(\n  $after: String\n  $first: Int\n  $searchTerm: String\n) {\n  ...Templates_2s884C\n}\n\nfragment Templates_2s884C on Query {\n  templates(first: $first, after: $after, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        description\n        createdAt\n        updatedAt\n        photo {\n          url\n          key\n        }\n        exercises {\n          orderPosition\n          exercise {\n            id\n            name\n            url\n            category\n            photo {\n              url\n              key\n            }\n          }\n          sets {\n            setNumber\n            variables {\n              variable {\n                id\n                name\n                unit\n              }\n              targetValue\n            }\n          }\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "f658a50a9b6d1e7062cb45e018fa17e8";
+(node as any).hash = "9976501a56b11ec530afb5fd434a3a4a";
 
 export default node;

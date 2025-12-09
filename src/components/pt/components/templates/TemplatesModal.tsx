@@ -4,7 +4,12 @@ import type {
   TemplateFormData,
   TemplatesModalProps,
 } from "./types";
-import { useForm, type FieldErrors } from "react-hook-form";
+import {
+  Controller,
+  useForm,
+  useWatch,
+  type FieldErrors,
+} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "../categories/Categories.styles";
 import {
@@ -29,6 +34,8 @@ import type {
   TemplatesEditMutation$data,
 } from "../../../../__generated__/TemplatesEditMutation.graphql";
 import ExerciseConfiguration from "../../../shared/exercise_configuration/ExerciseConfiguration";
+import ConnectionHandlerPlus from "relay-connection-handler-plus";
+import PreviewFile from "../../../shared/preview_file/PreviewFiles";
 
 const TemplateSchema = yup.object().shape({
   name: yup
@@ -39,6 +46,19 @@ const TemplateSchema = yup.object().shape({
     .string()
     .default("")
     .max(200, "Descrição tem que ter menos de 200 caracteres"),
+  photo: yup
+    .mixed<File>()
+    .default(null)
+    .nullable()
+    .test("fileType", "Só imagens em JPEG, PNG ou WebP", (value) => {
+      if (!value) return true;
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      return allowedTypes.includes((value as File).type);
+    })
+    .test("fileSize", "Imagem deve ter menos de 10MB", (value) => {
+      if (!value) return true;
+      return (value as File).size <= 10000000;
+    }),
   exercises: yup
     .array()
     .of(
@@ -100,6 +120,7 @@ const TemplatesModal = ({
 
   const {
     register,
+    control,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
@@ -110,8 +131,14 @@ const TemplatesModal = ({
     defaultValues: {
       name: template?.name || "",
       description: template?.description || "",
+      photo: null,
       exercises: exercisesInitialValue,
     },
+  });
+
+  const photo = useWatch<TemplateFormData, "photo">({
+    control,
+    name: "photo",
   });
 
   const setManualError = (create: boolean, message?: string) => {
@@ -121,7 +148,8 @@ const TemplatesModal = ({
     });
   };
 
-  const onSubmitForm = async (values: TemplateFormData) => {
+  const onSubmitForm = async (formValues: TemplateFormData) => {
+    const { photo, ...values } = formValues;
     if (!template) {
       create({
         variables: {
@@ -132,6 +160,7 @@ const TemplatesModal = ({
               name: undefined,
             })),
           },
+          file: photo,
           connections: [
             ConnectionHandler.getConnectionID(
               "client:root",
@@ -141,7 +170,16 @@ const TemplatesModal = ({
           ],
         },
         updater: (store) => {
-          store.invalidateStore();
+          const root = store.getRoot();
+          const connectionKey = "TemplatesPaginatedQuery_templates";
+
+          const connections = ConnectionHandlerPlus.getConnections(
+            root,
+            connectionKey
+          );
+          connections.forEach((connection) => {
+            connection?.invalidateRecord();
+          });
         },
         onCompleted: (response: TemplatesCreateMutation$data, errors) => {
           if (response.createTemplate?.id) {
@@ -165,6 +203,7 @@ const TemplatesModal = ({
               name: undefined,
             })),
           },
+          file: photo,
         },
         onCompleted: (response: TemplatesEditMutation$data, errors) => {
           if (response.updateTemplate?.id) {
@@ -239,6 +278,40 @@ const TemplatesModal = ({
               </Error>
             )}
           </FormController>
+
+          <FormController>
+            <label htmlFor="photo" className="montserrat-bold">
+              FOTOGRAFIA (OPCIONAL)
+            </label>
+            {photo || template?.photo?.url ? (
+              <PreviewFile
+                width={100}
+                height={"auto"}
+                file={photo || (template?.photo?.url as string)}
+              />
+            ) : null}
+            <Controller
+              name="photo"
+              control={control}
+              render={({ field: { onChange, value, ...field } }) => (
+                <Input
+                  {...field}
+                  id="photo"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    onChange(file || null);
+                  }}
+                  hasError={!!errors.photo}
+                />
+              )}
+            />
+            {errors.photo && (
+              <Error className="montserrat-bold">{errors.photo.message}</Error>
+            )}
+          </FormController>
+
           <Suspense fallback={<div>Loading...</div>}>
             <ExercisePicker
               initialValues={getValues("exercises") as SelectedExercise[]}

@@ -2,7 +2,7 @@ import type { HeaderLink } from "../../shared/header/types";
 
 export const links: HeaderLink[] = [
   {
-    section: "Pefil",
+    section: "Perfil",
     links: [
       {
         label: "Perfil",

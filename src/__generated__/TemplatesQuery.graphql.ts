@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f03512b0db9cb8db6a5e4666dd1805b9>>
+ * @generated SignedSource<<81b234352f82e5e9a784567c98da4e0a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -59,6 +59,32 @@ v3 = {
   "args": null,
   "kind": "ScalarField",
   "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Photo",
+  "kind": "LinkedField",
+  "name": "photo",
+  "plural": false,
+  "selections": [
+    (v4/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "key",
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 };
 return {
@@ -130,6 +156,7 @@ return {
                     "name": "updatedAt",
                     "storageKey": null
                   },
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -155,20 +182,15 @@ return {
                         "selections": [
                           (v2/*: any*/),
                           (v3/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "url",
-                            "storageKey": null
-                          },
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
                             "name": "category",
                             "storageKey": null
-                          }
+                          },
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -308,12 +330,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "076cd918c5d65f1f5cba51a915f9ac84",
+    "cacheID": "7c945709357d79a87d3460b29a50d053",
     "id": null,
     "metadata": {},
     "name": "TemplatesQuery",
     "operationKind": "query",
-    "text": "query TemplatesQuery(\n  $first: Int\n  $searchTerm: String\n) {\n  ...Templates_A49pD\n}\n\nfragment Templates_A49pD on Query {\n  templates(first: $first, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        description\n        createdAt\n        updatedAt\n        exercises {\n          orderPosition\n          exercise {\n            id\n            name\n            url\n            category\n          }\n          sets {\n            setNumber\n            variables {\n              variable {\n                id\n                name\n                unit\n              }\n              targetValue\n            }\n          }\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
+    "text": "query TemplatesQuery(\n  $first: Int\n  $searchTerm: String\n) {\n  ...Templates_A49pD\n}\n\nfragment Templates_A49pD on Query {\n  templates(first: $first, searchTerm: $searchTerm) {\n    edges {\n      node {\n        id\n        name\n        description\n        createdAt\n        updatedAt\n        photo {\n          url\n          key\n        }\n        exercises {\n          orderPosition\n          exercise {\n            id\n            name\n            url\n            category\n            photo {\n              url\n              key\n            }\n          }\n          sets {\n            setNumber\n            variables {\n              variable {\n                id\n                name\n                unit\n              }\n              targetValue\n            }\n          }\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();

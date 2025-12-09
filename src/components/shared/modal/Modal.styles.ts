@@ -11,7 +11,7 @@ export const Overlay = styled.div`
   position: fixed;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
 export const ModalContainer = styled.div`
@@ -20,9 +20,10 @@ export const ModalContainer = styled.div`
   padding: 24px;
   max-height: 90vh;
   max-width: 500px;
-  background: black;
+  background: white;
+  border-radius: 8px;
   flex-direction: column;
-  border: 2px solid white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
 
 export const ModalHeader = styled.div`
@@ -32,16 +33,42 @@ export const ModalHeader = styled.div`
 `;
 
 export const SubTitle = styled("h2")`
-  font-size: 30px;
+  margin: 0;
+  font-size: 24px;
 `;
 
 export const ModalBody = styled.div`
   flex: 1;
-  overflow-y: auto;
   color: black;
+  overflow-y: auto;
 `;
 
-export const CloseButton = styled(Button)`
-  width: 40px;
-  font-size: 40px;
+export const Description = styled.div`
+  font-size: 14px;
+  color: #757575;
+  margin-top: 10px;
+  line-height: 1.5;
+`;
+
+export const ModalActions = styled.div`
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+
+  > button {
+    max-width: calc(50% - 5px);
+  }
+`;
+
+export const DismissButton = styled(Button)`
+  color: #f55367;
+  background: white;
+  border-color: #f55367;
+
+  &:hover:not(:disabled) {
+    color: white;
+    background: #f55367;
+  }
 `;

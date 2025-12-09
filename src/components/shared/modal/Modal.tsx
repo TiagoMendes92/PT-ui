@@ -1,5 +1,5 @@
 import {
-  CloseButton,
+  Description,
   ModalBody,
   ModalContainer,
   ModalHeader,
@@ -8,14 +8,18 @@ import {
 } from "./Modal.styles";
 import type { ModalProps } from "./type";
 
-const Modal = ({ title, children, onDismiss }: ModalProps) => (
+const Modal = ({ title, subtitle, children, onDismiss }: ModalProps) => (
   <Overlay onClick={onDismiss}>
     <ModalContainer onClick={(e) => e.stopPropagation()}>
       <ModalHeader>
         <SubTitle className="montserrat-bold">{title}</SubTitle>
-        <CloseButton onClick={onDismiss}>&times;</CloseButton>
       </ModalHeader>
-      <ModalBody>{children}</ModalBody>
+      <ModalBody>
+        {subtitle && (
+          <Description className="montserrat">{subtitle}</Description>
+        )}
+        {children}
+      </ModalBody>
     </ModalContainer>
   </Overlay>
 );

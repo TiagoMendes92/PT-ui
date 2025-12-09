@@ -9,10 +9,15 @@ import type { DeleteExercise_VariablesModalProps } from "./type";
 import { DeleteModalContent } from "../categories/Categories.styles";
 import { Button, Error } from "../../../login/LoginPage.styles";
 import Loader from "../../../shared/loader/Loader";
+import {
+  DismissButton,
+  ModalActions,
+} from "../../../shared/modal/Modal.styles";
 
 const DeleteExercise_VariablesModal = ({
   variable,
   onDelete,
+  onDismiss,
 }: DeleteExercise_VariablesModalProps) => {
   const [delVariable, isDeletingVariable] =
     useMutation<ExerciseVariablesDeleteMutation>(EXERCISE_VARIABLE_DELETE);
@@ -48,14 +53,16 @@ const DeleteExercise_VariablesModal = ({
           {error}
         </Error>
       )}
-
-      <Button
-        onClick={deleteVariable}
-        disabled={isDeletingVariable}
-        className="montserrat-bold"
-      >
-        {isDeletingVariable ? <Loader size={25} color="black" /> : "APAGAR"}
-      </Button>
+      <ModalActions>
+        <Button
+          onClick={deleteVariable}
+          disabled={isDeletingVariable}
+          className="montserrat-bold"
+        >
+          {isDeletingVariable ? <Loader size={25} color="black" /> : "APAGAR"}
+        </Button>
+        <DismissButton onClick={onDismiss}>CANCELAR</DismissButton>
+      </ModalActions>
     </>
   );
 };

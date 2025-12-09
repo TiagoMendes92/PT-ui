@@ -83,13 +83,13 @@ export const Select = ({
 
   const dropdown = (
     <Dropdown
-      ref={dropdownRef} // Add ref here
+      ref={dropdownRef}
       isOpen={isOpen}
       top={dropdownPosition.top}
       left={dropdownPosition.left}
       width={dropdownPosition.width}
     >
-      <EmptyOption onClick={() => handleSelect("")}>Nenhuma</EmptyOption>
+      <EmptyOption onClick={() => handleSelect("")}>&nbsp;</EmptyOption>
       {options.map((option) => (
         <Option
           className="montserrat"
@@ -124,7 +124,9 @@ export const Select = ({
         ) : (
           <Placeholder>{placeholder}</Placeholder>
         )}
-        <Arrow isOpen={isOpen}>▼</Arrow>
+        <Arrow isOpen={isOpen}>
+          <img src="/chevron.svg" />
+        </Arrow>
       </SelectButton>
 
       {isOpen && createPortal(dropdown, document.body)}

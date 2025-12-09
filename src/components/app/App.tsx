@@ -12,6 +12,7 @@ import PTCategories from "../pt/components/categories/Categories";
 import PTExercises from "../pt/components/exercises/Exercises";
 import PTUsers from "../pt/components/users/Users";
 import PTTemplates from "../pt/components/templates/Templates";
+import PTTrainings from "../pt/components/trainings/Trainings";
 import PTExerciseVariables from "../pt/components/exercise_variables/Exercise_Variables";
 
 // Aluno Routes
@@ -22,8 +23,6 @@ import RegisterPage from "../register/Register";
 import { links as alunoLinks } from "../aluno/enums/links.enum";
 
 const App = () => {
-  "use memo";
-
   const { user } = useAuth();
   return (
     <BrowserRouter>
@@ -64,7 +63,9 @@ const App = () => {
           <Route path="exercises" element={<PTExercises />} />
           <Route path="users" element={<PTUsers />} />
           <Route path="templates" element={<PTTemplates />} />
+          <Route path="trainings" element={<PTTrainings />} />
           <Route path="exercise_variables" element={<PTExerciseVariables />} />
+          <Route path="perfil" element={<AlunoProfile />} />
         </Route>
         {/* Client Routes */}
         <Route

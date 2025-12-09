@@ -12,13 +12,17 @@ export const Content = styled("div")`
 `;
 
 export const Title = styled("h1")`
-  font-size: 50px;
+  margin: 0;
+  font-size: 24px;
 `;
 
 export const FormController = styled("div")`
-  color: white;
   position: relative;
   margin-bottom: 25px;
+
+  label {
+    font-size: 14px;
+  }
 `;
 
 export const Input = styled("input").withConfig({
@@ -26,14 +30,13 @@ export const Input = styled("input").withConfig({
 })<{ hasError: boolean }>`
   outline: 0;
   width: 100%;
-  padding: 8px;
-  color: white;
-  font-size: 18px;
+  font-size: 14px;
   margin-top: 10px;
-  background: black;
-  border-radius: 0px;
-  border: 2px solid ${({ hasError }) => (hasError ? "red" : "white")};
+  border-radius: 16px;
+  padding-block: 10px;
+  padding-inline: 15px;
   transition: border-color 0.3s ease;
+  border: 1px solid ${({ hasError }) => (hasError ? "red" : "lightgrey")};
 `;
 
 export const Error = styled("div").withConfig({
@@ -45,8 +48,8 @@ export const Error = styled("div").withConfig({
   ${({ generic }) =>
     !generic
       ? css`
-          left: 0;
           bottom: 0;
+          left: 16px;
           position: absolute;
           transform: translateY(calc(100% + 5px));
         `
@@ -56,21 +59,36 @@ export const Error = styled("div").withConfig({
 `;
 
 export const Button = styled("button")`
+  gap: 10px;
   width: 100%;
-  color: black;
-  padding: 0px;
-  height: 40px;
-  border: unset;
+  color: white;
+  padding: 6px;
+  height: 36px;
   display: flex;
   cursor: pointer;
-  background: white;
+  font-size: 12px;
+  font-weight: 700;
+  background: #0047f9;
   align-items: center;
-  border: 2px solid white;
+  border: 1px solid #0047f9;
   justify-content: center;
+  border-radius: 8px;
+  letter-spacing: 0.75px;
+  font-variant: small-caps;
   transition: background 0.3s ease;
 
   &:hover:not(:disabled) {
-    background: grey;
+    color: #0047f9;
+    background: white;
+  }
+
+  img {
+    width: 17px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 `;
 

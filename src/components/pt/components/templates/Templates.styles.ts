@@ -47,17 +47,16 @@ export const GridCardActions = styled.div`
 export const TextArea = styled("textarea").withConfig({
   shouldForwardProp: (prop) => prop !== "hasError",
 })<{ hasError: boolean }>`
-  resize: none;
   outline: 0;
-  padding: 8px;
-  color: white;
-  font-size: 18px;
+  resize: none;
+  font-size: 14px;
   margin-top: 10px;
-  background: black;
-  border-radius: 0px;
-  width: calc(100% - 20px);
-  border: 2px solid ${({ hasError }) => (hasError ? "red" : "white")};
+  border-radius: 16px;
+  padding-block: 10px;
+  padding-inline: 15px;
+  width: calc(100% - 32px);
   transition: border-color 0.3s ease;
+  border: 1px solid ${({ hasError }) => (hasError ? "red" : "lightgrey")};
 `;
 
 export const ExercisesList = styled.div`

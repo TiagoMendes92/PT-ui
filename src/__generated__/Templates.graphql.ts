@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8e435e713657843df95a2f68fd5fd6a1>>
+ * @generated SignedSource<<d38e494e3d3210e1307f8364848ed0c6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,6 +21,10 @@ export type Templates$data = {
             readonly category: string;
             readonly id: string;
             readonly name: string;
+            readonly photo: {
+              readonly key: string;
+              readonly url: string;
+            } | null | undefined;
             readonly url: string;
           };
           readonly orderPosition: number;
@@ -38,6 +42,10 @@ export type Templates$data = {
         }>;
         readonly id: string;
         readonly name: string;
+        readonly photo: {
+          readonly key: string;
+          readonly url: string;
+        } | null | undefined;
         readonly updatedAt: string;
       };
     }>;
@@ -73,6 +81,32 @@ v2 = {
   "args": null,
   "kind": "ScalarField",
   "name": "name",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Photo",
+  "kind": "LinkedField",
+  "name": "photo",
+  "plural": false,
+  "selections": [
+    (v3/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "key",
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 };
 return {
@@ -171,6 +205,7 @@ return {
                   "name": "updatedAt",
                   "storageKey": null
                 },
+                (v4/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -196,20 +231,15 @@ return {
                       "selections": [
                         (v1/*: any*/),
                         (v2/*: any*/),
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "url",
-                          "storageKey": null
-                        },
+                        (v3/*: any*/),
                         {
                           "alias": null,
                           "args": null,
                           "kind": "ScalarField",
                           "name": "category",
                           "storageKey": null
-                        }
+                        },
+                        (v4/*: any*/)
                       ],
                       "storageKey": null
                     },
@@ -340,6 +370,6 @@ return {
 };
 })();
 
-(node as any).hash = "f658a50a9b6d1e7062cb45e018fa17e8";
+(node as any).hash = "9976501a56b11ec530afb5fd434a3a4a";
 
 export default node;

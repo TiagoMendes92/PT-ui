@@ -11,7 +11,7 @@ import type { TemplatesQuery } from "../../../../__generated__/TemplatesQuery.gr
 import { GET_TEMPLATES, GET_TEMPLATES_LIST } from "./Templates.queries";
 import type { Templates$key } from "../../../../__generated__/Templates.graphql";
 import EmptyCategory from "../categories/EmptyCategory";
-import { ActionButton } from "../categories/Categories.styles";
+import { ActionButton, ImageCell } from "../categories/Categories.styles";
 import deleteIcon from "../../../../icons/delete.svg";
 import Spinner from "../../../shared/loader/Loader";
 import editIcon from "../../../../icons/edit.svg";
@@ -46,6 +46,7 @@ const TemplatesGrid = ({
                       searchTerm={searchTerm}
                     />
                   </GridCardTitle>
+
                   <GridCardActions>
                     <ActionButton
                       onClick={() => setIsModalOpen({ template: template })}
@@ -59,6 +60,10 @@ const TemplatesGrid = ({
                     </ActionButton>
                   </GridCardActions>
                 </GridCardHeader>
+                <br />
+                <ImageCell>
+                  <img src={template.photo?.url} />
+                </ImageCell>
                 <ol>
                   {template.exercises.map((exercise) => (
                     <li key={`${template.id}-${exercise.exercise.id}`}>

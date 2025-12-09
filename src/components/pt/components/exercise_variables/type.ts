@@ -19,9 +19,6 @@ export type Exercise_VariablesProps = {
 };
 
 export type TableHeaderProps = {
-  onSearch: () => void;
-  searchTerm: string;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setIsModalOpen: React.Dispatch<
     React.SetStateAction<{ exerciseVariable: ExerciseVariable | null } | null>
   >;
@@ -48,9 +45,11 @@ export type Exercise_VariablesModalProps = {
   searchTerm: string;
   variable: ExerciseVariable | null;
   onSubmit: () => void;
+  onDismiss: () => void;
 };
 
 export type DeleteExercise_VariablesModalProps = {
   variable: ExerciseVariable;
   onDelete: () => void;
+  onDismiss: () => void;
 };

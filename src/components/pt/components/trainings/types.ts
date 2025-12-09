@@ -1,21 +1,21 @@
 import type { PreloadedQuery } from "react-relay";
-import type { Templates$data } from "../../../../__generated__/Templates.graphql";
-import type { TemplatesQuery } from "../../../../__generated__/TemplatesQuery.graphql";
+import type { Trainings$data } from "../../../../__generated__/Trainings.graphql";
+import type { TrainingsQuery } from "../../../../__generated__/TrainingsQuery.graphql";
 import type { CategoriesQuery } from "../../../../__generated__/CategoriesQuery.graphql";
 import type { ExerciseVariablesAllQuery } from "../../../../__generated__/ExerciseVariablesAllQuery.graphql";
 
-export type Template = NonNullable<
-  Templates$data["templates"]["edges"]["0"]["node"]
+export type Training = NonNullable<
+  Trainings$data["trainings"]["edges"]["0"]["node"]
 >;
 
-export type TemplatesProps = {
-  queryRef: PreloadedQuery<TemplatesQuery>;
+export type TrainingsProps = {
+  queryRef: PreloadedQuery<TrainingsQuery>;
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setIsModalOpen: React.Dispatch<
-    React.SetStateAction<{ template: Template | null } | null>
+    React.SetStateAction<{ training: Training | null } | null>
   >;
-  setIsDeleteModalOpen: React.Dispatch<React.SetStateAction<Template | null>>;
+  setIsDeleteModalOpen: React.Dispatch<React.SetStateAction<Training | null>>;
 };
 
 export type TableHeaderProps = {
@@ -23,23 +23,23 @@ export type TableHeaderProps = {
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setIsModalOpen: React.Dispatch<
-    React.SetStateAction<{ template: Template | null } | null>
+    React.SetStateAction<{ training: Training | null } | null>
   >;
 };
 
-export type TemplatesGridProps = {
-  queryRef: PreloadedQuery<TemplatesQuery>;
+export type TrainingsGridProps = {
+  queryRef: PreloadedQuery<TrainingsQuery>;
   searchTerm: string;
   setIsModalOpen: React.Dispatch<
-    React.SetStateAction<{ template: Template | null } | null>
+    React.SetStateAction<{ training: Training | null } | null>
   >;
-  setIsDeleteModalOpen: React.Dispatch<React.SetStateAction<Template | null>>;
+  setIsDeleteModalOpen: React.Dispatch<React.SetStateAction<Training | null>>;
 };
 
-export type TemplatesModalProps = {
+export type TrainingsModalProps = {
   searchTerm: string;
   onSubmit: () => void;
-  template: Template | null;
+  training: Training | null;
   catsQueryRef: PreloadedQuery<CategoriesQuery>;
   exerciseVariablesRef: PreloadedQuery<ExerciseVariablesAllQuery>;
 };
@@ -61,18 +61,12 @@ export type SelectedExercise = {
   sets: ExerciseSet[];
 };
 
-export type TemplateFormData = {
+export type TrainingFormData = {
   name: string;
   description: string;
-  photo: File | null;
   exercises: {
     exerciseId: string;
     orderPosition: number;
     sets: ExerciseSet[];
   }[];
-};
-
-export type DeleteTemplateModalProps = {
-  template: Template;
-  onDelete: () => void;
 };

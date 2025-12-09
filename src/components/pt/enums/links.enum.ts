@@ -5,6 +5,10 @@ export const links: HeaderLink[] = [
     section: "Admin",
     links: [
       {
+        label: "Treinos",
+        path: "/pt/trainings",
+      },
+      {
         label: "Templates",
         path: "/pt/templates",
       },
@@ -23,6 +27,15 @@ export const links: HeaderLink[] = [
       {
         label: "Variaveis de Exercícios",
         path: "/pt/exercise_variables",
+      },
+    ],
+  },
+  {
+    section: "Pefil",
+    links: [
+      {
+        label: "Perfil",
+        path: "/pt/perfil",
       },
     ],
   },

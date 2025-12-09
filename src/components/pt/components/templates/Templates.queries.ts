@@ -23,6 +23,10 @@ export const GET_TEMPLATES_LIST = graphql`
           description
           createdAt
           updatedAt
+          photo {
+            url
+            key
+          }
           exercises {
             orderPosition
             exercise {
@@ -30,6 +34,10 @@ export const GET_TEMPLATES_LIST = graphql`
               name
               url
               category
+              photo {
+                url
+                key
+              }
             }
             sets {
               setNumber
@@ -59,12 +67,17 @@ export const TEMPLATES_CREATE = graphql`
   mutation TemplatesCreateMutation(
     $input: CreateTemplateInput!
     $connections: [ID!]!
+    $file: Upload
   ) {
-    createTemplate(input: $input)
+    createTemplate(input: $input, file: $file)
       @prependNode(connections: $connections, edgeTypeName: "TemplateEdge") {
       id
       name
       description
+      photo {
+        url
+        key
+      }
       createdAt
       updatedAt
       exercises {
@@ -74,6 +87,10 @@ export const TEMPLATES_CREATE = graphql`
           name
           url
           category
+          photo {
+            url
+            key
+          }
         }
         sets {
           setNumber
@@ -92,13 +109,17 @@ export const TEMPLATES_CREATE = graphql`
 `;
 
 export const TEMPLATES_EDIT = graphql`
-  mutation TemplatesEditMutation($input: UpdateTemplateInput!) {
-    updateTemplate(input: $input) {
+  mutation TemplatesEditMutation($input: UpdateTemplateInput!, $file: Upload) {
+    updateTemplate(input: $input, file: $file) {
       id
       name
       description
       createdAt
       updatedAt
+      photo {
+        url
+        key
+      }
       exercises {
         orderPosition
         exercise {
@@ -106,6 +127,10 @@ export const TEMPLATES_EDIT = graphql`
           name
           url
           category
+          photo {
+            url
+            key
+          }
         }
         sets {
           setNumber

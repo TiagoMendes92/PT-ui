@@ -1,4 +1,4 @@
-import { StrictMode, Suspense } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { Environment, Network, type FetchFunction } from "relay-runtime";
@@ -79,7 +79,7 @@ const fetchGraphQL: FetchFunction = async (request, variables) => {
   }
 };
 
-function handlerProvider(handle) {
+function handlerProvider(handle: string) {
   switch (handle) {
     case "connection":
       return ConnectionHandler;
@@ -97,9 +97,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RelayEnvironmentProvider environment={environment}>
       <AuthProvider>
-        <Suspense fallback="Loading...">
-          <App />
-        </Suspense>
+        <App />
       </AuthProvider>
     </RelayEnvironmentProvider>
   </StrictMode>

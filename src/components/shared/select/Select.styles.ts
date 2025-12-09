@@ -15,18 +15,20 @@ export const SelectButton = styled("button").withConfig({
   shouldForwardProp: (prop) => prop !== "hasError",
 })<SelectButtonProps>`
   width: 100%;
-  padding: 8px;
-  margin-top: 8px;
-  text-align: left;
-  background: black;
-  border: 2px solid ${({ hasError }) => (hasError ? "red" : "white")};
-  cursor: pointer;
   display: flex;
-  justify-content: space-between;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  text-align: left;
+  background: white;
+  padding-block: 10px;
+  border-radius: 16px;
   align-items: center;
   transition: all 0.2s;
   font-family: inherit;
-  font-size: 18px;
+  padding-inline: 15px;
+  justify-content: space-between;
+  border: 1px solid ${({ hasError }) => (hasError ? "red" : "lightgrey")};
 
   &:disabled {
     opacity: 0.5;
@@ -35,20 +37,21 @@ export const SelectButton = styled("button").withConfig({
 `;
 
 export const Placeholder = styled.span`
-  color: #747474;
+  color: #757575;
 `;
 
 export const SelectedValue = styled.span`
-  color: white;
+  color: black;
 `;
 
 export const Arrow = styled("span").withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
 })<SelectArrowType>`
-  color: white;
-  font-size: 10px;
   transition: transform 0.2s;
   transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0)")};
+  img {
+    width: 14px;
+  }
 `;
 
 export const Dropdown = styled("div").withConfig({
@@ -58,10 +61,11 @@ export const Dropdown = styled("div").withConfig({
   z-index: 9999;
   position: fixed;
   overflow-y: auto;
-  background: black;
+  background: white;
   max-height: 250px;
+  border-radius: 16px;
   box-sizing: border-box;
-  border: 2px solid white;
+  border: 1px solid lightgrey;
   top: ${({ top }) => top}px;
   left: ${({ left }) => left}px;
   width: ${({ width }) => width}px;
@@ -80,10 +84,10 @@ export const Option = styled("div").withConfig({
     props.isSelected
       ? css`
           color: black;
-          background-color: #eff6ff;
+          background-color: #f5f6f9;
         `
       : css`
-          background-color: black;
+          background-color: white;
         `}
 
   &:hover {

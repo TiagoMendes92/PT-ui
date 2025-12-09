@@ -10,7 +10,12 @@ import Spinner from "../../../shared/loader/Loader";
 import EmptyCategory from "../categories/EmptyCategory";
 import HighlightText from "../../../shared/highlight_text/HighlightText";
 import { unitOptions } from "./Exercise_VariablesModal";
-import { ActionButton, Actions } from "../categories/Categories.styles";
+import {
+  ActionButton,
+  Actions,
+  LoadMoreButton,
+  LoadMoreButtonContainer,
+} from "../categories/Categories.styles";
 import editIcon from "../../../../icons/edit.svg";
 import deleteIcon from "../../../../icons/delete.svg";
 
@@ -63,6 +68,7 @@ const Exercise_VariablesTableBody = ({
               <td>
                 <Actions>
                   <ActionButton
+                    action="edit"
                     onClick={() =>
                       setIsModalOpen({
                         exerciseVariable: exerciseVariable.node,
@@ -72,6 +78,7 @@ const Exercise_VariablesTableBody = ({
                     <img src={editIcon} alt="" />
                   </ActionButton>
                   <ActionButton
+                    action="delete"
                     onClick={() => setIsDeleteModalOpen(exerciseVariable.node)}
                   >
                     <img src={deleteIcon} alt="" />
@@ -83,7 +90,16 @@ const Exercise_VariablesTableBody = ({
         })
       )}
       {hasNext && !isLoadingNext ? (
-        <button onClick={() => loadNext(10)}>Load more</button>
+        <LoadMoreButtonContainer>
+          <td colSpan={3}>
+            <div>
+              <LoadMoreButton onClick={() => loadNext(10)}>
+                <img src="/load-more.svg" />
+                LOAD MORE
+              </LoadMoreButton>
+            </div>
+          </td>
+        </LoadMoreButtonContainer>
       ) : null}
     </>
   );

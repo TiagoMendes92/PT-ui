@@ -4,12 +4,25 @@ import { GET_EXERCISE_VARIABLES } from "./Exercise_Variables.queries";
 import { Suspense, useEffect, useState } from "react";
 import type { Exercise_VariablesProps, ExerciseVariable } from "./type";
 import TableHeader from "./TableHeader";
-import { Table } from "../categories/Categories.styles";
+import {
+  Content,
+  LoaderContainer,
+  Search,
+  SearchIcon,
+  SearchInput,
+  Table,
+  TableActions,
+  TableContainer,
+  Thead,
+} from "../categories/Categories.styles";
 import Exercise_VariablesTableBody from "./Exercise_VariablesTableBody";
 import { createPortal } from "react-dom";
 import Modal from "../../../shared/modal/Modal";
 import Exercise_VariablesModal from "./Exercise_VariablesModal";
 import DeleteExercise_VariablesModal from "./DeleteExercise_VariablesModal";
+import { Container } from "./Exercise_Variables.styles";
+import searchIcon from "../../../../icons/search.svg";
+import Spinner from "../../../shared/loader/Loader";
 
 const Exercise_Variables = ({
   searchTerm,
@@ -24,32 +37,69 @@ const Exercise_Variables = ({
     setSearchTerm(localSearchTerm);
   };
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm !== undefined) {
+        handleSearch();
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, handleSearch]);
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
-    <>
-      <TableHeader
-        onSearch={handleSearch}
-        searchTerm={localSearchTerm}
-        setSearchTerm={setLocalSearchTerm}
-        setIsModalOpen={setIsModalOpen}
-      />
-      <Table style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th style={{ width: "auto" }}>Nome</th>
-            <th style={{ width: "120px" }}>Unidade</th>
-            <th style={{ width: "85px" }}>Ações</th>
-          </tr>
-        </thead>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Exercise_VariablesTableBody
-            exerciseVariablesQueryRef={exerciseVariablesQueryRef}
-            searchTerm={searchTerm}
-            setIsModalOpen={setIsModalOpen}
-            setIsDeleteModalOpen={setIsDeleteModalOpen}
-          />
-        </Suspense>
-      </Table>
-    </>
+    <Container>
+      <TableHeader setIsModalOpen={setIsModalOpen} />
+      <Content>
+        <TableContainer>
+          <TableActions>
+            <Search>
+              <SearchInput
+                hasError={false}
+                placeholder="Pesquisar por nome..."
+                value={localSearchTerm}
+                onChange={(e) => setLocalSearchTerm(e.target.value)}
+                onKeyUp={handleKeyPress}
+              />
+              <SearchIcon>
+                <img src={searchIcon} />
+              </SearchIcon>
+            </Search>
+          </TableActions>
+          <Table>
+            <Thead>
+              <tr>
+                <th style={{ width: "50%" }}>Nome</th>
+                <th style={{ width: "25%" }}>Unidade</th>
+                <th style={{ width: "25%" }}>Ações</th>
+              </tr>
+            </Thead>
+            <Suspense
+              fallback={
+                <LoaderContainer>
+                  <td colSpan={3}>
+                    <Spinner />
+                  </td>
+                </LoaderContainer>
+              }
+            >
+              <Exercise_VariablesTableBody
+                exerciseVariablesQueryRef={exerciseVariablesQueryRef}
+                searchTerm={searchTerm}
+                setIsModalOpen={setIsModalOpen}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+              />
+            </Suspense>
+          </Table>
+        </TableContainer>
+      </Content>
+    </Container>
   );
 };
 
@@ -79,7 +129,7 @@ const Loader = () => {
   };
 
   return (
-    <div>
+    <>
       {exerciseVariablesQueryRef ? (
         <>
           <Exercise_Variables
@@ -97,12 +147,14 @@ const Loader = () => {
                       ? "Editar variável de execício"
                       : "Nova variável de execício"
                   }
+                  subtitle="Variáveis de exercício que podem ser usadas na criação de treinos. Servem para registar e acompanhar a evolução nos relatórios."
                   onDismiss={() => setIsModalOpen(null)}
                 >
                   <Exercise_VariablesModal
                     searchTerm={searchTerm}
                     variable={isModalOpen.exerciseVariable}
                     onSubmit={handleExerciseVariableAction}
+                    onDismiss={() => setIsModalOpen(null)}
                   />
                 </Modal>,
                 document.body
@@ -116,6 +168,7 @@ const Loader = () => {
                   <DeleteExercise_VariablesModal
                     variable={isDeleteModalOpen}
                     onDelete={handleExerciseVariableAction}
+                    onDismiss={() => setIsDeleteModalOpen(null)}
                   />
                 </Modal>,
                 document.body
@@ -123,7 +176,7 @@ const Loader = () => {
             : null}
         </>
       ) : null}
-    </div>
+    </>
   );
 };
 
