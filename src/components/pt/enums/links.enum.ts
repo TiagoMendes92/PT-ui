@@ -5,28 +5,24 @@ export const links: HeaderLink[] = [
     section: "Admin",
     links: [
       {
-        label: "Treinos",
-        path: "/pt/trainings",
-      },
-      {
-        label: "Templates",
-        path: "/pt/templates",
-      },
-      {
-        label: "Alunos",
-        path: "/pt/users",
-      },
-      {
         label: "Categorias",
         path: "/pt/categories",
+      },
+      {
+        label: "Variaveis de Exercícios",
+        path: "/pt/exercise_variables",
       },
       {
         label: "Exercícios",
         path: "/pt/exercises",
       },
       {
-        label: "Variaveis de Exercícios",
-        path: "/pt/exercise_variables",
+        label: "Templates de Treino",
+        path: "/pt/templates",
+      },
+      {
+        label: "Alunos",
+        path: "/pt/users",
       },
     ],
   },

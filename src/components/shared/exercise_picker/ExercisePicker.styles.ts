@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Chip } from "../../pt/components/exercises/Exercises.styles";
+import { Chip } from "../../pt/components/exercises/Exercises.styled";
 
 export const Exercise = styled("div").withConfig({
   shouldForwardProp: (prop) => prop !== "active",

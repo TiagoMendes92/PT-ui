@@ -11,12 +11,11 @@ import {
 } from "../../pt/components/exercises/Exercise.queries";
 import { useState } from "react";
 import type { Exercise$key } from "../../../__generated__/Exercise.graphql";
-import { FormController, Input } from "../../login/LoginPage.styles";
 import { ExercisesList } from "../../pt/components/templates/Templates.styles";
 import {
   Chip,
   ChipsContainer,
-} from "../../pt/components/exercises/Exercises.styles";
+} from "../../pt/components/exercises/Exercises.styled";
 import type { CategoriesQuery } from "../../../__generated__/CategoriesQuery.graphql";
 import { CATEGORIES_QUERY } from "../../pt/components/categories/Categories.queries";
 import type { ExercisePickerProps } from "./types";
@@ -27,12 +26,13 @@ import {
   Exercise,
   SelectedExercises,
 } from "./ExercisePicker.styles";
-import { ActionButton } from "../../pt/components/categories/Categories.styles";
 import addIcon from "../../../icons/add.svg";
 import removeIcon from "../../../icons/minus.svg";
 import deleteIcon from "../../../icons/delete.svg";
 import EmptyCategory from "../../pt/components/categories/EmptyCategory";
 import Loader from "../../shared/loader/Loader";
+import { FormController, Input } from "../styles/Form.styled";
+import { ActionButton } from "../styles/Table.styled";
 
 const ExercisePicker = ({
   initialValues,
@@ -138,7 +138,7 @@ const ExercisePicker = ({
               onClick={() => removeExercise({ id: ex.exerciseId })}
             >
               {ex.name}
-              <ActionButton type="button">
+              <ActionButton action="delete" type="button">
                 <img src={deleteIcon} />
               </ActionButton>
             </ChipWithAction>
@@ -167,6 +167,7 @@ const ExercisePicker = ({
               <div>
                 {isSelected ? (
                   <ActionButton
+                    action="delete"
                     type="button"
                     onClick={() => isSelected && removeExercise(exercise)}
                   >
@@ -174,6 +175,7 @@ const ExercisePicker = ({
                   </ActionButton>
                 ) : (
                   <ActionButton
+                    action="edit"
                     type="button"
                     onClick={() => !isSelected && addExercise(exercise)}
                   >
