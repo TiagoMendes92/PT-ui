@@ -16,6 +16,7 @@ export type CategoryModalProps = {
   category: Category | null;
   onSubmit: () => void;
   queryRef: PreloadedQuery<CategoriesQuery>;
+  onDismiss: () => void;
 };
 
 export type CategoryFormData = {
@@ -27,9 +28,6 @@ export type CategoryFormData = {
 export type Category = CategoriesQuery$data["categories"][0];
 
 export type TableHeaderProps = {
-  searchTerm: string;
-  onSearch: () => void;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setIsModalOpen: React.Dispatch<
     React.SetStateAction<{ category: Category | null } | null>
   >;
@@ -38,6 +36,7 @@ export type TableHeaderProps = {
 export type DeleteCategoryModalProps = {
   category: Category;
   onDelete: () => void;
+  onDismiss: () => void;
 };
 
 export type CategoriesTableBodyProps = {

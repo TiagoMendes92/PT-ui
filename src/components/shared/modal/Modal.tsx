@@ -8,9 +8,15 @@ import {
 } from "./Modal.styles";
 import type { ModalProps } from "./type";
 
-const Modal = ({ title, subtitle, children, onDismiss }: ModalProps) => (
+const Modal = ({
+  title,
+  subtitle,
+  children,
+  onDismiss,
+  style = {},
+}: ModalProps) => (
   <Overlay onClick={onDismiss}>
-    <ModalContainer onClick={(e) => e.stopPropagation()}>
+    <ModalContainer onClick={(e) => e.stopPropagation()} style={style}>
       <ModalHeader>
         <SubTitle className="montserrat-bold">{title}</SubTitle>
       </ModalHeader>

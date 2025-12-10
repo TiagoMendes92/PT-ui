@@ -1,5 +1,3 @@
-import type { CSSProperties } from "styled-components";
-
 export type SelectOption = {
   value: string;
   label: string;
@@ -12,7 +10,8 @@ export type CustomSelectProps = {
   placeholder?: string;
   hasError?: boolean;
   disabled?: boolean;
-  style?: CSSProperties;
+  style?: Record<string, string>;
+  containerStyle?: Record<string, string>;
 };
 
 export type SelectButtonProps = {

@@ -1,10 +1,10 @@
-import { Title } from "../../../login/LoginPage.styles";
 import type { TableHeaderProps } from "./type";
 import {
   AddButton,
   TableHeaderFirstLine,
   TableHeader as THeader,
-} from "../categories/Categories.styles";
+} from "../../../shared/styles/Table.styled";
+import { Title } from "../../../shared/styles/Typography.styled";
 
 const TableHeader = ({ setIsModalOpen }: TableHeaderProps) => {
   return (
@@ -12,7 +12,7 @@ const TableHeader = ({ setIsModalOpen }: TableHeaderProps) => {
       <TableHeaderFirstLine>
         <Title>Variaveis de Exercícios</Title>
         <AddButton onClick={() => setIsModalOpen({ exerciseVariable: null })}>
-          CRIAR VARIÁVEL
+          <span>CRIAR VARIÁVEL</span>
           <img src="/plus.svg" />
         </AddButton>
       </TableHeaderFirstLine>

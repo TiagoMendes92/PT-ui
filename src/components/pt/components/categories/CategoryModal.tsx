@@ -2,13 +2,6 @@ import type { CategoryFormData, CategoryModalProps } from "./types";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import {
-  FormController,
-  Input,
-  Error,
-  Button,
-} from "../../../login/LoginPage.styles";
-import { Form } from "./Categories.styles";
 import Loader from "../../../shared/loader/Loader";
 import { useMutation, usePreloadedQuery } from "react-relay/hooks";
 import {
@@ -29,12 +22,23 @@ import type {
   CategoriesEditMutation$data,
 } from "../../../../__generated__/CategoriesEditMutation.graphql";
 import PreviewFile from "../../../shared/preview_file/PreviewFiles";
+import {
+  Form,
+  FormController,
+  Input,
+  Error,
+} from "../../../shared/styles/Form.styled";
+import { Button } from "../../../shared/styles/Table.styled";
+import {
+  DismissButton,
+  ModalActions,
+} from "../../../shared/modal/Modal.styles";
 
 const CategorySchema = yup.object().shape({
   name: yup
     .string()
-    .min(3, "Categoria tem que ter 3 caracteres")
-    .required("Nome é obrigatório"),
+    .required("Nome da categoria é obrigatório")
+    .min(3, "Nome da categoria tem que ter 3 caracteres"),
   parent_category: yup.string().default(""),
   photo: yup
     .mixed<File>()
@@ -55,6 +59,7 @@ const CategoryModal = ({
   category,
   onSubmit,
   queryRef,
+  onDismiss,
 }: CategoryModalProps) => {
   const [create, isCreating] =
     useMutation<CategoriesCreateMutation>(CATEGORY_CREATE);
@@ -145,24 +150,23 @@ const CategoryModal = ({
     <Form onSubmit={handleSubmit(onSubmitForm)}>
       <FormController>
         <label htmlFor="name" className="montserrat-bold">
-          NOME
+          Nome da categoria
         </label>
         <Input
           id="name"
           type="text"
           className="montserrat"
           hasError={!!errors.name}
-          placeholder="Nome da categoria"
+          placeholder="Escrever nome da categoria..."
           {...register("name")}
         />
         {errors.name && (
           <Error className="montserrat-bold">{errors.name.message}</Error>
         )}
       </FormController>
-
       <FormController>
         <label htmlFor="parent_category" className="montserrat-bold">
-          CATEGORIA PAI (OPCIONAL)
+          Categoria pai (opcional)
         </label>
         <Controller
           name="parent_category"
@@ -172,7 +176,7 @@ const CategoryModal = ({
               options={categoryOptions}
               value={field.value}
               onChange={field.onChange}
-              placeholder="Selecionar categoria pai"
+              placeholder="Selecionar categoria pai..."
               hasError={!!errors.parent_category}
             />
           )}
@@ -183,10 +187,9 @@ const CategoryModal = ({
           </Error>
         )}
       </FormController>
-
       <FormController>
         <label htmlFor="photo" className="montserrat-bold">
-          FOTOGRAFIA (OPCIONAL)
+          Fotografia (opcional)
         </label>
         {photo || category?.photo?.url ? (
           <PreviewFile
@@ -216,26 +219,29 @@ const CategoryModal = ({
           <Error className="montserrat-bold">{errors.photo.message}</Error>
         )}
       </FormController>
-
       {errors.root?.message && (
         <Error generic className="montserrat-bold">
           {errors.root.message}
         </Error>
       )}
-
-      <Button
-        type="submit"
-        disabled={isSubmitting || isLoading}
-        className="montserrat-bold"
-      >
-        {isSubmitting || isLoading ? (
-          <Loader size={25} color="black" />
-        ) : category ? (
-          "EDITAR"
-        ) : (
-          "CRIAR"
-        )}
-      </Button>
+      <ModalActions>
+        <Button
+          type="submit"
+          disabled={isSubmitting || isLoading}
+          className="montserrat-bold"
+        >
+          {isSubmitting || isLoading ? (
+            <Loader size={15} color="white" />
+          ) : category ? (
+            "EDITAR CATEGORIA"
+          ) : (
+            "CRIAR CATEGORIA"
+          )}
+        </Button>
+        <DismissButton disabled={isSubmitting || isLoading} onClick={onDismiss}>
+          CANCELAR
+        </DismissButton>
+      </ModalActions>
     </Form>
   );
 };

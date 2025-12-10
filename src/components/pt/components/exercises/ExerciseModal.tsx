@@ -6,16 +6,9 @@ import { CATEGORIES_QUERY } from "../categories/Categories.queries";
 import type { SelectOption } from "../../../shared/select/types";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form } from "../categories/Categories.styles";
-import {
-  FormController,
-  Input,
-  Error,
-  Button,
-} from "../../../login/LoginPage.styles";
 import Select from "../../../shared/select/Select";
 import Loader from "../../../shared/loader/Loader";
-import { VerifyButton, VideoInput } from "./Exercises.styles";
+import { VerifyButton, VideoInput } from "./Exercises.styled";
 import viewIcon from "../../../../icons/eye.svg";
 import { getYouTubeEmbedUrl } from "./utils";
 import { useState } from "react";
@@ -33,17 +26,31 @@ import type {
 } from "../../../../__generated__/ExerciseEditMutation.graphql";
 import PreviewFile from "../../../shared/preview_file/PreviewFiles";
 import ConnectionHandlerPlus from "relay-connection-handler-plus";
+import {
+  Form,
+  FormController,
+  Input,
+  Error,
+} from "../../../shared/styles/Form.styled";
+import { Button } from "../../../shared/styles/Table.styled";
+import {
+  DismissButton,
+  ModalActions,
+} from "../../../shared/modal/Modal.styles";
 
 const ExerciseSchema = yup.object().shape({
   name: yup
     .string()
-    .min(3, "Nome tem que ter 3 caracteres")
-    .required("Nome é obrigatório"),
+    .required("Nome do exercício é obrigatório")
+    .min(3, "Nome do exercício tem que ter 3 caracteres"),
   url: yup
     .string()
-    .min(3, "Url tem que ter 3 caracteres")
-    .required("Url é obrigatório"),
-  category: yup.string().default("").required("Categoria é obrigatória"),
+    .required("Link do youtube é obrigatório")
+    .min(3, "Link do youtube tem que ter 3 caracteres"),
+  category: yup
+    .string()
+    .default("")
+    .required("Categoria do exercício é obrigatória"),
   photo: yup
     .mixed<File>()
     .default(null)
@@ -65,6 +72,7 @@ const ExerciseModal = ({
   searchCat,
   searchTerm,
   catsQueryRef,
+  onDismiss,
 }: ExerciseModalProps) => {
   const [showVideo, setShowVideo] = useState<string | null>(null);
   const { categories } = usePreloadedQuery<CategoriesQuery>(
@@ -221,24 +229,23 @@ const ExerciseModal = ({
       <Form onSubmit={handleSubmit(onSubmitForm)}>
         <FormController>
           <label htmlFor="name" className="montserrat-bold">
-            NOME
+            Nome do exercício
           </label>
           <Input
             id="name"
             type="text"
             className="montserrat"
             hasError={!!errors.name}
-            placeholder="Nome do exercício"
+            placeholder="Escrever nome do exercício..."
             {...register("name")}
           />
           {errors.name && (
             <Error className="montserrat-bold">{errors.name.message}</Error>
           )}
         </FormController>
-
         <FormController>
           <label htmlFor="category" className="montserrat-bold">
-            CATEGORIA
+            Categoria
           </label>
           <Controller
             name="category"
@@ -248,7 +255,7 @@ const ExerciseModal = ({
                 options={categoryOptions}
                 value={field.value}
                 onChange={field.onChange}
-                placeholder="Selecionar categoria"
+                placeholder="Selecionar categoria de exercício..."
                 hasError={!!errors.category}
               />
             )}
@@ -257,10 +264,9 @@ const ExerciseModal = ({
             <Error className="montserrat-bold">{errors.category.message}</Error>
           )}
         </FormController>
-
         <FormController>
           <label htmlFor="photo" className="montserrat-bold">
-            FOTOGRAFIA (OPCIONAL)
+            Fotografia (opcional)
           </label>
           {photo || exercise?.photo?.url ? (
             <PreviewFile
@@ -290,46 +296,51 @@ const ExerciseModal = ({
             <Error className="montserrat-bold">{errors.photo.message}</Error>
           )}
         </FormController>
-
         <FormController>
           <label htmlFor="url" className="montserrat-bold">
-            URL
+            Link do youtube
           </label>
           <VideoInput
             id="url"
             type="text"
             className="montserrat"
             hasError={!!errors.url}
-            placeholder="Nome do exercício"
+            placeholder="Escrever Link do youtube..."
             {...register("url")}
           />
           {errors.url && (
             <Error className="montserrat-bold">{errors.url.message}</Error>
           )}
-          <VerifyButton type="button" onClick={checkVideo}>
+          <VerifyButton action="view" onClick={checkVideo}>
             <img src={viewIcon} />
           </VerifyButton>
         </FormController>
-
         {errors.root?.message && (
           <Error generic className="montserrat-bold">
             {errors.root.message}
           </Error>
         )}
-
-        <Button
-          type="submit"
-          disabled={isSubmitting || isLoading}
-          className="montserrat-bold"
-        >
-          {isSubmitting || isLoading ? (
-            <Loader size={25} color="black" />
-          ) : exercise ? (
-            "EDITAR"
-          ) : (
-            "CRIAR"
-          )}
-        </Button>
+        <ModalActions>
+          <Button
+            type="submit"
+            disabled={isSubmitting || isLoading}
+            className="montserrat-bold"
+          >
+            {isSubmitting || isLoading ? (
+              <Loader size={15} color="white" />
+            ) : exercise ? (
+              "EDITAR EXERCÍCIO"
+            ) : (
+              "CRIAR EXERCÍCIO"
+            )}
+          </Button>
+          <DismissButton
+            disabled={isSubmitting || isLoading}
+            onClick={onDismiss}
+          >
+            CANCELAR
+          </DismissButton>
+        </ModalActions>
       </Form>
       {showVideo &&
         createPortal(

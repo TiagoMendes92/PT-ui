@@ -4,16 +4,21 @@ import type {
   CategoriesDeleteMutation$data,
 } from "../../../../__generated__/CategoriesDeleteMutation.graphql";
 import { CATEGORY_DELETE } from "./Categories.queries";
-import { DeleteModalContent } from "./Categories.styles";
 import type { DeleteCategoryModalProps } from "./types";
-import { Button } from "../../../login/LoginPage.styles";
 import Loader from "../../../shared/loader/Loader";
 import { useState } from "react";
-import { Error } from "../../../login/LoginPage.styles";
+import { DeleteModalContent } from "../../../shared/styles/Modal.styled";
+import { Button } from "../../../shared/styles/Table.styled";
+import { Error } from "../../../shared/styles/Form.styled";
+import {
+  DismissButton,
+  ModalActions,
+} from "../../../shared/modal/Modal.styles";
 
 const DeleteCategoryModal = ({
   category,
   onDelete,
+  onDismiss,
 }: DeleteCategoryModalProps) => {
   const [deleteCat, isDeletingCat] =
     useMutation<CategoriesDeleteMutation>(CATEGORY_DELETE);
@@ -62,14 +67,16 @@ const DeleteCategoryModal = ({
           {error}
         </Error>
       )}
-
-      <Button
-        onClick={deleteCategory}
-        disabled={isDeletingCat}
-        className="montserrat-bold"
-      >
-        {isDeletingCat ? <Loader size={25} color="black" /> : "APAGAR"}
-      </Button>
+      <ModalActions>
+        <Button
+          onClick={deleteCategory}
+          disabled={isDeletingCat}
+          className="montserrat-bold"
+        >
+          {isDeletingCat ? <Loader size={15} color="white" /> : "APAGAR"}
+        </Button>
+        <DismissButton onClick={onDismiss}>CANCELAR</DismissButton>
+      </ModalActions>
     </>
   );
 };

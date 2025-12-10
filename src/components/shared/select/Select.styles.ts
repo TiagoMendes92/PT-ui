@@ -38,10 +38,18 @@ export const SelectButton = styled("button").withConfig({
 
 export const Placeholder = styled.span`
   color: #757575;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 `;
 
 export const SelectedValue = styled.span`
   color: black;
+  whitespace: nowrap;
+  overflow: hidden;
+  textoverflow: ellipsis;
+  display: block;
 `;
 
 export const Arrow = styled("span").withConfig({
@@ -78,6 +86,7 @@ export const Option = styled("div").withConfig({
 })<OptionProps>`
   padding: 12px 16px;
   cursor: pointer;
+  font-size: 14px;
   transition: background-color 0.15s;
 
   ${(props) =>
@@ -97,5 +106,6 @@ export const Option = styled("div").withConfig({
 
 export const EmptyOption = styled(Option)`
   color: #6b7280;
+  font-size: 14px;
   font-style: italic;
 `;

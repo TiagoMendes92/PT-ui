@@ -20,20 +20,21 @@ import type {
   Exercise_VariablesModalProps,
 } from "./type";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form } from "../categories/Categories.styles";
-import {
-  FormController,
-  Error,
-  Input,
-  Button,
-} from "../../../login/LoginPage.styles";
-import { TextArea } from "../templates/Templates.styles";
+
 import Select from "../../../shared/select/Select";
 import Loader from "../../../shared/loader/Loader";
 import {
   DismissButton,
   ModalActions,
 } from "../../../shared/modal/Modal.styles";
+import {
+  FormController,
+  Input,
+  Error,
+  Form,
+  TextArea,
+} from "../../../shared/styles/Form.styled";
+import { Button } from "../../../shared/styles/Table.styled";
 
 const VariableSchema = yup.object().shape({
   name: yup
@@ -209,7 +210,6 @@ const Exercise_VariablesModal = ({
             <Error className="montserrat-bold">{errors.unit.message}</Error>
           )}
         </FormController>
-
         <FormController>
           <label htmlFor="description" className="montserrat-bold">
             Descrição da variável

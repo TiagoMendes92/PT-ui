@@ -1,10 +1,15 @@
 import type { VideoProps } from "./types";
 
 const Video = ({ url }: VideoProps) => {
+  const width = Math.min(window.innerWidth - 90, 560);
+  const aspectRatio = 560 / 315; // ~1.778 (16:9)
+  const height = Math.round(width / aspectRatio);
+
   return (
     <iframe
-      width="560"
-      height="315"
+      style={{ marginBlock: "20px" }}
+      width={width}
+      height={height}
       src={url}
       title="YouTube video player"
       frameBorder="0"

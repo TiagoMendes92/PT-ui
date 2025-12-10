@@ -2,12 +2,8 @@ import EmptyCategory from "../categories/EmptyCategory";
 import type { Category } from "../categories/types";
 import { getCategoryChips, getYouTubeEmbedUrl } from "./utils";
 import HighlightText from "../../../shared/highlight_text/HighlightText";
-import { Chip, ChipsContainer } from "./Exercises.styles";
-import {
-  ActionButton,
-  Actions,
-  ImageCell,
-} from "../categories/Categories.styles";
+import { Chip, ChipsContainer } from "./Exercises.styled";
+import { ImageCell } from "../categories/Categories.styled";
 import type { ExercisesTableBodyProps } from "./types";
 import editIcon from "../../../../icons/edit.svg";
 import deleteIcon from "../../../../icons/delete.svg";
@@ -21,6 +17,18 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import Modal from "../../../shared/modal/Modal";
 import Video from "./Video";
+import {
+  ActionButton,
+  Actions,
+  LoaderContainer,
+  LoadMoreButton,
+  LoadMoreButtonContainer,
+} from "../../../shared/styles/Table.styled";
+import {
+  DismissButton,
+  ModalActions,
+} from "../../../shared/modal/Modal.styles";
+import useIsMobile from "../../../../hooks/useIsMobile";
 
 const ExercisesTableBody = ({
   categories,
@@ -30,6 +38,7 @@ const ExercisesTableBody = ({
   setIsDeleteModalOpen,
   exercisesQueryRef,
 }: ExercisesTableBodyProps) => {
+  const isMobile = useIsMobile(1200);
   const [showVideo, setShowVideo] = useState<string | null>(null);
   const query = usePreloadedQuery<ExerciseQuery>(
     GET_EXERCISES,
@@ -67,7 +76,7 @@ const ExercisesTableBody = ({
     <>
       <tbody>
         {!data.exercises.edges.length ? (
-          <EmptyCategory nrOfCols={3} />
+          <EmptyCategory nrOfCols={4} />
         ) : (
           data.exercises.edges.map((exercise) => {
             if (!exercise.node) return null;
@@ -77,12 +86,25 @@ const ExercisesTableBody = ({
             );
             return (
               <tr key={exercise.node.id}>
-                <td>
+                <td className="name">
                   <HighlightText
                     text={exercise.node.name}
                     searchTerm={searchTerm}
                   />
-                  <br />
+                  {isMobile && (
+                    <>
+                      <br />
+                      <ChipsContainer>
+                        {chips.map((c) => (
+                          <Chip isActive={c.id === searchCat} key={c.id}>
+                            {c.label}
+                          </Chip>
+                        ))}
+                      </ChipsContainer>
+                    </>
+                  )}
+                </td>
+                <td className="categories">
                   <ChipsContainer>
                     {chips.map((c) => (
                       <Chip isActive={c.id === searchCat} key={c.id}>
@@ -91,17 +113,21 @@ const ExercisesTableBody = ({
                     ))}
                   </ChipsContainer>
                 </td>
-                <td>
+                <td className="image">
                   <ImageCell>
                     <img src={exercise.node.photo?.url} />
                   </ImageCell>
                 </td>
-                <td>
+                <td className="actions">
                   <Actions>
-                    <ActionButton onClick={() => checkVideo(exercise.node.url)}>
+                    <ActionButton
+                      action="view"
+                      onClick={() => checkVideo(exercise.node.url)}
+                    >
                       <img src={viewIcon} />
                     </ActionButton>
                     <ActionButton
+                      action="edit"
                       onClick={() =>
                         setIsModalOpen({ exercise: exercise.node })
                       }
@@ -109,6 +135,7 @@ const ExercisesTableBody = ({
                       <img src={editIcon} alt="" />
                     </ActionButton>
                     <ActionButton
+                      action="delete"
                       onClick={() => setIsDeleteModalOpen(exercise.node)}
                     >
                       <img src={deleteIcon} alt="" />
@@ -120,14 +147,38 @@ const ExercisesTableBody = ({
           })
         )}
       </tbody>
-      {isLoadingNext ? <Spinner size={25} color="white" /> : null}
+      {isLoadingNext ? (
+        <LoaderContainer>
+          <td colSpan={3}>
+            <Spinner />
+          </td>
+        </LoaderContainer>
+      ) : null}
       {hasNext && !isLoadingNext ? (
-        <button onClick={() => loadNext(10)}>Load more</button>
+        <LoadMoreButtonContainer>
+          <td colSpan={3}>
+            <div>
+              <LoadMoreButton onClick={() => loadNext(10)}>
+                <img src="/load-more.svg" />
+                LOAD MORE
+              </LoadMoreButton>
+            </div>
+          </td>
+        </LoadMoreButtonContainer>
       ) : null}
       {showVideo &&
         createPortal(
-          <Modal title="Video" onDismiss={() => setShowVideo(null)}>
+          <Modal
+            title="Video"
+            onDismiss={() => setShowVideo(null)}
+            style={{ "max-width": "560px" }}
+          >
             <Video url={showVideo} />
+            <ModalActions>
+              <DismissButton onClick={() => setShowVideo(null)}>
+                FECHAR
+              </DismissButton>
+            </ModalActions>
           </Modal>,
           document.body
         )}

@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
 export const Container = styled("div")`
-  min-height: 100%;
-  height: max-content;
+  height: 100%;
   display: flex;
+  min-height: 100%;
   flex-direction: column;
 
   @media (min-width: 768px) {
+    overflow: hidden;
     flex-direction: row;
   }
 `;

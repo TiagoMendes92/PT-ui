@@ -5,4 +5,5 @@ export type ModalProps = {
   subtitle?: string;
   children: ReactNode;
   onDismiss: () => void;
+  style?: Record<string, string>;
 };

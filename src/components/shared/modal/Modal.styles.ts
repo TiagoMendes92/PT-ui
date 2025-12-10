@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button } from "../../login/LoginPage.styles";
+import { Button } from "../styles/Table.styled";
 
 export const Overlay = styled.div`
   top: 0;
@@ -15,13 +15,15 @@ export const Overlay = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   padding: 24px;
+  overflow: hidden;
   max-height: 90vh;
   max-width: 500px;
   background: white;
   border-radius: 8px;
+  margin-inline: 20px;
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;

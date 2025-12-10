@@ -10,14 +10,16 @@ import Spinner from "../../../shared/loader/Loader";
 import EmptyCategory from "../categories/EmptyCategory";
 import HighlightText from "../../../shared/highlight_text/HighlightText";
 import { unitOptions } from "./Exercise_VariablesModal";
+
+import editIcon from "../../../../icons/edit.svg";
+import deleteIcon from "../../../../icons/delete.svg";
 import {
   ActionButton,
   Actions,
+  LoaderContainer,
   LoadMoreButton,
   LoadMoreButtonContainer,
-} from "../categories/Categories.styles";
-import editIcon from "../../../../icons/edit.svg";
-import deleteIcon from "../../../../icons/delete.svg";
+} from "../../../shared/styles/Table.styled";
 
 const getUnitName = (unitValue: string) => {
   return unitOptions.find((option) => option.value === unitValue)?.label || "-";
@@ -44,51 +46,57 @@ const Exercise_VariablesTableBody = ({
       <tbody>
         {!data.exerciseVariables.edges.length ? (
           <EmptyCategory nrOfCols={3} />
-        ) : null}
+        ) : (
+          data.exerciseVariables.edges.map((exerciseVariable) => {
+            if (!exerciseVariable.node) return null;
+            return (
+              <tr key={exerciseVariable.node.id}>
+                <td className="name">
+                  <HighlightText
+                    text={exerciseVariable.node.name}
+                    searchTerm={searchTerm}
+                  />
+                </td>
+                <td className="unit">
+                  {getUnitName(exerciseVariable.node.unit || "")}{" "}
+                  {exerciseVariable.node.unit !== "r"
+                    ? `(${exerciseVariable.node.unit})`
+                    : ""}
+                </td>
+                <td className="actions">
+                  <Actions>
+                    <ActionButton
+                      action="edit"
+                      onClick={() =>
+                        setIsModalOpen({
+                          exerciseVariable: exerciseVariable.node,
+                        })
+                      }
+                    >
+                      <img src={editIcon} alt="" />
+                    </ActionButton>
+                    <ActionButton
+                      action="delete"
+                      onClick={() =>
+                        setIsDeleteModalOpen(exerciseVariable.node)
+                      }
+                    >
+                      <img src={deleteIcon} alt="" />
+                    </ActionButton>
+                  </Actions>
+                </td>
+              </tr>
+            );
+          })
+        )}
       </tbody>
       {isLoadingNext ? (
-        <Spinner size={25} color="white" />
-      ) : (
-        data.exerciseVariables.edges.map((exerciseVariable) => {
-          if (!exerciseVariable.node) return null;
-          return (
-            <tr key={exerciseVariable.node.id}>
-              <td>
-                <HighlightText
-                  text={exerciseVariable.node.name}
-                  searchTerm={searchTerm}
-                />
-              </td>
-              <td>
-                {getUnitName(exerciseVariable.node.unit || "")}{" "}
-                {exerciseVariable.node.unit !== "r"
-                  ? `(${exerciseVariable.node.unit})`
-                  : ""}
-              </td>
-              <td>
-                <Actions>
-                  <ActionButton
-                    action="edit"
-                    onClick={() =>
-                      setIsModalOpen({
-                        exerciseVariable: exerciseVariable.node,
-                      })
-                    }
-                  >
-                    <img src={editIcon} alt="" />
-                  </ActionButton>
-                  <ActionButton
-                    action="delete"
-                    onClick={() => setIsDeleteModalOpen(exerciseVariable.node)}
-                  >
-                    <img src={deleteIcon} alt="" />
-                  </ActionButton>
-                </Actions>
-              </td>
-            </tr>
-          );
-        })
-      )}
+        <LoaderContainer>
+          <td colSpan={3}>
+            <Spinner />
+          </td>
+        </LoaderContainer>
+      ) : null}
       {hasNext && !isLoadingNext ? (
         <LoadMoreButtonContainer>
           <td colSpan={3}>

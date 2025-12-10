@@ -6,13 +6,14 @@ import type {
 import { EXERCISE_VARIABLE_DELETE } from "./Exercise_Variables.queries";
 import { useState } from "react";
 import type { DeleteExercise_VariablesModalProps } from "./type";
-import { DeleteModalContent } from "../categories/Categories.styles";
-import { Button, Error } from "../../../login/LoginPage.styles";
 import Loader from "../../../shared/loader/Loader";
 import {
   DismissButton,
   ModalActions,
 } from "../../../shared/modal/Modal.styles";
+import { Button } from "../../../shared/styles/Table.styled";
+import { Error } from "../../../shared/styles/Form.styled";
+import { DeleteModalContent } from "../../../shared/styles/Modal.styled";
 
 const DeleteExercise_VariablesModal = ({
   variable,
@@ -59,7 +60,7 @@ const DeleteExercise_VariablesModal = ({
           disabled={isDeletingVariable}
           className="montserrat-bold"
         >
-          {isDeletingVariable ? <Loader size={25} color="black" /> : "APAGAR"}
+          {isDeletingVariable ? <Loader size={15} color="white" /> : "APAGAR"}
         </Button>
         <DismissButton onClick={onDismiss}>CANCELAR</DismissButton>
       </ModalActions>

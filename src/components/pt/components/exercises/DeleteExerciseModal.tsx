@@ -1,7 +1,5 @@
-import { DeleteModalContent } from "../categories/Categories.styles";
 import type { DeleteExerciseModalProps } from "./types";
 import Loader from "../../../shared/loader/Loader";
-import { Button, Error } from "../../../login/LoginPage.styles";
 import { useMutation } from "react-relay";
 import type {
   ExerciseDeleteMutation,
@@ -9,10 +7,17 @@ import type {
 } from "../../../../__generated__/ExerciseDeleteMutation.graphql";
 import { useState } from "react";
 import { EXERCISE_DELETE } from "./Exercise.queries";
-
+import { DeleteModalContent } from "../../../shared/styles/Modal.styled";
+import { Button } from "../../../shared/styles/Table.styled";
+import { Error } from "../../../shared/styles/Form.styled";
+import {
+  DismissButton,
+  ModalActions,
+} from "../../../shared/modal/Modal.styles";
 const DeleteExerciseModal = ({
   exercise,
   onDelete,
+  onDismiss,
 }: DeleteExerciseModalProps) => {
   const [delExercise, isDeletingExercise] =
     useMutation<ExerciseDeleteMutation>(EXERCISE_DELETE);
@@ -48,14 +53,16 @@ const DeleteExerciseModal = ({
           {error}
         </Error>
       )}
-
-      <Button
-        onClick={deleteExercise}
-        disabled={isDeletingExercise}
-        className="montserrat-bold"
-      >
-        {isDeletingExercise ? <Loader size={25} color="black" /> : "APAGAR"}
-      </Button>
+      <ModalActions>
+        <Button
+          onClick={deleteExercise}
+          disabled={isDeletingExercise}
+          className="montserrat-bold"
+        >
+          {isDeletingExercise ? <Loader size={15} color="white" /> : "APAGAR"}
+        </Button>
+        <DismissButton onClick={onDismiss}>CANCELAR</DismissButton>
+      </ModalActions>
     </>
   );
 };

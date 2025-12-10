@@ -5,17 +5,21 @@ import { Fragment, useEffect } from "react";
 import type { CategoriesTableBodyProps, Category } from "./types";
 import EmptyCategory from "./EmptyCategory";
 import {
-  ActionButton,
-  Actions,
+  CategoriesTable,
   CatName,
   ImageCell,
   SubCatName,
-  Table,
-} from "./Categories.styles";
+} from "./Categories.styled";
 import HighlightText from "../../../shared/highlight_text/HighlightText";
 import childIcon from "../../../../icons/child.svg";
 import editIcon from "../../../../icons/edit.svg";
 import deleteIcon from "../../../../icons/delete.svg";
+import {
+  ActionButton,
+  Actions,
+  Table,
+} from "../../../shared/styles/Table.styled";
+import useIsMobile from "../../../../hooks/useIsMobile";
 
 const CategoriesTableBody = ({
   searchTerm,
@@ -27,6 +31,7 @@ const CategoriesTableBody = ({
   setIsModalOpen,
   setIsDeleteModalOpen,
 }: CategoriesTableBodyProps) => {
+  const isMobile = useIsMobile(490);
   const { categories: cats } = usePreloadedQuery<CategoriesQuery>(
     CATEGORIES_QUERY,
     queryRef
@@ -54,7 +59,7 @@ const CategoriesTableBody = ({
         categories.map((category) => (
           <Fragment key={category.id}>
             <tr>
-              <td>
+              <td className="name">
                 <CatName>
                   <button onClick={() => toggleOpenCat(category)}>
                     {openCats.some((c) => c.id === category.id) ? "-" : "+"}
@@ -62,17 +67,23 @@ const CategoriesTableBody = ({
                   <HighlightText text={category.name} searchTerm={searchTerm} />
                 </CatName>
               </td>
-              <td>
+              <td className="image">
                 <ImageCell>
                   <img src={category.photo?.url} />
                 </ImageCell>
               </td>
-              <td>
+              <td className="actions">
                 <Actions>
-                  <ActionButton onClick={() => setIsModalOpen({ category })}>
+                  <ActionButton
+                    action="edit"
+                    onClick={() => setIsModalOpen({ category })}
+                  >
                     <img src={editIcon} alt="" />
                   </ActionButton>
-                  <ActionButton onClick={() => setIsDeleteModalOpen(category)}>
+                  <ActionButton
+                    action="delete"
+                    onClick={() => setIsDeleteModalOpen(category)}
+                  >
                     <img src={deleteIcon} alt="" />
                   </ActionButton>
                 </Actions>
@@ -80,15 +91,15 @@ const CategoriesTableBody = ({
             </tr>
             {openCats.some((c) => c.id === category.id) && (
               <tr>
-                <td colSpan={3} style={{ padding: 0 }}>
-                  <Table>
+                <td colSpan={isMobile ? 2 : 3} style={{ padding: 0 }}>
+                  <CategoriesTable>
                     <tbody>
                       {!category?.subcategories?.length ? (
                         <EmptyCategory />
                       ) : (
                         category.subcategories.map((sub) => (
                           <tr key={sub.id}>
-                            <td style={{ width: "auto" }}>
+                            <td className="name">
                               <SubCatName>
                                 <img src={childIcon} alt="" />
                                 <HighlightText
@@ -97,14 +108,15 @@ const CategoriesTableBody = ({
                                 />
                               </SubCatName>
                             </td>
-                            <td style={{ width: "150px" }}>
+                            <td className="image">
                               <ImageCell>
                                 <img src={sub.photo?.url} />
                               </ImageCell>
                             </td>
-                            <td style={{ width: "85px" }}>
+                            <td className="actions">
                               <Actions>
                                 <ActionButton
+                                  action="edit"
                                   onClick={() =>
                                     setIsModalOpen({
                                       category: {
@@ -117,6 +129,7 @@ const CategoriesTableBody = ({
                                   <img src={editIcon} alt="" />
                                 </ActionButton>
                                 <ActionButton
+                                  action="delete"
                                   onClick={() =>
                                     setIsDeleteModalOpen({
                                       ...sub,
@@ -132,7 +145,7 @@ const CategoriesTableBody = ({
                         ))
                       )}
                     </tbody>
-                  </Table>
+                  </CategoriesTable>
                 </td>
               </tr>
             )}

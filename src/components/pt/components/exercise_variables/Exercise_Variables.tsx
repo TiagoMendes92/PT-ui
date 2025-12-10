@@ -4,25 +4,25 @@ import { GET_EXERCISE_VARIABLES } from "./Exercise_Variables.queries";
 import { Suspense, useEffect, useState } from "react";
 import type { Exercise_VariablesProps, ExerciseVariable } from "./type";
 import TableHeader from "./TableHeader";
-import {
-  Content,
-  LoaderContainer,
-  Search,
-  SearchIcon,
-  SearchInput,
-  Table,
-  TableActions,
-  TableContainer,
-  Thead,
-} from "../categories/Categories.styles";
 import Exercise_VariablesTableBody from "./Exercise_VariablesTableBody";
 import { createPortal } from "react-dom";
 import Modal from "../../../shared/modal/Modal";
 import Exercise_VariablesModal from "./Exercise_VariablesModal";
 import DeleteExercise_VariablesModal from "./DeleteExercise_VariablesModal";
-import { Container } from "./Exercise_Variables.styles";
 import searchIcon from "../../../../icons/search.svg";
 import Spinner from "../../../shared/loader/Loader";
+import {
+  TablePageContent,
+  TablePageWrapper,
+  TableContainer,
+  TableActions,
+  Search,
+  SearchIcon,
+  SearchInput,
+  Thead,
+  LoaderContainer,
+} from "../../../shared/styles/Table.styled";
+import { ExerciseVariablesTable } from "./Exercise_Variables.styled";
 
 const Exercise_Variables = ({
   searchTerm,
@@ -54,9 +54,9 @@ const Exercise_Variables = ({
   };
 
   return (
-    <Container>
+    <TablePageWrapper>
       <TableHeader setIsModalOpen={setIsModalOpen} />
-      <Content>
+      <TablePageContent>
         <TableContainer>
           <TableActions>
             <Search>
@@ -72,12 +72,12 @@ const Exercise_Variables = ({
               </SearchIcon>
             </Search>
           </TableActions>
-          <Table>
+          <ExerciseVariablesTable>
             <Thead>
               <tr>
-                <th style={{ width: "50%" }}>Nome</th>
-                <th style={{ width: "25%" }}>Unidade</th>
-                <th style={{ width: "25%" }}>Ações</th>
+                <th className="name">Nome</th>
+                <th className="unit">Unidade</th>
+                <th className="actions">Ações</th>
               </tr>
             </Thead>
             <Suspense
@@ -96,10 +96,10 @@ const Exercise_Variables = ({
                 setIsDeleteModalOpen={setIsDeleteModalOpen}
               />
             </Suspense>
-          </Table>
+          </ExerciseVariablesTable>
         </TableContainer>
-      </Content>
-    </Container>
+      </TablePageContent>
+    </TablePageWrapper>
   );
 };
 

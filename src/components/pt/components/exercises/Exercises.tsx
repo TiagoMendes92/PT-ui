@@ -9,10 +9,24 @@ import type { CategoriesQuery } from "../../../../__generated__/CategoriesQuery.
 import { CATEGORIES_QUERY } from "../categories/Categories.queries";
 import type { ExerciseQuery } from "../../../../__generated__/ExerciseQuery.graphql";
 import { GET_EXERCISES } from "./Exercise.queries";
-import { Table } from "../categories/Categories.styles";
 import type { Category } from "../categories/types";
 import DeleteExerciseModal from "./DeleteExerciseModal";
 import ExercisesTableBody from "./ExercisesTableBody";
+import {
+  LoaderContainer,
+  Search,
+  SearchIcon,
+  SearchInput,
+  TableContainer,
+  TablePageContent,
+  TablePageWrapper,
+  Thead,
+} from "../../../shared/styles/Table.styled";
+import searchIcon from "../../../../icons/search.svg";
+import type { SelectOption } from "../../../shared/select/types";
+import Select from "../../../shared/select/Select";
+import Spinner from "../../../shared/loader/Loader";
+import { ExerciseActions, ExerciseTable } from "./Exercises.styled";
 
 const Exercises = ({
   searchCat,
@@ -29,43 +43,106 @@ const Exercises = ({
     catsQueryRef
   );
 
+  const categoryOptions = categories.reduce((acc, category) => {
+    acc.push({
+      value: category.id,
+      label: category.name,
+    });
+
+    if (category.subcategories && category.subcategories.length > 0) {
+      category.subcategories.forEach((sub) => {
+        acc.push({
+          value: sub.id,
+          label: `${category.name} - ${sub.name}`,
+        });
+      });
+    }
+
+    return acc;
+  }, [] as SelectOption[]);
+
   const [localSearchTerm, setLocalSearchTerm] = useState<string>("");
 
   const handleSearch = () => {
     setSearchTerm(localSearchTerm);
   };
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm !== undefined) {
+        handleSearch();
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, handleSearch]);
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
-    <>
-      <TableHeader
-        categories={categories as Category[]}
-        searchCat={searchCat}
-        setSearchCat={setSearchCat}
-        onSearch={handleSearch}
-        searchTerm={localSearchTerm}
-        setSearchTerm={setLocalSearchTerm}
-        setIsModalOpen={setIsModalOpen}
-      />
-      <Table style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th style={{ width: "auto" }}>Nome</th>
-            <th style={{ width: "150px" }}>Imagem</th>
-            <th style={{ width: "85px" }}>Ações</th>
-          </tr>
-        </thead>
-        <Suspense fallback={<div>Loading...</div>}>
-          <ExercisesTableBody
-            exercisesQueryRef={exercisesQueryRef}
-            searchCat={searchCat}
-            searchTerm={searchTerm}
-            setIsModalOpen={setIsModalOpen}
-            categories={categories as Category[]}
-            setIsDeleteModalOpen={setIsDeleteModalOpen}
-          />
-        </Suspense>
-      </Table>
-    </>
+    <TablePageWrapper>
+      <TableHeader setIsModalOpen={setIsModalOpen} />
+      <TablePageContent>
+        <TableContainer>
+          <ExerciseActions>
+            <Search>
+              <SearchInput
+                hasError={false}
+                placeholder="Pesquisar por nome..."
+                value={localSearchTerm}
+                onChange={(e) => setLocalSearchTerm(e.target.value)}
+                onKeyUp={handleKeyPress}
+              />
+              <SearchIcon>
+                <img src={searchIcon} />
+              </SearchIcon>
+            </Search>
+            <Select
+              style={{ marginTop: "0px" }}
+              options={categoryOptions}
+              value={searchCat}
+              onChange={(e) => {
+                setSearchCat(e);
+              }}
+              placeholder="Pesquisar por categoria..."
+              hasError={false}
+            />
+          </ExerciseActions>
+          <ExerciseTable>
+            <Thead>
+              <tr>
+                <th className="name">Nome</th>
+                <th className="categories">Categorias</th>
+                <th className="image">Imagem</th>
+                <th className="actions">Ações</th>
+              </tr>
+            </Thead>
+            <Suspense
+              fallback={
+                <LoaderContainer>
+                  <td colSpan={3}>
+                    <Spinner />
+                  </td>
+                </LoaderContainer>
+              }
+            >
+              <ExercisesTableBody
+                exercisesQueryRef={exercisesQueryRef}
+                searchCat={searchCat}
+                searchTerm={searchTerm}
+                setIsModalOpen={setIsModalOpen}
+                categories={categories as Category[]}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+              />
+            </Suspense>
+          </ExerciseTable>
+        </TableContainer>
+      </TablePageContent>
+    </TablePageWrapper>
   );
 };
 
@@ -104,7 +181,7 @@ const Loader = () => {
   };
 
   return (
-    <div>
+    <>
       {catsQueryRef && exercisesQueryRef ? (
         <>
           <Exercises
@@ -123,6 +200,7 @@ const Loader = () => {
                   title={
                     isModalOpen.exercise ? "Editar execício" : "Novo execício"
                   }
+                  subtitle="Exercícios para serem usados em treinos para alunos."
                   onDismiss={() => setIsModalOpen(null)}
                 >
                   <ExerciseModal
@@ -131,6 +209,7 @@ const Loader = () => {
                     exercise={isModalOpen.exercise}
                     catsQueryRef={catsQueryRef}
                     onSubmit={handleExerciseAction}
+                    onDismiss={() => setIsModalOpen(null)}
                   />
                 </Modal>,
                 document.body
@@ -138,12 +217,13 @@ const Loader = () => {
             : isDeleteModalOpen
             ? createPortal(
                 <Modal
-                  title="Apagar categoria"
+                  title="Apagar Exercício"
                   onDismiss={() => setIsDeleteModalOpen(null)}
                 >
                   <DeleteExerciseModal
                     exercise={isDeleteModalOpen}
                     onDelete={handleExerciseAction}
+                    onDismiss={() => setIsDeleteModalOpen(null)}
                   />
                 </Modal>,
                 document.body
@@ -151,7 +231,7 @@ const Loader = () => {
             : null}
         </>
       ) : null}
-    </div>
+    </>
   );
 };
 

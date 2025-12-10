@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { NavLink } from "react-router-dom";
-import { Button } from "../../login/LoginPage.styles";
+import { Button } from "../styles/Table.styled";
 
 export const Container = styled("div")`
   z-index: 1;

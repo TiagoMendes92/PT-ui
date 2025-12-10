@@ -22,12 +22,6 @@ export type ExercisesProps = {
 };
 
 export type TableHeaderProps = {
-  categories: Category[];
-  searchCat: string;
-  setSearchCat: React.Dispatch<React.SetStateAction<string>>;
-  searchTerm: string;
-  onSearch: () => void;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setIsModalOpen: React.Dispatch<
     React.SetStateAction<{ exercise: Exercise | null } | null>
   >;
@@ -39,6 +33,7 @@ export type ExerciseModalProps = {
   exercise: Exercise | null;
   catsQueryRef: PreloadedQuery<CategoriesQuery>;
   onSubmit: () => void;
+  onDismiss: () => void;
 };
 
 export type ExerciseFormData = {
@@ -60,6 +55,7 @@ export type ChipType = {
 export type DeleteExerciseModalProps = {
   exercise: Exercise;
   onDelete: () => void;
+  onDismiss: () => void;
 };
 
 export type ExercisesTableBodyProps = {

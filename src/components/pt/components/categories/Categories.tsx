@@ -1,17 +1,29 @@
 import { useQueryLoader } from "react-relay";
 import { CATEGORIES_QUERY } from "./Categories.queries";
 import { Suspense, useEffect, useState } from "react";
-import { Table } from "./Categories.styles";
 
 import type { CategoriesProps, Category } from "./types";
 import { createPortal } from "react-dom";
 import Modal from "../../../shared/modal/Modal";
 import CategoryModal from "./CategoryModal";
 import type { CategoriesQuery } from "../../../../__generated__/CategoriesQuery.graphql";
-import TableHead from "./TableHead";
 import TableHeader from "./TableHeader";
 import DeleteCategoryModal from "./DeleteCategoryModal";
 import CategoriesTableBody from "./CategoriesTableBody";
+import {
+  Thead,
+  Search,
+  SearchIcon,
+  SearchInput,
+  TableActions,
+  TableContainer,
+  TablePageContent,
+  TablePageWrapper,
+  LoaderContainer,
+} from "../../../shared/styles/Table.styled";
+import searchIcon from "../../../../icons/search.svg";
+import { CategoriesTable } from "./Categories.styled";
+import Spinner from "../../../shared/loader/Loader";
 
 const Categories = ({
   queryRef,
@@ -64,30 +76,73 @@ const Categories = ({
     setCategories(cats);
   }, [cats]);
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm !== undefined) {
+        handleSearch();
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, handleSearch]);
+
   return (
-    <>
-      <TableHeader
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        onSearch={handleSearch}
-        setIsModalOpen={setIsModalOpen}
-      />
-      <Table>
-        <TableHead />
-        <Suspense fallback={<div>Loading...</div>}>
-          <CategoriesTableBody
-            queryRef={queryRef}
-            searchTerm={searchTerm}
-            categories={categories}
-            setCats={setCats}
-            openCats={openCats}
-            setOpenCats={setOpenCats}
-            setIsModalOpen={setIsModalOpen}
-            setIsDeleteModalOpen={setIsDeleteModalOpen}
-          />
-        </Suspense>
-      </Table>
-    </>
+    <TablePageWrapper>
+      <TableHeader setIsModalOpen={setIsModalOpen} />
+      <TablePageContent>
+        <TableContainer>
+          <TableActions>
+            <Search>
+              <SearchInput
+                hasError={false}
+                placeholder="Pesquisar por nome..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyUp={handleKeyPress}
+              />
+              <SearchIcon>
+                <img src={searchIcon} />
+              </SearchIcon>
+            </Search>
+          </TableActions>
+          <CategoriesTable>
+            <Thead>
+              <tr>
+                <th className="name">Nome</th>
+                <th className="image">Imagem</th>
+                <th className="actions">Ações</th>
+              </tr>
+            </Thead>
+            <Suspense
+              fallback={
+                <LoaderContainer>
+                  <td colSpan={3}>
+                    <Spinner />
+                  </td>
+                </LoaderContainer>
+              }
+            >
+              <CategoriesTableBody
+                queryRef={queryRef}
+                searchTerm={searchTerm}
+                categories={categories}
+                setCats={setCats}
+                openCats={openCats}
+                setOpenCats={setOpenCats}
+                setIsModalOpen={setIsModalOpen}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+              />
+            </Suspense>
+          </CategoriesTable>
+        </TableContainer>
+      </TablePageContent>
+    </TablePageWrapper>
   );
 };
 
@@ -113,7 +168,7 @@ const Loader = () => {
   };
 
   return (
-    <div>
+    <>
       {queryRef && (
         <>
           <Categories
@@ -127,12 +182,14 @@ const Loader = () => {
                   title={
                     isModalOpen.category ? "Editar categoria" : "Nova categoria"
                   }
+                  subtitle="Categorias para agrupar exercícios e facilitar a pesquisa."
                   onDismiss={() => setIsModalOpen(null)}
                 >
                   <CategoryModal
                     category={isModalOpen.category}
                     queryRef={queryRef}
                     onSubmit={handleCategoryAction}
+                    onDismiss={() => setIsModalOpen(null)}
                   />
                 </Modal>,
                 document.body
@@ -146,6 +203,7 @@ const Loader = () => {
                   <DeleteCategoryModal
                     category={isDeleteModalOpen}
                     onDelete={handleCategoryAction}
+                    onDismiss={() => setIsDeleteModalOpen(null)}
                   />
                 </Modal>,
                 document.body
@@ -153,7 +211,7 @@ const Loader = () => {
             : null}
         </>
       )}
-    </div>
+    </>
   );
 };
 

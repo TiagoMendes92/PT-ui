@@ -20,6 +20,7 @@ export const Select = ({
   hasError = false,
   disabled = false,
   style = {},
+  containerStyle = {},
 }: CustomSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({
@@ -104,7 +105,11 @@ export const Select = ({
   );
 
   return (
-    <SelectContainer ref={containerRef} className="montserrat">
+    <SelectContainer
+      style={containerStyle}
+      ref={containerRef}
+      className="montserrat"
+    >
       <SelectButton
         ref={buttonRef}
         type="button"
