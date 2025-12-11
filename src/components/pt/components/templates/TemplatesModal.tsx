@@ -11,15 +11,13 @@ import {
   type FieldErrors,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form } from "../categories/Categories.styles";
 import {
+  Form,
   FormController,
   Input,
   Error,
-  Button,
-  CancelButton,
-} from "../../../login/LoginPage.styles";
-import { TextArea } from "./Templates.styles";
+  TextArea,
+} from "../../../shared/styles/Form.styled";
 import { Suspense, useState } from "react";
 import ExercisePicker from "../../../shared/exercise_picker/ExercisePicker";
 import type {
@@ -36,12 +34,17 @@ import type {
 import ExerciseConfiguration from "../../../shared/exercise_configuration/ExerciseConfiguration";
 import ConnectionHandlerPlus from "relay-connection-handler-plus";
 import PreviewFile from "../../../shared/preview_file/PreviewFiles";
+import { Button } from "../../../shared/styles/Table.styled";
+import {
+  DismissButton,
+  ModalActions,
+} from "../../../shared/modal/Modal.styles";
 
 const TemplateSchema = yup.object().shape({
   name: yup
     .string()
-    .min(3, "Categoria tem que ter 3 caracteres")
-    .required("Nome é obrigatório"),
+    .required("Nome do treino é obrigatório")
+    .min(3, "Nome do treino tem que ter 3 caracteres"),
   description: yup
     .string()
     .default("")
@@ -97,8 +100,9 @@ const TemplatesModal = ({
   catsQueryRef,
   exerciseVariablesRef,
   template,
+  onDismiss,
 }: TemplatesModalProps) => {
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [create, isCreating] =
     useMutation<TemplatesCreateMutation>(TEMPLATES_CREATE);
   const [edit, isEditing] = useMutation<TemplatesEditMutation>(TEMPLATES_EDIT);
@@ -121,6 +125,7 @@ const TemplatesModal = ({
   const {
     register,
     control,
+    trigger,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
@@ -223,17 +228,24 @@ const TemplatesModal = ({
     setValue("exercises", exercises);
   };
 
-  const handleStepOne = () => {
-    const name = getValues("name");
+  const handleStepOne = async () => {
+    const isValid = await trigger("name");
+
+    if (isValid) {
+      setStep(2);
+    }
+  };
+
+  const handleStepTwo = async () => {
     const exercises = getValues("exercises");
-    if (!name || !exercises.length) {
+    if (!exercises.length) {
       return;
     }
-    setStep(2);
+    setStep(3);
   };
 
   const handleBackToStepOne = () => {
-    setStep(1);
+    setStep((prev) => (prev - 1) as 1 | 2);
   };
 
   const onError = (errors: FieldErrors) => {
@@ -246,14 +258,14 @@ const TemplatesModal = ({
         <>
           <FormController>
             <label htmlFor="name" className="montserrat-bold">
-              NOME
+              Nome do treino
             </label>
             <Input
               id="name"
               type="text"
               className="montserrat"
               hasError={!!errors.name}
-              placeholder="Nome do exercício"
+              placeholder="Escrever nome do treino..."
               {...register("name")}
             />
             {errors.name && (
@@ -262,13 +274,13 @@ const TemplatesModal = ({
           </FormController>
           <FormController>
             <label htmlFor="description" className="montserrat-bold">
-              DESCRIÇÃO
+              Descrição do treino
             </label>
             <TextArea
               id="description"
               className="montserrat"
               hasError={!!errors.description}
-              placeholder="Descrição do exercício"
+              placeholder="Escrever descrição do exercício..."
               rows={4}
               {...register("description")}
             />
@@ -278,10 +290,9 @@ const TemplatesModal = ({
               </Error>
             )}
           </FormController>
-
           <FormController>
             <label htmlFor="photo" className="montserrat-bold">
-              FOTOGRAFIA (OPCIONAL)
+              Fotografia (opcional)
             </label>
             {photo || template?.photo?.url ? (
               <PreviewFile
@@ -311,7 +322,21 @@ const TemplatesModal = ({
               <Error className="montserrat-bold">{errors.photo.message}</Error>
             )}
           </FormController>
-
+          <ModalActions>
+            <Button
+              type="button"
+              onClick={handleStepOne}
+              className="montserrat-bold"
+            >
+              PRÓXIMO
+            </Button>
+            <DismissButton type="button" onClick={onDismiss}>
+              CANCELAR
+            </DismissButton>
+          </ModalActions>
+        </>
+      ) : step === 2 ? (
+        <>
           <Suspense fallback={<div>Loading...</div>}>
             <ExercisePicker
               initialValues={getValues("exercises") as SelectedExercise[]}
@@ -319,7 +344,6 @@ const TemplatesModal = ({
               catsQueryRef={catsQueryRef}
             />
           </Suspense>
-
           {errors.exercises && (
             <Error
               style={{ position: "unset", transform: "unset" }}
@@ -328,15 +352,22 @@ const TemplatesModal = ({
               {errors.exercises.message}
             </Error>
           )}
-
-          <Button
-            style={{ marginTop: "10px" }}
-            type="button"
-            onClick={handleStepOne}
-            className="montserrat-bold"
-          >
-            PRÓXIMO
-          </Button>
+          <ModalActions>
+            <Button
+              type="button"
+              onClick={handleStepTwo}
+              className="montserrat-bold"
+            >
+              PRÓXIMO
+            </Button>
+            <DismissButton
+              type="button"
+              onClick={handleBackToStepOne}
+              className="montserrat-bold"
+            >
+              VOLTAR
+            </DismissButton>
+          </ModalActions>
         </>
       ) : (
         <>
@@ -355,29 +386,28 @@ const TemplatesModal = ({
               {errors.exercises.message}
             </Error>
           )}
-
-          <CancelButton
-            type="button"
-            onClick={handleBackToStepOne}
-            className="montserrat-bold"
-          >
-            VOLTAR
-          </CancelButton>
-
-          <Button
-            style={{ marginTop: "10px" }}
-            type="submit"
-            disabled={isSubmitting || isLoading}
-            className="montserrat-bold"
-          >
-            {isSubmitting || isLoading ? (
-              <Loader size={25} color="black" />
-            ) : template ? (
-              "EDITAR"
-            ) : (
-              "CRIAR"
-            )}
-          </Button>
+          <ModalActions>
+            <Button
+              type="submit"
+              disabled={isSubmitting || isLoading}
+              className="montserrat-bold"
+            >
+              {isSubmitting || isLoading ? (
+                <Loader size={15} color="white" />
+              ) : template ? (
+                "EDITAR TREINO"
+              ) : (
+                "CRIAR TREINO"
+              )}
+            </Button>
+            <DismissButton
+              type="button"
+              onClick={handleBackToStepOne}
+              className="montserrat-bold"
+            >
+              VOLTAR
+            </DismissButton>
+          </ModalActions>
         </>
       )}
     </Form>

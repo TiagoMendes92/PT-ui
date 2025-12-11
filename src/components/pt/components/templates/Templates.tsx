@@ -13,6 +13,17 @@ import { CATEGORIES_QUERY } from "../categories/Categories.queries";
 import DeleteTemplateModal from "./DeleteTemplateModal";
 import { GET_ALL_EXERCISE_VARIABLES } from "../exercise_variables/Exercise_Variables.queries";
 import type { ExerciseVariablesAllQuery } from "../../../../__generated__/ExerciseVariablesAllQuery.graphql";
+import {
+  Search,
+  SearchIcon,
+  SearchInput,
+  TableActions,
+  TablePageContent,
+  TablePageWrapper,
+} from "../../../shared/styles/Table.styled";
+import searchIcon from "../../../../icons/search.svg";
+import Spinner from "../../../shared/loader/Loader";
+import { Container } from "./Templates.styled";
 
 const Templates = ({
   queryRef,
@@ -27,23 +38,64 @@ const Templates = ({
     setSearchTerm(localSearchTerm);
   };
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm !== undefined) {
+        handleSearch();
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, handleSearch]);
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
-    <>
-      <TableHeader
-        onSearch={handleSearch}
-        searchTerm={localSearchTerm}
-        setSearchTerm={setLocalSearchTerm}
-        setIsModalOpen={setIsModalOpen}
-      />
-      <Suspense fallback={<div>Loading...</div>}>
-        <TemplatesGrid
-          queryRef={queryRef}
-          searchTerm={searchTerm}
-          setIsModalOpen={setIsModalOpen}
-          setIsDeleteModalOpen={setIsDeleteModalOpen}
-        />
-      </Suspense>
-    </>
+    <TablePageWrapper>
+      <TableHeader setIsModalOpen={setIsModalOpen} />
+      <TablePageContent>
+        <Container>
+          <TableActions>
+            <Search>
+              <SearchInput
+                hasError={false}
+                placeholder="Pesquisar por nome..."
+                value={localSearchTerm}
+                onChange={(e) => setLocalSearchTerm(e.target.value)}
+                onKeyUp={handleKeyPress}
+              />
+              <SearchIcon>
+                <img src={searchIcon} />
+              </SearchIcon>
+            </Search>
+          </TableActions>
+        </Container>
+        <Suspense
+          fallback={
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginBlock: "10px",
+              }}
+            >
+              <Spinner />
+            </div>
+          }
+        >
+          <TemplatesGrid
+            queryRef={queryRef}
+            searchTerm={searchTerm}
+            setIsModalOpen={setIsModalOpen}
+            setIsDeleteModalOpen={setIsDeleteModalOpen}
+          />
+        </Suspense>
+      </TablePageContent>
+    </TablePageWrapper>
   );
 };
 
@@ -104,6 +156,7 @@ const Loader = () => {
                     searchTerm={searchTerm}
                     template={isModalOpen.template}
                     onSubmit={handleTemplateAction}
+                    onDismiss={() => setIsModalOpen(null)}
                   />
                 </Modal>,
                 document.body

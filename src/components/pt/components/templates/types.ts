@@ -19,9 +19,6 @@ export type TemplatesProps = {
 };
 
 export type TableHeaderProps = {
-  onSearch: () => void;
-  searchTerm: string;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setIsModalOpen: React.Dispatch<
     React.SetStateAction<{ template: Template | null } | null>
   >;
@@ -42,6 +39,7 @@ export type TemplatesModalProps = {
   template: Template | null;
   catsQueryRef: PreloadedQuery<CategoriesQuery>;
   exerciseVariablesRef: PreloadedQuery<ExerciseVariablesAllQuery>;
+  onDismiss: () => void;
 };
 
 export type ExerciseSet = {

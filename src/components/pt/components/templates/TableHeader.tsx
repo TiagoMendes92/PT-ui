@@ -1,46 +1,22 @@
 import type { TableHeaderProps } from "./types";
 import {
   AddButton,
-  Search,
-  SearchButton,
-  SearchInput,
   TableHeader as THeader,
   TableHeaderFirstLine,
-} from "../categories/Categories.styles";
-import { Title } from "../../../login/LoginPage.styles";
-import searchIcon from "../../../../icons/search.svg";
+} from "../../../shared/styles/Table.styled";
 
-const TableHeader = ({
-  onSearch,
-  searchTerm,
-  setSearchTerm,
-  setIsModalOpen,
-}: TableHeaderProps) => {
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      onSearch();
-    }
-  };
+import { Title } from "../../../shared/styles/Typography.styled";
+
+const TableHeader = ({ setIsModalOpen }: TableHeaderProps) => {
   return (
     <THeader>
       <TableHeaderFirstLine>
-        <Title>Templates</Title>
+        <Title>Treinos</Title>
         <AddButton onClick={() => setIsModalOpen({ template: null })}>
-          +
+          <span>CRIAR TREINO</span>
+          <img src="/plus.svg" />
         </AddButton>
       </TableHeaderFirstLine>
-      <Search>
-        <SearchInput
-          hasError={false}
-          placeholder="Pesquisar por nome..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyUp={handleKeyPress}
-        />
-        <SearchButton onClick={onSearch}>
-          <img src={searchIcon} />
-        </SearchButton>
-      </Search>
     </THeader>
   );
 };

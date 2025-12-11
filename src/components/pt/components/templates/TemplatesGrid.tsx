@@ -5,17 +5,21 @@ import {
   GridCardActions,
   GridCardHeader,
   GridCardTitle,
-} from "./Templates.styles";
+  GridImage,
+} from "./Templates.styled";
 import type { TemplatesGridProps } from "./types";
 import type { TemplatesQuery } from "../../../../__generated__/TemplatesQuery.graphql";
 import { GET_TEMPLATES, GET_TEMPLATES_LIST } from "./Templates.queries";
 import type { Templates$key } from "../../../../__generated__/Templates.graphql";
 import EmptyCategory from "../categories/EmptyCategory";
-import { ActionButton, ImageCell } from "../categories/Categories.styles";
 import deleteIcon from "../../../../icons/delete.svg";
 import Spinner from "../../../shared/loader/Loader";
 import editIcon from "../../../../icons/edit.svg";
 import HighlightText from "../../../shared/highlight_text/HighlightText";
+import {
+  ActionButton,
+  LoadMoreButton,
+} from "../../../shared/styles/Table.styled";
 
 const TemplatesGrid = ({
   queryRef,
@@ -49,11 +53,13 @@ const TemplatesGrid = ({
 
                   <GridCardActions>
                     <ActionButton
+                      action="edit"
                       onClick={() => setIsModalOpen({ template: template })}
                     >
                       <img src={editIcon} alt="" />
                     </ActionButton>
                     <ActionButton
+                      action="delete"
                       onClick={() => setIsDeleteModalOpen(template)}
                     >
                       <img src={deleteIcon} alt="" />
@@ -61,9 +67,9 @@ const TemplatesGrid = ({
                   </GridCardActions>
                 </GridCardHeader>
                 <br />
-                <ImageCell>
+                <GridImage>
                   <img src={template.photo?.url} />
-                </ImageCell>
+                </GridImage>
                 <ol>
                   {template.exercises.map((exercise) => (
                     <li key={`${template.id}-${exercise.exercise.id}`}>
@@ -85,7 +91,10 @@ const TemplatesGrid = ({
       >
         {isLoadingNext ? <Spinner size={25} color="white" /> : null}
         {hasNext && !isLoadingNext ? (
-          <button onClick={() => loadNext(10)}>Load more</button>
+          <LoadMoreButton onClick={() => loadNext(10)}>
+            <img src="/load-more.svg" />
+            LOAD MORE
+          </LoadMoreButton>
         ) : null}
       </div>
     </>

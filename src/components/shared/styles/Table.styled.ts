@@ -163,7 +163,8 @@ export const AddButton = styled(Button)`
   }
 
   @media (min-width: 576px) {
-    width: 170px;
+    width: auto;
+    padding-inline: 12px;
     > span {
       display: block;
     }
@@ -193,7 +194,7 @@ export const LoadMoreButton = styled(Button)`
     background: #0047f9;
 
     img {
-      filter: brightness(10);
+      filter: grayscale(1) contrast(3) invert(1);
     }
   }
 `;

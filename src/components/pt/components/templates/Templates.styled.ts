@@ -1,4 +1,10 @@
 import styled from "styled-components";
+import { TableContainer } from "../../../shared/styles/Table.styled";
+import { ImageCell } from "../categories/Categories.styled";
+
+export const Container = styled(TableContainer)`
+  margin-bottom: 20px;
+`;
 
 export const Grid = styled.div`
   display: grid;
@@ -10,21 +16,27 @@ export const Grid = styled.div`
   }
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 
   @media (min-width: 992px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   @media (min-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1440px) {
     grid-template-columns: repeat(4, 1fr);
   }
 `;
 
 export const GridCard = styled("div")`
-  padding: 10px;
-  border: 1px solid white;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
 
 export const GridCardHeader = styled.div`
@@ -44,24 +56,8 @@ export const GridCardActions = styled.div`
   gap: 10px;
 `;
 
-export const TextArea = styled("textarea").withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
-})<{ hasError: boolean }>`
-  outline: 0;
-  resize: none;
-  font-size: 14px;
-  margin-top: 10px;
-  border-radius: 16px;
-  padding-block: 10px;
-  padding-inline: 15px;
-  width: calc(100% - 32px);
-  transition: border-color 0.3s ease;
-  border: 1px solid ${({ hasError }) => (hasError ? "red" : "lightgrey")};
-`;
-
-export const ExercisesList = styled.div`
-  color: white;
-  overflow: auto;
-  max-height: 260 px;
-  border: 1px solid white;
+export const GridImage = styled(ImageCell)`
+  img {
+    object-position: center;
+  }
 `;

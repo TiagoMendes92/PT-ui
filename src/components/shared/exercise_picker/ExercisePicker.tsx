@@ -11,7 +11,6 @@ import {
 } from "../../pt/components/exercises/Exercise.queries";
 import { useState } from "react";
 import type { Exercise$key } from "../../../__generated__/Exercise.graphql";
-import { ExercisesList } from "../../pt/components/templates/Templates.styles";
 import {
   Chip,
   ChipsContainer,
@@ -24,6 +23,7 @@ import type { SelectOption } from "../select/types";
 import {
   ChipWithAction,
   Exercise,
+  ExercisesList,
   SelectedExercises,
 } from "./ExercisePicker.styles";
 import addIcon from "../../../icons/add.svg";
@@ -32,7 +32,7 @@ import deleteIcon from "../../../icons/delete.svg";
 import EmptyCategory from "../../pt/components/categories/EmptyCategory";
 import Loader from "../../shared/loader/Loader";
 import { FormController, Input } from "../styles/Form.styled";
-import { ActionButton } from "../styles/Table.styled";
+import { ActionButton, LoadMoreButton } from "../styles/Table.styled";
 
 const ExercisePicker = ({
   initialValues,
@@ -103,29 +103,22 @@ const ExercisePicker = ({
   return (
     <>
       <FormController>
-        <label htmlFor="exercises" className="montserrat-bold">
-          EXERCICIOS
-        </label>
         <Input
           id="exercises"
           type="text"
           className="montserrat"
           hasError={false}
-          placeholder="Procurar exercícios"
+          placeholder="Procurar exercícios por nome..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </FormController>
-
       <FormController>
-        <label htmlFor="category" className="montserrat-bold">
-          CATEGORIA
-        </label>
         <Select
           options={categoryOptions}
           value={searchCat}
           onChange={(e) => setSearchCat(e)}
-          placeholder="Procuar por categoria"
+          placeholder="Procuar exercícios por categoria"
           hasError={false}
         />
       </FormController>
@@ -138,7 +131,11 @@ const ExercisePicker = ({
               onClick={() => removeExercise({ id: ex.exerciseId })}
             >
               {ex.name}
-              <ActionButton action="delete" type="button">
+              <ActionButton
+                style={{ height: "10px" }}
+                action="delete"
+                type="button"
+              >
                 <img src={deleteIcon} />
               </ActionButton>
             </ChipWithAction>
@@ -186,14 +183,33 @@ const ExercisePicker = ({
             </Exercise>
           );
         })}
-        {isLoadingNext && <Loader />}
-        {hasNext && (
-          <button type="button" onClick={() => loadNext(4)}>
-            Load more
-          </button>
+        {isLoadingNext && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBlock: "10px",
+            }}
+          >
+            <Loader />
+          </div>
         )}
         {!exercises.length ? <EmptyCategory /> : null}
       </ExercisesList>
+      {hasNext && (
+        <LoadMoreButton
+          type="button"
+          onClick={() => loadNext(4)}
+          style={{
+            transform: "unset",
+            marginBottom: "20px",
+            marginInline: "auto",
+          }}
+        >
+          <img src="/load-more.svg" />
+          LOAD MORE
+        </LoadMoreButton>
+      )}
     </>
   );
 };

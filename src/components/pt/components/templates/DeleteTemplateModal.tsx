@@ -1,5 +1,4 @@
 import { useMutation } from "react-relay";
-import { DeleteModalContent } from "../categories/Categories.styles";
 import type { DeleteTemplateModalProps } from "./types";
 import { TEMPLATE_DELETE } from "./Templates.queries";
 import type {
@@ -7,9 +6,10 @@ import type {
   TemplatesDeleteMutation$data,
 } from "../../../../__generated__/TemplatesDeleteMutation.graphql";
 import { useState } from "react";
-import { Button, Error } from "../../../login/LoginPage.styles";
 import Loader from "../../../shared/loader/Loader";
-
+import { DeleteModalContent } from "../../../shared/styles/Modal.styled";
+import { Button } from "../../../shared/styles/Table.styled";
+import { Error } from "../../../shared/styles/Form.styled";
 const DeleteTemplateModal = ({
   template,
   onDelete,
