@@ -17,7 +17,7 @@ export const links: HeaderLink[] = [
         path: "/pt/exercises",
       },
       {
-        label: "Templates de Treino",
+        label: "Treinos",
         path: "/pt/templates",
       },
       {

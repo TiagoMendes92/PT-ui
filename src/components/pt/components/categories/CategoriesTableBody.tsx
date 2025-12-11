@@ -14,11 +14,7 @@ import HighlightText from "../../../shared/highlight_text/HighlightText";
 import childIcon from "../../../../icons/child.svg";
 import editIcon from "../../../../icons/edit.svg";
 import deleteIcon from "../../../../icons/delete.svg";
-import {
-  ActionButton,
-  Actions,
-  Table,
-} from "../../../shared/styles/Table.styled";
+import { ActionButton, Actions } from "../../../shared/styles/Table.styled";
 import useIsMobile from "../../../../hooks/useIsMobile";
 
 const CategoriesTableBody = ({
@@ -54,7 +50,7 @@ const CategoriesTableBody = ({
   return (
     <tbody>
       {!categories.length ? (
-        <EmptyCategory nrOfCols={3} />
+        <EmptyCategory nrOfCols={isMobile ? 2 : 3} />
       ) : (
         categories.map((category) => (
           <Fragment key={category.id}>
@@ -95,7 +91,7 @@ const CategoriesTableBody = ({
                   <CategoriesTable>
                     <tbody>
                       {!category?.subcategories?.length ? (
-                        <EmptyCategory />
+                        <EmptyCategory nrOfCols={isMobile ? 2 : 3} />
                       ) : (
                         category.subcategories.map((sub) => (
                           <tr key={sub.id}>

@@ -311,7 +311,7 @@ const ExerciseModal = ({
           {errors.url && (
             <Error className="montserrat-bold">{errors.url.message}</Error>
           )}
-          <VerifyButton action="view" onClick={checkVideo}>
+          <VerifyButton type="button" action="view" onClick={checkVideo}>
             <img src={viewIcon} />
           </VerifyButton>
         </FormController>

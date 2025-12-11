@@ -23,6 +23,7 @@ import {
   LoaderContainer,
 } from "../../../shared/styles/Table.styled";
 import { ExerciseVariablesTable } from "./Exercise_Variables.styled";
+import useIsMobile from "../../../../hooks/useIsMobile";
 
 const Exercise_Variables = ({
   searchTerm,
@@ -31,6 +32,7 @@ const Exercise_Variables = ({
   setIsDeleteModalOpen,
   exerciseVariablesQueryRef,
 }: Exercise_VariablesProps) => {
+  const isMobile = useIsMobile(490);
   const [localSearchTerm, setLocalSearchTerm] = useState<string>("");
 
   const handleSearch = () => {
@@ -83,7 +85,7 @@ const Exercise_Variables = ({
             <Suspense
               fallback={
                 <LoaderContainer>
-                  <td colSpan={3}>
+                  <td colSpan={isMobile ? 2 : 3}>
                     <Spinner />
                   </td>
                 </LoaderContainer>

@@ -38,7 +38,8 @@ const ExercisesTableBody = ({
   setIsDeleteModalOpen,
   exercisesQueryRef,
 }: ExercisesTableBodyProps) => {
-  const isMobile = useIsMobile(1200);
+  const isMobile = useIsMobile(576);
+  const isDesktop = useIsMobile(1200);
   const [showVideo, setShowVideo] = useState<string | null>(null);
   const query = usePreloadedQuery<ExerciseQuery>(
     GET_EXERCISES,
@@ -76,7 +77,7 @@ const ExercisesTableBody = ({
     <>
       <tbody>
         {!data.exercises.edges.length ? (
-          <EmptyCategory nrOfCols={4} />
+          <EmptyCategory nrOfCols={isMobile ? 2 : isDesktop ? 3 : 4} />
         ) : (
           data.exercises.edges.map((exercise) => {
             if (!exercise.node) return null;
@@ -91,7 +92,7 @@ const ExercisesTableBody = ({
                     text={exercise.node.name}
                     searchTerm={searchTerm}
                   />
-                  {isMobile && (
+                  {isDesktop && (
                     <>
                       <br />
                       <ChipsContainer>

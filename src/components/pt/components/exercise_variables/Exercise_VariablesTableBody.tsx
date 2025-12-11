@@ -20,6 +20,7 @@ import {
   LoadMoreButton,
   LoadMoreButtonContainer,
 } from "../../../shared/styles/Table.styled";
+import useIsMobile from "../../../../hooks/useIsMobile";
 
 const getUnitName = (unitValue: string) => {
   return unitOptions.find((option) => option.value === unitValue)?.label || "-";
@@ -31,6 +32,7 @@ const Exercise_VariablesTableBody = ({
   setIsModalOpen,
   setIsDeleteModalOpen,
 }: Exercise_VariablesTableBodyProps) => {
+  const isMobile = useIsMobile(490);
   const query = usePreloadedQuery<ExerciseVariablesQuery>(
     GET_EXERCISE_VARIABLES,
     exerciseVariablesQueryRef
@@ -45,7 +47,7 @@ const Exercise_VariablesTableBody = ({
     <>
       <tbody>
         {!data.exerciseVariables.edges.length ? (
-          <EmptyCategory nrOfCols={3} />
+          <EmptyCategory nrOfCols={isMobile ? 2 : 3} />
         ) : (
           data.exerciseVariables.edges.map((exerciseVariable) => {
             if (!exerciseVariable.node) return null;

@@ -27,6 +27,7 @@ import type { SelectOption } from "../../../shared/select/types";
 import Select from "../../../shared/select/Select";
 import Spinner from "../../../shared/loader/Loader";
 import { ExerciseActions, ExerciseTable } from "./Exercises.styled";
+import useIsMobile from "../../../../hooks/useIsMobile";
 
 const Exercises = ({
   searchCat,
@@ -38,6 +39,8 @@ const Exercises = ({
   setSearchTerm,
   setIsDeleteModalOpen,
 }: ExercisesProps) => {
+  const isMobile = useIsMobile(576);
+  const isDesktop = useIsMobile(1200);
   const { categories } = usePreloadedQuery<CategoriesQuery>(
     CATEGORIES_QUERY,
     catsQueryRef
@@ -124,7 +127,7 @@ const Exercises = ({
             <Suspense
               fallback={
                 <LoaderContainer>
-                  <td colSpan={3}>
+                  <td colSpan={isMobile ? 2 : isDesktop ? 3 : 4}>
                     <Spinner />
                   </td>
                 </LoaderContainer>

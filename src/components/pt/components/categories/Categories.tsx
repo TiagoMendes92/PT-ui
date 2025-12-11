@@ -24,12 +24,14 @@ import {
 import searchIcon from "../../../../icons/search.svg";
 import { CategoriesTable } from "./Categories.styled";
 import Spinner from "../../../shared/loader/Loader";
+import useIsMobile from "../../../../hooks/useIsMobile";
 
 const Categories = ({
   queryRef,
   setIsModalOpen,
   setIsDeleteModalOpen,
 }: CategoriesProps) => {
+  const isMobile = useIsMobile(490);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [cats, setCats] = useState<Category[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -122,7 +124,7 @@ const Categories = ({
             <Suspense
               fallback={
                 <LoaderContainer>
-                  <td colSpan={3}>
+                  <td colSpan={isMobile ? 2 : 3}>
                     <Spinner />
                   </td>
                 </LoaderContainer>
