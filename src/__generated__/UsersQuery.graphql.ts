@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4ed91d674c1ab0a223ea4d8081fcf6b0>>
+ * @generated SignedSource<<f011e290345532f075464282d698c531>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -161,6 +161,31 @@ return {
                   {
                     "alias": null,
                     "args": null,
+                    "concreteType": "Photo",
+                    "kind": "LinkedField",
+                    "name": "photo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "url",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "key",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
                     "kind": "ScalarField",
                     "name": "__typename",
                     "storageKey": null
@@ -234,12 +259,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "741f4e47ff86aaf9a6b768c379f010ff",
+    "cacheID": "f12ab3b544f3d82a8ef1ea0aff575058",
     "id": null,
     "metadata": {},
     "name": "UsersQuery",
     "operationKind": "query",
-    "text": "query UsersQuery(\n  $first: Int\n  $filter: AdminUserFilterInput\n) {\n  ...Users_1qzYLD\n}\n\nfragment Users_1qzYLD on Query {\n  adminUsers(first: $first, filter: $filter) {\n    edges {\n      node {\n        id\n        email\n        name\n        status\n        createdAt\n        updatedAt\n        deactivatedAt\n        passwordSetAt\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
+    "text": "query UsersQuery(\n  $first: Int\n  $filter: AdminUserFilterInput\n) {\n  ...Users_1qzYLD\n}\n\nfragment Users_1qzYLD on Query {\n  adminUsers(first: $first, filter: $filter) {\n    edges {\n      node {\n        id\n        email\n        name\n        status\n        createdAt\n        updatedAt\n        deactivatedAt\n        passwordSetAt\n        photo {\n          url\n          key\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();

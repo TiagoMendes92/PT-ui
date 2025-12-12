@@ -41,8 +41,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setLoading(false);
         },
       });
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const login = (token: string, user: User) => {

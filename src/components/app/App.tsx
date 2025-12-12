@@ -11,6 +11,7 @@ import { links as ptlinks } from "../pt/enums/links.enum";
 import PTCategories from "../pt/components/categories/Categories";
 import PTExercises from "../pt/components/exercises/Exercises";
 import PTUsers from "../pt/components/users/Users";
+import PTUser from "../pt/components/user/User";
 import PTTemplates from "../pt/components/templates/Templates";
 import PTExerciseVariables from "../pt/components/exercise_variables/Exercise_Variables";
 
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="categories" element={<PTCategories />} />
           <Route path="exercises" element={<PTExercises />} />
           <Route path="users" element={<PTUsers />} />
+          <Route path="users/:id" element={<PTUser />} />
           <Route path="templates" element={<PTTemplates />} />
           <Route path="exercise_variables" element={<PTExerciseVariables />} />
           <Route path="perfil" element={<AlunoProfile />} />

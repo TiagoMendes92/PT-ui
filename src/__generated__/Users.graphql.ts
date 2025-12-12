@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1608b4965e33a72ca93d7cbbdf09244e>>
+ * @generated SignedSource<<89aea677da9f8ebcbaff00e7586e1694>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,6 +21,10 @@ export type Users$data = {
         readonly id: string;
         readonly name: string;
         readonly passwordSetAt: string | null | undefined;
+        readonly photo: {
+          readonly key: string;
+          readonly url: string;
+        } | null | undefined;
         readonly status: UserStatus;
         readonly updatedAt: string | null | undefined;
       };
@@ -177,6 +181,31 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "concreteType": "Photo",
+                  "kind": "LinkedField",
+                  "name": "photo",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "url",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "key",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
@@ -242,6 +271,6 @@ return {
 };
 })();
 
-(node as any).hash = "a3c3f3b35e0d5f83e9d7e8cb615b7cca";
+(node as any).hash = "7d6b9afd157e8532069969d314244c77";
 
 export default node;

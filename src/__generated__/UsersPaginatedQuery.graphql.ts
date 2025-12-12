@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a102015e7489d012ac175bb98ed8d640>>
+ * @generated SignedSource<<6ab71ba9ff93528970daa213dd9140eb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -168,6 +168,31 @@ return {
                   {
                     "alias": null,
                     "args": null,
+                    "concreteType": "Photo",
+                    "kind": "LinkedField",
+                    "name": "photo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "url",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "key",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
                     "kind": "ScalarField",
                     "name": "__typename",
                     "storageKey": null
@@ -241,16 +266,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5f7df4db868272ea0f059ab3792f60f0",
+    "cacheID": "b7cb5cc3f14647358db145cb934a8e10",
     "id": null,
     "metadata": {},
     "name": "UsersPaginatedQuery",
     "operationKind": "query",
-    "text": "query UsersPaginatedQuery(\n  $after: String\n  $filter: AdminUserFilterInput\n  $first: Int\n) {\n  ...Users_G9cLv\n}\n\nfragment Users_G9cLv on Query {\n  adminUsers(first: $first, after: $after, filter: $filter) {\n    edges {\n      node {\n        id\n        email\n        name\n        status\n        createdAt\n        updatedAt\n        deactivatedAt\n        passwordSetAt\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
+    "text": "query UsersPaginatedQuery(\n  $after: String\n  $filter: AdminUserFilterInput\n  $first: Int\n) {\n  ...Users_G9cLv\n}\n\nfragment Users_G9cLv on Query {\n  adminUsers(first: $first, after: $after, filter: $filter) {\n    edges {\n      node {\n        id\n        email\n        name\n        status\n        createdAt\n        updatedAt\n        deactivatedAt\n        passwordSetAt\n        photo {\n          url\n          key\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "a3c3f3b35e0d5f83e9d7e8cb615b7cca";
+(node as any).hash = "7d6b9afd157e8532069969d314244c77";
 
 export default node;
