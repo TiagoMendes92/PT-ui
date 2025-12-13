@@ -72,6 +72,7 @@ const Profile = ({ queryRef, user }: ProfileProps) => {
     formState: { errors },
     setError,
   } = useForm<ProfileFormData>({
+    mode: "onChange",
     resolver: yupResolver(userDetailsSchema),
     defaultValues: {
       birthday: data?.userDetails?.birthday

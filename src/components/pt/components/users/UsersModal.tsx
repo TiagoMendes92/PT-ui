@@ -46,6 +46,7 @@ const UsersModal = ({
     formState: { errors, isSubmitting },
     setError,
   } = useForm<UserFormData>({
+    mode: "onChange",
     resolver: yupResolver(UserSchema),
     defaultValues: {
       name: user?.name || "",

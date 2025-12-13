@@ -34,6 +34,7 @@ const RegisterPage = () => {
     formState: { errors, isSubmitting },
     setError,
   } = useForm<RegisterFormData>({
+    mode: "onChange",
     resolver: yupResolver(RegisterSchema),
   });
 

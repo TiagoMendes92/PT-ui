@@ -112,6 +112,7 @@ const ExerciseModal = ({
     getValues,
     setError,
   } = useForm<ExerciseFormData>({
+    mode: "onChange",
     resolver: yupResolver(ExerciseSchema),
     defaultValues: {
       name: exercise?.name || "",

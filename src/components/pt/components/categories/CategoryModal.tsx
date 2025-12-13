@@ -84,6 +84,7 @@ const CategoryModal = ({
     formState: { errors, isSubmitting },
     setError,
   } = useForm<CategoryFormData>({
+    mode: "onChange",
     resolver: yupResolver(CategorySchema),
     defaultValues: {
       name: category?.name || "",

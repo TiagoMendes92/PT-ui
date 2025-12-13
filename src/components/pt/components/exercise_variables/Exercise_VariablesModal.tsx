@@ -93,6 +93,7 @@ const Exercise_VariablesModal = ({
     formState: { errors, isSubmitting },
     setError,
   } = useForm<Exercise_VariablesFormData>({
+    mode: "onChange",
     resolver: yupResolver(VariableSchema),
     defaultValues: {
       name: variable?.name || "",
