@@ -71,7 +71,16 @@ const TemplateSchema = yup.object().shape({
                     variableId: yup.string().required(),
                     targetValue: yup
                       .string()
-                      .required("O valor da variável é obrigatório"),
+                      .required("O valor da variável é obrigatório")
+                      .test(
+                        "positive-number",
+                        "O valor tem que ser um número maior que 0",
+                        (value) => {
+                          if (!value || value.trim() === "") return false;
+                          const num = Number(value);
+                          return !isNaN(num) && num > 0;
+                        }
+                      ),
                   })
                 )
                 .min(1, "Pelo menos uma variável é obrigatória")
@@ -352,6 +361,11 @@ const TemplatesModal = ({
             controlName="exercises"
             exerciseVariablesRef={exerciseVariablesRef}
           />
+          {errors.root?.message && (
+            <Error generic className="montserrat-bold">
+              {errors.root.message}
+            </Error>
+          )}
           <ModalActions>
             <Button
               type="submit"

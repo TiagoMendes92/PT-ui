@@ -71,7 +71,8 @@ type Mutation {
   createTemplate(input: CreateTemplateInput!, file: Upload): Template!
   updateTemplate(input: UpdateTemplateInput!, file: Upload): Template!
   deleteTemplate(id: String!): ID
-  createTraining(input: CreateTrainingInput!): Training!
+  createTraining(input: CreateTrainingInput!, file: Upload): Training!
+  editTraining(input: UpdateTrainingInput!): Training!
   login(email: String!, password: String!): AuthPayload!
 }
 
@@ -323,6 +324,7 @@ type Training {
   archivedAt: String
   createdAt: String!
   updatedAt: String!
+  photo: Photo
 }
 
 type TrainingExercise {
@@ -339,14 +341,26 @@ type TrainingExerciseSet {
 }
 
 type TrainingExerciseSetVariable {
+  id: String
   variable: ExerciseVariable!
   targetValue: String
 }
 
+input PhotoInput {
+  url: String!
+  key: String!
+}
+
 input CreateTrainingInput {
   target_id: String!
+  photo: PhotoInput
   name: String!
   description: String
+  exercises: [TrainingExerciseInput!]!
+}
+
+input UpdateTrainingInput {
+  training_id: String!
   exercises: [TrainingExerciseInput!]!
 }
 
@@ -362,6 +376,7 @@ input TrainingExerciseSetInput {
 }
 
 input TrainingExerciseSetVariableInput {
+  id: String
   variableId: ID!
   targetValue: String
 }

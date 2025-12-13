@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ActionButton } from "../../../shared/styles/Table.styled";
+import { Grid } from "../templates/Templates.styled";
 
 export const UserPage = styled("div")`
   height: 100%;
@@ -35,6 +36,7 @@ export const UserDetailsContainerGrid = styled("div")`
   gap: 20px;
   display: flex;
   .preview-container {
+    height: 100%;
     img {
       overflow: hidden;
       object-fit: cover;
@@ -93,4 +95,33 @@ export const UserNoTrainings = styled("div")`
   background: #f5f6f9;
   justify-content: center;
   border-radius: 8px;
+`;
+
+export const UserTrainingPlanWrapper = styled(Grid)`
+  margin-top: 30px;
+`;
+
+export const UserTrain = styled("div")`
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid lightgrey;
+`;
+
+export const UserTrainHeader = styled("div")`
+  gap: 10px;
+  display: flex;
+  padding-bottom: 10px;
+  justify-content: space-between;
+  border-bottom: 1px solid white;
+`;
+
+export const UserTrainHeaderTitle = styled("div")`
+  flex: 1;
+  font-weight: 600;
+`;
+
+export const UserTrainingImage = styled("div")`
+  display: flex;
+  justify-content: center;
 `;

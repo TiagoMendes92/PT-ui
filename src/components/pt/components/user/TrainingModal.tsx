@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import type { TrainingFormData, TrainingModalProps } from "./User.types";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import {
@@ -17,14 +17,8 @@ import {
 } from "../../../shared/modal/Modal.styles";
 import { Button } from "../../../shared/styles/Table.styled";
 import TemplatePicker from "../../../shared/template_picker/TemplatePicker";
-import type {
-  ExerciseSet,
-  SelectedExercise,
-  Template,
-} from "../templates/Templates.types";
+import type { Template } from "../templates/Templates.types";
 import PreviewFile from "../../../shared/preview_file/PreviewFiles";
-import ExercisePicker from "../../../shared/exercise_picker/ExercisePicker";
-import ExerciseConfiguration from "../../../shared/exercise_configuration/ExerciseConfiguration";
 import Loader from "../../../shared/loader/Loader";
 import { useMutation } from "react-relay";
 import { TRAINING_CREATE } from "./UserTraining.queries";
@@ -32,6 +26,8 @@ import type {
   UserTrainingCreateMutation,
   UserTrainingCreateMutation$data,
 } from "../../../../__generated__/UserTrainingCreateMutation.graphql";
+import ExercisePickerController from "../../../shared/exercise_picker/ExercisePickerController";
+import ExerciseConfigurationController from "../../../shared/exercise_configuration/ExerciseConfigurationController";
 
 const TrainingSchema = yup.object().shape({
   name: yup
@@ -71,7 +67,18 @@ const TrainingSchema = yup.object().shape({
                 .of(
                   yup.object().shape({
                     variableId: yup.string().required(),
-                    targetValue: yup.string(),
+                    targetValue: yup
+                      .string()
+                      .required("O valor da variável é obrigatório")
+                      .test(
+                        "positive-number",
+                        "O valor tem que ser um número maior que 0",
+                        (value) => {
+                          if (!value || value.trim() === "") return false;
+                          const num = Number(value);
+                          return !isNaN(num) && num > 0;
+                        }
+                      ),
                   })
                 )
                 .min(1, "Pelo menos uma variável é obrigatória")
@@ -82,8 +89,8 @@ const TrainingSchema = yup.object().shape({
           .default([]),
       })
     )
-    .min(1, "Pelo menos um exercício é obrigatório")
     .required("Exercícios são obrigatórios")
+    .min(1, "Pelo menos um exercício é obrigatório")
     .default([]),
 });
 
@@ -94,7 +101,6 @@ const TrainingModal = ({
   exerciseVariablesRef,
   onDismiss,
 }: TrainingModalProps) => {
-  "use no memo";
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
@@ -113,6 +119,7 @@ const TrainingModal = ({
     setError,
     getValues,
   } = useForm<TrainingFormData>({
+    mode: "onChange",
     resolver: yupResolver(TrainingSchema),
     defaultValues: {
       name: "",
@@ -133,7 +140,7 @@ const TrainingModal = ({
       sets: (e.sets || []).map((s) => ({
         ...s,
         variables: (s.variables || []).map(({ targetValue, variable }) => ({
-          targetValue: targetValue ?? undefined,
+          targetValue: targetValue as string,
           variableId: variable.id,
         })),
       })),
@@ -156,10 +163,6 @@ const TrainingModal = ({
     control,
     name: "photo",
   });
-
-  const onExerciseChange = (exercises: SelectedExercise[]) => {
-    setValue("exercises", exercises);
-  };
 
   const handleBackToPreviousStep = () => {
     setStep((prev) => (prev - 1) as 1 | 2 | 3);
@@ -189,34 +192,19 @@ const TrainingModal = ({
     });
   };
 
-  const hasEmptyTargetValue = (
-    exercises: {
-      exerciseId: string;
-      orderPosition: number;
-      sets: ExerciseSet[];
-    }[]
-  ) => {
-    return exercises.some((exercise) =>
-      exercise.sets.some((set) =>
-        set.variables.some(
-          (variable) =>
-            !variable.targetValue || variable.targetValue.trim() === ""
-        )
-      )
-    );
-  };
-
-  const onSubmitForm = async (values: TrainingFormData) => {
-    console.log("ON SUBOT");
-    if (hasEmptyTargetValue(values.exercises)) {
-      setError("root", {
-        type: "manual",
-        message: "Todos os sets precisam ter valores preenchidos",
-      });
-      return;
+  const onSubmitForm = async (formValues: TrainingFormData) => {
+    const { photo, ...values } = formValues;
+    let photoInput;
+    if (
+      !photo &&
+      selectedTemplate?.photo?.url &&
+      selectedTemplate?.photo?.key
+    ) {
+      photoInput = {
+        url: selectedTemplate.photo.url,
+        key: selectedTemplate.photo.key,
+      };
     }
-    // const { photo, ...values } = formValues;
-
     create({
       variables: {
         input: {
@@ -226,7 +214,9 @@ const TrainingModal = ({
             ...e,
             name: undefined,
           })),
+          photo: photoInput,
         },
+        file: photo,
       },
       onCompleted: (response: UserTrainingCreateMutation$data, errors) => {
         if (response.createTraining?.id) {
@@ -333,10 +323,7 @@ const TrainingModal = ({
           <ModalActions>
             <Button
               type="button"
-              onClick={(e) => {
-                // e.stopPropagation();
-                handleStepOne();
-              }}
+              onClick={handleStepOne}
               className="montserrat-bold"
             >
               PRÓXIMO
@@ -348,28 +335,15 @@ const TrainingModal = ({
         </>
       ) : step === 3 ? (
         <>
-          <Suspense fallback={<div>Loading...</div>}>
-            <ExercisePicker
-              initialValues={getValues("exercises") as SelectedExercise[]}
-              onChange={onExerciseChange}
-              catsQueryRef={catsQueryRef}
-            />
-          </Suspense>
-          {errors.exercises && (
-            <Error
-              style={{ position: "unset", transform: "unset" }}
-              className="montserrat-bold"
-            >
-              {errors.exercises.message}
-            </Error>
-          )}
+          <ExercisePickerController
+            control={control}
+            controlName="exercises"
+            catsQueryRef={catsQueryRef}
+          />
           <ModalActions>
             <Button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleStepTwo();
-              }}
+              onClick={handleStepTwo}
               className="montserrat-bold"
             >
               PRÓXIMO
@@ -385,19 +359,13 @@ const TrainingModal = ({
         </>
       ) : (
         <>
-          <Suspense fallback={<div>Loading...</div>}>
-            <ExerciseConfiguration
-              initialValues={getValues("exercises") as SelectedExercise[]}
-              onChange={onExerciseChange}
-              errors={errors.exercises}
-              exerciseVariablesRef={exerciseVariablesRef}
-            />
-          </Suspense>
-          {errors.root && (
-            <Error
-              style={{ position: "unset", transform: "unset" }}
-              className="montserrat-bold"
-            >
+          <ExerciseConfigurationController
+            control={control}
+            controlName="exercises"
+            exerciseVariablesRef={exerciseVariablesRef}
+          />
+          {errors.root?.message && (
+            <Error generic className="montserrat-bold">
               {errors.root.message}
             </Error>
           )}

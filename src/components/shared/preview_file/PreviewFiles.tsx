@@ -35,7 +35,7 @@ const PreviewFile = ({
   }, [file, fallbackSrc]);
 
   return (
-    <div className="preview-container">
+    <div className="preview-container" style={{ height: "100%" }}>
       {preview && (
         <img
           src={preview}

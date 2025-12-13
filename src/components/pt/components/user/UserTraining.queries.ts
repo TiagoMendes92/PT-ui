@@ -6,6 +6,50 @@ export const TRAININGS_QUERY = graphql`
       id
       name
       description
+      photo {
+        url
+        key
+      }
+      createdAt
+      updatedAt
+      exercises {
+        orderPosition
+        exercise {
+          id
+          name
+          url
+          category
+          photo {
+            url
+            key
+          }
+        }
+        sets {
+          setNumber
+          variables {
+            id
+            variable {
+              id
+              name
+              unit
+            }
+            targetValue
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const TRAINING_CREATE = graphql`
+  mutation UserTrainingCreateMutation(
+    $input: CreateTrainingInput!
+    $file: Upload
+  ) {
+    createTraining(input: $input, file: $file) {
+      id
+      name
+      description
       createdAt
       updatedAt
       exercises {
@@ -36,9 +80,9 @@ export const TRAININGS_QUERY = graphql`
   }
 `;
 
-export const TRAINING_CREATE = graphql`
-  mutation UserTrainingCreateMutation($input: CreateTrainingInput!) {
-    createTraining(input: $input) {
+export const TRAINING_EDIT = graphql`
+  mutation UserTrainingUpdateMutation($input: UpdateTrainingInput!) {
+    editTraining(input: $input) {
       id
       name
       description
