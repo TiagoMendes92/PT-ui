@@ -6,7 +6,7 @@ import { useState } from "react";
 import type {
   ExerciseSet,
   SelectedExercise,
-} from "../../pt/components/templates/types";
+} from "../../pt/components/templates/Templates.types";
 import {
   AddSetButton,
   Container,

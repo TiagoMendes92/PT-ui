@@ -1,4 +1,4 @@
-import type { TableHeaderProps } from "./types";
+import type { TableHeaderProps } from "./Templates.types";
 import {
   AddButton,
   TableHeader as THeader,

@@ -1,6 +1,6 @@
 import type { PreloadedQuery } from "react-relay";
 import type { TemplatesQuery } from "../../../__generated__/TemplatesQuery.graphql";
-import type { Template } from "../../pt/components/templates/types";
+import type { Template } from "../../pt/components/templates/Templates.types";
 
 export type TemplateLoaderProps = {
   onChange: (template: Template) => void;

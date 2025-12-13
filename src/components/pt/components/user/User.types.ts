@@ -5,7 +5,7 @@ import type {
 } from "../../../../__generated__/UserQuery.graphql";
 import type { CategoriesQuery } from "../../../../__generated__/CategoriesQuery.graphql";
 import type { ExerciseVariablesAllQuery } from "../../../../__generated__/ExerciseVariablesAllQuery.graphql";
-import type { ExerciseSet } from "../templates/types";
+import type { ExerciseSet } from "../templates/Templates.types";
 import type { UserTrainingQuery } from "../../../../__generated__/UserTrainingQuery.graphql";
 
 export type UserProps = {

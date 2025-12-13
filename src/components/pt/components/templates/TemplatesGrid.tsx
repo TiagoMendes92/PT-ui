@@ -7,7 +7,7 @@ import {
   GridCardTitle,
   GridImage,
 } from "./Templates.styled";
-import type { TemplatesGridProps } from "./types";
+import type { TemplatesGridProps } from "./Templates.types";
 import type { TemplatesQuery } from "../../../../__generated__/TemplatesQuery.graphql";
 import { GET_TEMPLATES, GET_TEMPLATES_LIST } from "./Templates.queries";
 import type { Templates$key } from "../../../../__generated__/Templates.graphql";

@@ -3,7 +3,7 @@ import { useQueryLoader } from "react-relay";
 import type { TemplatesQuery } from "../../../../__generated__/TemplatesQuery.graphql";
 import { GET_TEMPLATES } from "./Templates.queries";
 import { createPortal } from "react-dom";
-import type { Template, TemplatesProps } from "./types";
+import type { Template, TemplatesProps } from "./Templates.types";
 import Modal from "../../../shared/modal/Modal";
 import TableHeader from "./TableHeader";
 import TemplatesGrid from "./TemplatesGrid";

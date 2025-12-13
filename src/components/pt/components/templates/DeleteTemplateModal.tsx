@@ -1,5 +1,5 @@
 import { useMutation } from "react-relay";
-import type { DeleteTemplateModalProps } from "./types";
+import type { DeleteTemplateModalProps } from "./Templates.types";
 import { TEMPLATE_DELETE } from "./Templates.queries";
 import type {
   TemplatesDeleteMutation,

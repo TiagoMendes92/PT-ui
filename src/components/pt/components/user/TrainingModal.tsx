@@ -21,7 +21,7 @@ import type {
   ExerciseSet,
   SelectedExercise,
   Template,
-} from "../templates/types";
+} from "../templates/Templates.types";
 import PreviewFile from "../../../shared/preview_file/PreviewFiles";
 import ExercisePicker from "../../../shared/exercise_picker/ExercisePicker";
 import ExerciseConfiguration from "../../../shared/exercise_configuration/ExerciseConfiguration";
@@ -133,7 +133,7 @@ const TrainingModal = ({
       sets: (e.sets || []).map((s) => ({
         ...s,
         variables: (s.variables || []).map(({ targetValue, variable }) => ({
-          targetValue,
+          targetValue: targetValue ?? undefined,
           variableId: variable.id,
         })),
       })),

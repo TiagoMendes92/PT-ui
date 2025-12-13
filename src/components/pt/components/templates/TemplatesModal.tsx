@@ -3,7 +3,7 @@ import type {
   SelectedExercise,
   TemplateFormData,
   TemplatesModalProps,
-} from "./types";
+} from "./Templates.types";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -111,7 +111,7 @@ const TemplatesModal = ({
     sets: (e.sets || []).map((s) => ({
       ...s,
       variables: (s.variables || []).map(({ targetValue, variable }) => ({
-        targetValue,
+        targetValue: targetValue ?? undefined,
         variableId: variable.id,
       })),
     })),

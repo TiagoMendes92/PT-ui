@@ -3,7 +3,7 @@ import {
   usePaginationFragment,
   usePreloadedQuery,
 } from "react-relay";
-import type { SelectedExercise } from "../../pt/components/templates/types";
+import type { SelectedExercise } from "../../pt/components/templates/Templates.types";
 import type { ExerciseQuery } from "../../../__generated__/ExerciseQuery.graphql";
 import {
   GET_EXERCISES,
