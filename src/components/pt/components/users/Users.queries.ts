@@ -26,6 +26,10 @@ export const GET_USERS_LIST = graphql`
           updatedAt
           deactivatedAt
           passwordSetAt
+          photo {
+            url
+            key
+          }
         }
       }
       pageInfo {

@@ -66,7 +66,16 @@ export const Table = styled("table")`
   }
 
   td {
+    overflow: hidden;
     padding: 15px 25px;
+
+    span {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+      text-overflow: ellipsis;
+    }
   }
 `;
 

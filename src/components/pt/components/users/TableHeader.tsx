@@ -1,65 +1,21 @@
 import type { TableHeaderProps } from "./types";
 import {
   AddButton,
-  Search,
-  SearchButton,
-  SearchInput,
   TableHeader as THeader,
   TableHeaderFirstLine,
-} from "../categories/Categories.styles";
-import { Title } from "../../../login/LoginPage.styles";
-import searchIcon from "../../../../icons/search.svg";
-import Select from "../../../shared/select/Select";
-import type { UserStatus } from "../../../../__generated__/UsersQuery.graphql";
+} from "../../../shared/styles/Table.styled";
+import { Title } from "../../../shared/styles/Typography.styled";
 
-const statusOptions = [
-  { label: "Ativo", value: "ACTIVE" },
-  { label: "Desativo", value: "DEACTIVATED" },
-  { label: "Pendente", value: "PENDING" },
-];
-
-const TableHeader = ({
-  searchStatus,
-  setSearchStatus,
-  onSearch,
-  searchTerm,
-  setSearchTerm,
-  setIsModalOpen,
-}: TableHeaderProps) => {
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      onSearch();
-    }
-  };
-
+const TableHeader = ({ setIsModalOpen }: TableHeaderProps) => {
   return (
     <THeader>
       <TableHeaderFirstLine>
         <Title>Alunos</Title>
-        <AddButton onClick={() => setIsModalOpen({ user: null })}>+</AddButton>
+        <AddButton onClick={() => setIsModalOpen({ user: null })}>
+          CRIAR ALUNO
+          <img src="/plus.svg" />
+        </AddButton>
       </TableHeaderFirstLine>
-      <Search>
-        <SearchInput
-          hasError={false}
-          placeholder="Pesquisar por nome..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyUp={handleKeyPress}
-        />
-        <SearchButton onClick={onSearch}>
-          <img src={searchIcon} />
-        </SearchButton>
-      </Search>
-      <Select
-        style={{ border: "1px solid white" }}
-        options={statusOptions}
-        value={searchStatus}
-        onChange={(e) => {
-          setSearchStatus(e as UserStatus | "");
-        }}
-        placeholder="Selecionar estado"
-        hasError={false}
-      />
     </THeader>
   );
 };

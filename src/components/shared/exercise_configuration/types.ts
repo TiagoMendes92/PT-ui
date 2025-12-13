@@ -6,4 +6,5 @@ export type ExerciseConfigurationProps = {
   initialValues: SelectedExercise[];
   onChange: (exercises: SelectedExercise[]) => void;
   exerciseVariablesRef: PreloadedQuery<ExerciseVariablesAllQuery>;
+  errors?: any;
 };

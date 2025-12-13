@@ -10,7 +10,7 @@ export const ExerciseTable = styled(Table)`
   .name {
     width: calc(100% - 165px);
   }
-  .categories  {
+  .categories {
     display: none;
   }
   .image {

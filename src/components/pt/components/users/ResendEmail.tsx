@@ -1,6 +1,7 @@
 import { useMutation } from "react-relay";
-import { Button, Error } from "../../../login/LoginPage.styles";
-import { DeleteModalContent } from "../categories/Categories.styles";
+import { DeleteModalContent } from "../../../shared/styles/Modal.styled";
+import { Button } from "../../../shared/styles/Table.styled";
+import { Error } from "../../../shared/styles/Form.styled";
 import type { ResendEmailProps } from "./types";
 import { RESEND_EMAIL } from "./Users.queries";
 import type {

@@ -14,14 +14,7 @@ import type {
 } from "../../../../__generated__/ProfileMutation.graphql";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form } from "../../../pt/components/categories/Categories.styles";
-import {
-  FormController,
-  Input,
-  Error,
-  Button,
-  CancelButton,
-} from "../../../login/LoginPage.styles";
+
 import { useAuth, type User } from "../../../app/AuthContent.context";
 import Select from "../../../shared/select/Select";
 import Spinner from "../../../shared/loader/Loader";
@@ -31,6 +24,13 @@ import type {
 } from "../../../../__generated__/ProfilePhotoMutation.graphql";
 import { Container, Photo } from "./Profile.styles";
 import placeholderPhoto from "../../../../assets/placeholder.png";
+import {
+  FormController,
+  Error,
+  Form,
+  Input,
+} from "../../../shared/styles/Form.styled";
+import { Button, CancelButton } from "../../../shared/styles/Table.styled";
 
 const userDetailsSchema = yup.object({
   birthday: yup

@@ -7,13 +7,34 @@ import type {
 import { Suspense, useEffect, useState } from "react";
 import type { User, UsersProps } from "./types";
 import TableHeader from "./TableHeader";
-import { Table } from "../categories/Categories.styles";
 import UsersTableBody from "./UsersTableBody";
 import { createPortal } from "react-dom";
 import Modal from "../../../shared/modal/Modal";
 import UsersModal from "./UsersModal";
 import ResendEmail from "./ResendEmail";
 import DeleteUserModal from "./DeleteUserModal";
+import {
+  LoaderContainer,
+  Search,
+  SearchIcon,
+  SearchInput,
+  TableContainer,
+  TablePageContent,
+  TablePageWrapper,
+  Thead,
+} from "../../../shared/styles/Table.styled";
+import { ExerciseActions } from "../exercises/Exercises.styled";
+import searchIcon from "../../../../icons/search.svg";
+import Select from "../../../shared/select/Select";
+import Spinner from "../../../shared/loader/Loader";
+import { UsersTable } from "./Users.styled";
+import useIsMobile from "../../../../hooks/useIsMobile";
+
+const statusOptions = [
+  { label: "Ativo", value: "ACTIVE" },
+  { label: "Desativo", value: "DEACTIVATED" },
+  { label: "Pendente", value: "PENDING" },
+];
 
 const Users = ({
   queryRef,
@@ -25,42 +46,104 @@ const Users = ({
   setIsResendEmailOpen,
   setIsDeleteModalOpen,
 }: UsersProps) => {
+  const isMobile = useIsMobile(576);
+  const isTablet = useIsMobile(630);
+  const isSmallDesktop = useIsMobile(768);
+  const isDesktop = useIsMobile(920);
+  const isBigDesktop = useIsMobile(1044);
+  const cols = isMobile
+    ? 2
+    : isTablet
+    ? 3
+    : isSmallDesktop
+    ? 4
+    : isDesktop
+    ? 2
+    : isBigDesktop
+    ? 3
+    : 4;
   const [localSearchTerm, setLocalSearchTerm] = useState<string>("");
 
   const handleSearch = () => {
     setSearchTerm(localSearchTerm);
   };
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm !== undefined) {
+        handleSearch();
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, handleSearch]);
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
-    <>
-      <TableHeader
-        searchStatus={searchStatus}
-        setSearchStatus={setSearchStatus}
-        onSearch={handleSearch}
-        searchTerm={localSearchTerm}
-        setSearchTerm={setLocalSearchTerm}
-        setIsModalOpen={setIsModalOpen}
-      />
-      <Table style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th style={{ width: "auto" }}>Nome</th>
-            <th style={{ width: "90px" }}>Estado</th>
-            <th style={{ width: "85px" }}>Ações</th>
-          </tr>
-        </thead>
-        <Suspense fallback={<div>Loading...</div>}>
-          <UsersTableBody
-            queryRef={queryRef}
-            searchTerm={searchTerm}
-            searchStatus={searchStatus}
-            setIsModalOpen={setIsModalOpen}
-            setIsResendEmailOpen={setIsResendEmailOpen}
-            setIsDeleteModalOpen={setIsDeleteModalOpen}
-          />
-        </Suspense>
-      </Table>
-    </>
+    <TablePageWrapper>
+      <TableHeader setIsModalOpen={setIsModalOpen} />
+      <TablePageContent>
+        <TableContainer>
+          <ExerciseActions>
+            <Search>
+              <SearchInput
+                hasError={false}
+                placeholder="Pesquisar por nome..."
+                value={localSearchTerm}
+                onChange={(e) => setLocalSearchTerm(e.target.value)}
+                onKeyUp={handleKeyPress}
+              />
+              <SearchIcon>
+                <img src={searchIcon} />
+              </SearchIcon>
+            </Search>
+            <Select
+              style={{ marginTop: "0px" }}
+              options={statusOptions}
+              value={searchStatus}
+              onChange={(e) => {
+                setSearchStatus(e as UserStatus | "");
+              }}
+              placeholder="Pesquisar por estado..."
+              hasError={false}
+            />
+          </ExerciseActions>
+          <UsersTable>
+            <Thead>
+              <tr>
+                <th className="foto">Foto</th>
+                <th className="name">Nome</th>
+                <th className="status">Estado</th>
+                <th className="actions">Ações</th>
+              </tr>
+            </Thead>
+            <Suspense
+              fallback={
+                <LoaderContainer>
+                  <td colSpan={cols}>
+                    <Spinner />
+                  </td>
+                </LoaderContainer>
+              }
+            >
+              <UsersTableBody
+                queryRef={queryRef}
+                searchTerm={searchTerm}
+                searchStatus={searchStatus}
+                setIsModalOpen={setIsModalOpen}
+                setIsResendEmailOpen={setIsResendEmailOpen}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+              />
+            </Suspense>
+          </UsersTable>
+        </TableContainer>
+      </TablePageContent>
+    </TablePageWrapper>
   );
 };
 

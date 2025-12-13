@@ -1,41 +1,39 @@
 import * as yup from "yup";
-import type {
-  SelectedExercise,
-  TemplateFormData,
-  TemplatesModalProps,
-} from "./types";
-import { Controller, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
+import { Suspense, useState } from "react";
+import type { TrainingFormData, TrainingModalProps } from "./User.types";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import {
   Form,
+  Error,
   FormController,
   Input,
-  Error,
   TextArea,
 } from "../../../shared/styles/Form.styled";
-import { Suspense, useState } from "react";
-import ExercisePicker from "../../../shared/exercise_picker/ExercisePicker";
-import type {
-  TemplatesCreateMutation,
-  TemplatesCreateMutation$data,
-} from "../../../../__generated__/TemplatesCreateMutation.graphql";
-import { ConnectionHandler, useMutation } from "react-relay";
-import { TEMPLATES_CREATE, TEMPLATES_EDIT } from "./Templates.queries";
-import Loader from "../../../shared/loader/Loader";
-import type {
-  TemplatesEditMutation,
-  TemplatesEditMutation$data,
-} from "../../../../__generated__/TemplatesEditMutation.graphql";
-import ExerciseConfiguration from "../../../shared/exercise_configuration/ExerciseConfiguration";
-import ConnectionHandlerPlus from "relay-connection-handler-plus";
-import PreviewFile from "../../../shared/preview_file/PreviewFiles";
-import { Button } from "../../../shared/styles/Table.styled";
 import {
   DismissButton,
   ModalActions,
 } from "../../../shared/modal/Modal.styles";
+import { Button } from "../../../shared/styles/Table.styled";
+import TemplatePicker from "../../../shared/template_picker/TemplatePicker";
+import type {
+  ExerciseSet,
+  SelectedExercise,
+  Template,
+} from "../templates/types";
+import PreviewFile from "../../../shared/preview_file/PreviewFiles";
+import ExercisePicker from "../../../shared/exercise_picker/ExercisePicker";
+import ExerciseConfiguration from "../../../shared/exercise_configuration/ExerciseConfiguration";
+import Loader from "../../../shared/loader/Loader";
+import { useMutation } from "react-relay";
+import { TRAINING_CREATE } from "./UserTraining.queries";
+import type {
+  UserTrainingCreateMutation,
+  UserTrainingCreateMutation$data,
+} from "../../../../__generated__/UserTrainingCreateMutation.graphql";
 
-const TemplateSchema = yup.object().shape({
+const TrainingSchema = yup.object().shape({
   name: yup
     .string()
     .required("Nome do treino é obrigatório")
@@ -89,33 +87,21 @@ const TemplateSchema = yup.object().shape({
     .default([]),
 });
 
-const TemplatesModal = ({
-  searchTerm,
+const TrainingModal = ({
   onSubmit,
+  target_id,
   catsQueryRef,
   exerciseVariablesRef,
-  template,
   onDismiss,
-}: TemplatesModalProps) => {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [create, isCreating] =
-    useMutation<TemplatesCreateMutation>(TEMPLATES_CREATE);
-  const [edit, isEditing] = useMutation<TemplatesEditMutation>(TEMPLATES_EDIT);
+}: TrainingModalProps) => {
+  "use no memo";
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
+    null
+  );
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
 
-  const isLoading = isCreating || isEditing;
-
-  const exercisesInitialValue = (template?.exercises || []).map((e) => ({
-    name: e.exercise.name,
-    exerciseId: e.exercise.id,
-    orderPosition: e.orderPosition,
-    sets: (e.sets || []).map((s) => ({
-      ...s,
-      variables: (s.variables || []).map(({ targetValue, variable }) => ({
-        targetValue,
-        variableId: variable.id,
-      })),
-    })),
-  }));
+  const [create, isLoading] =
+    useMutation<UserTrainingCreateMutation>(TRAINING_CREATE);
 
   const {
     register,
@@ -126,126 +112,157 @@ const TemplatesModal = ({
     formState: { errors, isSubmitting },
     setError,
     getValues,
-  } = useForm<TemplateFormData>({
-    resolver: yupResolver(TemplateSchema),
+  } = useForm<TrainingFormData>({
+    resolver: yupResolver(TrainingSchema),
     defaultValues: {
-      name: template?.name || "",
-      description: template?.description || "",
+      name: "",
+      description: "",
       photo: null,
-      exercises: exercisesInitialValue,
+      exercises: [],
     },
   });
 
-  const photo = useWatch<TemplateFormData, "photo">({
+  const pickTemplate = (template: Template) => {
+    setValue("name", template.name || "");
+    setValue("description", template.description || "");
+
+    const exercisesValue = (template.exercises || []).map((e) => ({
+      name: e.exercise.name,
+      exerciseId: e.exercise.id,
+      orderPosition: e.orderPosition,
+      sets: (e.sets || []).map((s) => ({
+        ...s,
+        variables: (s.variables || []).map(({ targetValue, variable }) => ({
+          targetValue,
+          variableId: variable.id,
+        })),
+      })),
+    }));
+
+    setValue("exercises", exercisesValue);
+    setStep(2);
+    setSelectedTemplate(template);
+  };
+
+  const goWithoutTemplate = () => {
+    setValue("name", "");
+    setValue("description", "");
+    setValue("exercises", []);
+    setSelectedTemplate(null);
+    setStep(2);
+  };
+
+  const photo = useWatch<TrainingFormData, "photo">({
     control,
     name: "photo",
   });
 
-  const setManualError = (create: boolean, message?: string) => {
-    setError("root", {
-      type: "manual",
-      message: message || `Erro ao ${create ? "criar" : "editar"} template`,
-    });
-  };
-
-  const onSubmitForm = async (formValues: TemplateFormData) => {
-    const { photo, ...values } = formValues;
-    if (!template) {
-      create({
-        variables: {
-          input: {
-            ...values,
-            exercises: values.exercises.map((e) => ({
-              ...e,
-              name: undefined,
-            })),
-          },
-          file: photo,
-          connections: [
-            ConnectionHandler.getConnectionID(
-              "client:root",
-              "TemplatesPaginatedQuery_templates",
-              { searchTerm }
-            ),
-          ],
-        },
-        updater: (store) => {
-          const root = store.getRoot();
-          const connectionKey = "TemplatesPaginatedQuery_templates";
-
-          const connections = ConnectionHandlerPlus.getConnections(
-            root,
-            connectionKey
-          );
-          connections.forEach((connection) => {
-            connection?.invalidateRecord();
-          });
-        },
-        onCompleted: (response: TemplatesCreateMutation$data, errors) => {
-          if (response.createTemplate?.id) {
-            onSubmit();
-            return;
-          }
-          setManualError(true, errors?.[0].message);
-        },
-        onError: () => {
-          setManualError(true);
-        },
-      });
-    } else {
-      edit({
-        variables: {
-          input: {
-            ...values,
-            id: template.id,
-            exercises: values.exercises.map((e) => ({
-              ...e,
-              name: undefined,
-            })),
-          },
-          file: photo,
-        },
-        onCompleted: (response: TemplatesEditMutation$data, errors) => {
-          if (response.updateTemplate?.id) {
-            onSubmit();
-            return;
-          }
-          setManualError(true, errors?.[0].message);
-        },
-        onError: () => {
-          setManualError(true);
-        },
-      });
-    }
-  };
-
   const onExerciseChange = (exercises: SelectedExercise[]) => {
     setValue("exercises", exercises);
+  };
+
+  const handleBackToPreviousStep = () => {
+    setStep((prev) => (prev - 1) as 1 | 2 | 3);
   };
 
   const handleStepOne = async () => {
     const isValid = await trigger("name");
 
     if (isValid) {
-      setStep(2);
+      setStep(3);
     }
   };
 
   const handleStepTwo = async () => {
+    const isValid = await trigger("exercises");
     const exercises = getValues("exercises");
-    if (!exercises.length) {
+    if (!isValid && !exercises.length) {
       return;
     }
-    setStep(3);
+    setStep(4);
   };
 
-  const handleBackToPreviousStep = () => {
-    setStep((prev) => (prev - 1) as 1 | 2);
+  const setManualError = (message?: string) => {
+    setError("root", {
+      type: "manual",
+      message: message || `Erro ao criar treino`,
+    });
+  };
+
+  const hasEmptyTargetValue = (
+    exercises: {
+      exerciseId: string;
+      orderPosition: number;
+      sets: ExerciseSet[];
+    }[]
+  ) => {
+    return exercises.some((exercise) =>
+      exercise.sets.some((set) =>
+        set.variables.some(
+          (variable) =>
+            !variable.targetValue || variable.targetValue.trim() === ""
+        )
+      )
+    );
+  };
+
+  const onSubmitForm = async (values: TrainingFormData) => {
+    console.log("ON SUBOT");
+    if (hasEmptyTargetValue(values.exercises)) {
+      setError("root", {
+        type: "manual",
+        message: "Todos os sets precisam ter valores preenchidos",
+      });
+      return;
+    }
+    // const { photo, ...values } = formValues;
+
+    create({
+      variables: {
+        input: {
+          target_id,
+          ...values,
+          exercises: values.exercises.map((e) => ({
+            ...e,
+            name: undefined,
+          })),
+        },
+      },
+      onCompleted: (response: UserTrainingCreateMutation$data, errors) => {
+        if (response.createTraining?.id) {
+          onSubmit();
+          return;
+        }
+        setManualError(errors?.[0].message);
+      },
+      onError: () => {
+        setManualError();
+      },
+    });
   };
 
   return (
     <Form onSubmit={handleSubmit(onSubmitForm)}>
       {step === 1 ? (
+        <>
+          <span className="montserrat-bold">Usar algum template de base?</span>
+          <br />
+          <br />
+          <TemplatePicker onChange={pickTemplate} />
+          <ModalActions>
+            <Button
+              type="button"
+              onClick={goWithoutTemplate}
+              className="montserrat-bold"
+            >
+              SEM TEMPLATE
+            </Button>
+            <DismissButton type="button" onClick={onDismiss}>
+              CANCELAR
+            </DismissButton>
+          </ModalActions>
+        </>
+      ) : step === 2 ? (
         <>
           <FormController>
             <label htmlFor="name" className="montserrat-bold">
@@ -285,11 +302,11 @@ const TemplatesModal = ({
             <label htmlFor="photo" className="montserrat-bold">
               Fotografia (opcional)
             </label>
-            {photo || template?.photo?.url ? (
+            {photo || selectedTemplate?.photo?.url ? (
               <PreviewFile
                 width={100}
                 height={"auto"}
-                file={photo || (template?.photo?.url as string)}
+                file={photo || (selectedTemplate?.photo?.url as string)}
               />
             ) : null}
             <Controller
@@ -316,17 +333,20 @@ const TemplatesModal = ({
           <ModalActions>
             <Button
               type="button"
-              onClick={handleStepOne}
+              onClick={(e) => {
+                // e.stopPropagation();
+                handleStepOne();
+              }}
               className="montserrat-bold"
             >
               PRÓXIMO
             </Button>
-            <DismissButton type="button" onClick={onDismiss}>
-              CANCELAR
+            <DismissButton type="button" onClick={handleBackToPreviousStep}>
+              VOLTAR
             </DismissButton>
           </ModalActions>
         </>
-      ) : step === 2 ? (
+      ) : step === 3 ? (
         <>
           <Suspense fallback={<div>Loading...</div>}>
             <ExercisePicker
@@ -346,7 +366,10 @@ const TemplatesModal = ({
           <ModalActions>
             <Button
               type="button"
-              onClick={handleStepTwo}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleStepTwo();
+              }}
               className="montserrat-bold"
             >
               PRÓXIMO
@@ -366,15 +389,16 @@ const TemplatesModal = ({
             <ExerciseConfiguration
               initialValues={getValues("exercises") as SelectedExercise[]}
               onChange={onExerciseChange}
+              errors={errors.exercises}
               exerciseVariablesRef={exerciseVariablesRef}
             />
           </Suspense>
-          {errors.exercises && (
+          {errors.root && (
             <Error
               style={{ position: "unset", transform: "unset" }}
               className="montserrat-bold"
             >
-              {errors.exercises.message}
+              {errors.root.message}
             </Error>
           )}
           <ModalActions>
@@ -385,8 +409,6 @@ const TemplatesModal = ({
             >
               {isSubmitting || isLoading ? (
                 <Loader size={15} color="white" />
-              ) : template ? (
-                "EDITAR TREINO"
               ) : (
                 "CRIAR TREINO"
               )}
@@ -405,4 +427,4 @@ const TemplatesModal = ({
   );
 };
 
-export default TemplatesModal;
+export default TrainingModal;

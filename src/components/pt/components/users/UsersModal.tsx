@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { Form } from "../categories/Categories.styles";
 import type { UserFormData, UsersModalProps } from "./types";
 import { ConnectionHandler, useMutation } from "react-relay";
 import * as yup from "yup";
@@ -10,16 +9,17 @@ import type {
 } from "../../../../__generated__/UsersCreateMutation.graphql";
 import { USER_CREATE, USER_EDIT } from "./Users.queries";
 import {
+  Form,
   FormController,
   Input,
   Error,
-  Button,
-} from "../../../login/LoginPage.styles";
+} from "../../../shared/styles/Form.styled";
 import Loader from "../../../shared/loader/Loader";
 import type {
   UsersEditMutation,
   UsersEditMutation$data,
 } from "../../../../__generated__/UsersEditMutation.graphql";
+import { Button } from "../../../shared/styles/Table.styled";
 
 const UserSchema = yup.object().shape({
   name: yup

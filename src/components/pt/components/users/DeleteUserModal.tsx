@@ -1,5 +1,4 @@
 import { useMutation } from "react-relay";
-import { DeleteModalContent } from "../categories/Categories.styles";
 import type { DeleteUserProps } from "./types";
 import { USER_ACTIVATE, USER_DEACTIVATE, USER_DELETE } from "./Users.queries";
 import type {
@@ -11,12 +10,14 @@ import type {
   UsersDeactivateMutation$data,
 } from "../../../../__generated__/UsersDeactivateMutation.graphql";
 import { useState } from "react";
-import { Button, Error } from "../../../login/LoginPage.styles";
 import Loader from "../../../shared/loader/Loader";
 import type {
   UsersActivateMutation,
   UsersActivateMutation$data,
 } from "../../../../__generated__/UsersActivateMutation.graphql";
+import { DeleteModalContent } from "../../../shared/styles/Modal.styled";
+import { Button } from "../../../shared/styles/Table.styled";
+import { Error } from "../../../shared/styles/Form.styled";
 
 const DeleteUserModal = ({ user, action, onDelete }: DeleteUserProps) => {
   const [archiving, isArchiving] =

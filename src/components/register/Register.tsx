@@ -8,17 +8,12 @@ import type {
   RegisterPageMutation,
   RegisterPageMutation$data,
 } from "../../__generated__/RegisterPageMutation.graphql";
-import {
-  Container,
-  Content,
-  FormController,
-  Input,
-  Title,
-  Error,
-  Button,
-} from "../login/LoginPage.styles";
+import { Container, Content } from "../login/LoginPage.styles";
 import Loader from "../shared/loader/Loader";
 import { useNavigate, useParams } from "react-router-dom";
+import { Title } from "../shared/styles/Typography.styled";
+import { FormController, Input, Error } from "../shared/styles/Form.styled";
+import { Button } from "../shared/styles/Table.styled";
 
 const RegisterSchema = yup.object().shape({
   password: yup

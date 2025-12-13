@@ -27,11 +27,6 @@ export type UsersProps = {
 };
 
 export type TableHeaderProps = {
-  searchStatus: UserStatus | "";
-  setSearchStatus: React.Dispatch<React.SetStateAction<UserStatus | "">>;
-  onSearch: () => void;
-  searchTerm: string;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setIsModalOpen: React.Dispatch<
     React.SetStateAction<{ user: User | null } | null>
   >;

@@ -21,11 +21,13 @@ import {
   VariableItem,
   VariablesGrid,
 } from "./ExerciseConfiguration.styles";
+import { Error } from "../styles/Form.styled";
 
 const ExerciseConfiguration = ({
   initialValues,
   onChange,
   exerciseVariablesRef,
+  errors,
 }: ExerciseConfigurationProps) => {
   const { allVariables } = usePreloadedQuery<ExerciseVariablesAllQuery>(
     GET_ALL_EXERCISE_VARIABLES,
@@ -115,6 +117,17 @@ const ExerciseConfiguration = ({
     updateExercises(updated);
   };
 
+  const getError = (exerciseId: number, setId?: number) => {
+    if (typeof exerciseId === "number" && typeof setId === "number") {
+      return (
+        errors?.[exerciseId]?.sets?.[setId]?.message ||
+        errors?.[exerciseId]?.sets?.[setId]?.variables?.message
+      );
+    } else {
+      return errors?.[exerciseId]?.sets?.message;
+    }
+  };
+
   return (
     <Container>
       {selectedExercises.map((exercise, exerciseIndex) => (
@@ -122,7 +135,7 @@ const ExerciseConfiguration = ({
           <ExerciseHeader className="montserrat-bold">
             {exercise.name}
           </ExerciseHeader>
-          {(exercise.sets || []).map((set) => (
+          {(exercise.sets || []).map((set, setIndex) => (
             <SetCard key={set.setNumber}>
               <SetHeader>
                 <SetTitle className="montserrat-bold">
@@ -139,7 +152,7 @@ const ExerciseConfiguration = ({
                 )}
               </SetHeader>
               <VariablesGrid>
-                {allVariables.map((variable) => {
+                {allVariables.map((variable, variableIndex) => {
                   const isSelected = set.variables.some(
                     (v) => v.variableId === variable.id
                   );
@@ -191,8 +204,24 @@ const ExerciseConfiguration = ({
                   );
                 })}
               </VariablesGrid>
+              {getError(exerciseIndex, setIndex) ? (
+                <Error
+                  style={{ position: "unset", transform: "unset" }}
+                  className="montserrat-bold"
+                >
+                  {getError(exerciseIndex, setIndex)}
+                </Error>
+              ) : null}
             </SetCard>
           ))}
+          {getError(exerciseIndex) ? (
+            <Error
+              style={{ position: "unset", transform: "unset" }}
+              className="montserrat-bold"
+            >
+              {getError(exerciseIndex)}
+            </Error>
+          ) : null}
           <AddSetButton
             type="button"
             onClick={() => addSet(exerciseIndex)}

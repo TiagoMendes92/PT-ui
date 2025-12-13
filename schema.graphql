@@ -40,11 +40,7 @@ type Query {
     after: String
     searchTerm: String
   ): TemplateConnection!
-  trainings(
-    first: Int = 10
-    after: String
-    searchTerm: String
-  ): TrainingConnection!
+  trainings(target_id: String!): [Training!]!
   me: User
 }
 
@@ -76,8 +72,6 @@ type Mutation {
   updateTemplate(input: UpdateTemplateInput!, file: Upload): Template!
   deleteTemplate(id: String!): ID
   createTraining(input: CreateTrainingInput!): Training!
-  updateTraining(input: UpdateTrainingInput!): Training!
-  deleteTraining(id: String!): ID
   login(email: String!, password: String!): AuthPayload!
 }
 
@@ -349,17 +343,8 @@ type TrainingExerciseSetVariable {
   targetValue: String
 }
 
-type TrainingEdge {
-  cursor: String!
-  node: Training!
-}
-
-type TrainingConnection {
-  edges: [TrainingEdge!]!
-  pageInfo: PageInfo!
-}
-
 input CreateTrainingInput {
+  target_id: String!
   name: String!
   description: String
   exercises: [TrainingExerciseInput!]!
@@ -379,13 +364,6 @@ input TrainingExerciseSetInput {
 input TrainingExerciseSetVariableInput {
   variableId: ID!
   targetValue: String
-}
-
-input UpdateTrainingInput {
-  id: String!
-  name: String!
-  description: String
-  exercises: [TrainingExerciseInput!]!
 }
 
 type User {
