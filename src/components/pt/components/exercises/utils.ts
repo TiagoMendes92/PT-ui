@@ -19,7 +19,7 @@ export const getYouTubeEmbedUrl = (url: string): string | null => {
     if (!videoId) return null;
 
     return `https://www.youtube.com/embed/${videoId}`;
-  } catch (error) {
+  } catch {
     return null;
   }
 };

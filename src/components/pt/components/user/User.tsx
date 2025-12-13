@@ -1,5 +1,5 @@
 import { usePreloadedQuery, useQueryLoader } from "react-relay";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { GET_USER } from "./User.queries";
 import type { UserQuery } from "../../../../__generated__/UserQuery.graphql";
 import { Suspense, useEffect } from "react";
