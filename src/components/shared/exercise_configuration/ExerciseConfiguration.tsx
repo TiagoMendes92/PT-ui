@@ -18,6 +18,7 @@ import {
   SetTitle,
   VariableCheckbox,
   VariableInput,
+  VariableInputContainer,
   VariableItem,
   VariablesGrid,
 } from "./ExerciseConfiguration.styles";
@@ -117,14 +118,16 @@ const ExerciseConfiguration = ({
     updateExercises(updated);
   };
 
-  const getError = (exerciseId: number, setId?: number) => {
-    if (typeof exerciseId === "number" && typeof setId === "number") {
-      return (
-        errors?.[exerciseId]?.sets?.[setId]?.message ||
-        errors?.[exerciseId]?.sets?.[setId]?.variables?.message
-      );
+  const getError = (
+    exerciseId: number,
+    setId: number,
+    variableIndex?: number
+  ) => {
+    if (typeof variableIndex === "number") {
+      return errors?.[exerciseId]?.sets?.[setId]?.variables?.[variableIndex]
+        ?.targetValue?.message;
     } else {
-      return errors?.[exerciseId]?.sets?.message;
+      return errors?.[exerciseId]?.sets?.[setId]?.variables?.message;
     }
   };
 
@@ -185,43 +188,45 @@ const ExerciseConfiguration = ({
                       </VariableCheckbox>
 
                       {isSelected && (
-                        <VariableInput
-                          type="text"
-                          placeholder="Valor alvo"
-                          className="montserrat"
-                          value={variableData?.targetValue || ""}
-                          onChange={(e) =>
-                            updateVariableValue(
-                              exerciseIndex,
-                              set.setNumber,
-                              variable.id,
-                              e.target.value
-                            )
-                          }
-                        />
+                        <VariableInputContainer>
+                          <VariableInput
+                            type="text"
+                            placeholder="Valor alvo"
+                            className="montserrat"
+                            value={variableData?.targetValue || ""}
+                            onChange={(e) =>
+                              updateVariableValue(
+                                exerciseIndex,
+                                set.setNumber,
+                                variable.id,
+                                e.target.value
+                              )
+                            }
+                          />
+                          {getError(exerciseIndex, setIndex, variableIndex) && (
+                            <Error
+                              style={{ position: "unset", transform: "unset" }}
+                              className="montserrat-bold"
+                            >
+                              {getError(exerciseIndex, setIndex, variableIndex)}
+                            </Error>
+                          )}
+                        </VariableInputContainer>
                       )}
                     </VariableItem>
                   );
                 })}
               </VariablesGrid>
-              {getError(exerciseIndex, setIndex) ? (
+              {getError(exerciseIndex, setIndex) && (
                 <Error
                   style={{ position: "unset", transform: "unset" }}
                   className="montserrat-bold"
                 >
                   {getError(exerciseIndex, setIndex)}
                 </Error>
-              ) : null}
+              )}
             </SetCard>
           ))}
-          {getError(exerciseIndex) ? (
-            <Error
-              style={{ position: "unset", transform: "unset" }}
-              className="montserrat-bold"
-            >
-              {getError(exerciseIndex)}
-            </Error>
-          ) : null}
           <AddSetButton
             type="button"
             onClick={() => addSet(exerciseIndex)}

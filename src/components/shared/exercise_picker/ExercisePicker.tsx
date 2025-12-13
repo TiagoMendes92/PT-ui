@@ -85,6 +85,7 @@ const ExercisePicker = ({
       exerciseId: exercise.id,
       orderPosition: selectedExercises.length + 1,
       name: exercise.name,
+      sets: [{ setNumber: 1, variables: [] }],
     };
 
     const updated = [...selectedExercises, newExercise];

@@ -82,12 +82,16 @@ export const VariableCheckbox = styled.div`
   }
 `;
 
-export const VariableInput = styled.input`
+export const VariableInputContainer = styled.div`
   flex: 1;
-  font-size: 13px;
   max-width: 250px;
-  padding: 6px 8px;
+  position: relaive;
   margin-left: auto;
+`;
+
+export const VariableInput = styled.input`
+  font-size: 13px;
+  padding: 6px 8px;
   border-radius: 4px;
   border: 1px solid #ddd;
 
