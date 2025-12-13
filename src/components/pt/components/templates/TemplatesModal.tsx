@@ -1,9 +1,5 @@
 import * as yup from "yup";
-import type {
-  SelectedExercise,
-  TemplateFormData,
-  TemplatesModalProps,
-} from "./Templates.types";
+import type { TemplateFormData, TemplatesModalProps } from "./Templates.types";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -13,8 +9,7 @@ import {
   Error,
   TextArea,
 } from "../../../shared/styles/Form.styled";
-import { Suspense, useState } from "react";
-import ExercisePicker from "../../../shared/exercise_picker/ExercisePicker";
+import { useState } from "react";
 import type {
   TemplatesCreateMutation,
   TemplatesCreateMutation$data,
@@ -26,7 +21,6 @@ import type {
   TemplatesEditMutation,
   TemplatesEditMutation$data,
 } from "../../../../__generated__/TemplatesEditMutation.graphql";
-import ExerciseConfiguration from "../../../shared/exercise_configuration/ExerciseConfiguration";
 import ConnectionHandlerPlus from "relay-connection-handler-plus";
 import PreviewFile from "../../../shared/preview_file/PreviewFiles";
 import { Button } from "../../../shared/styles/Table.styled";
@@ -34,6 +28,8 @@ import {
   DismissButton,
   ModalActions,
 } from "../../../shared/modal/Modal.styles";
+import ExercisePickerController from "../../../shared/exercise_picker/ExercisePickerController";
+import ExerciseConfigurationController from "../../../shared/exercise_configuration/ExerciseConfigurationController";
 
 const TemplateSchema = yup.object().shape({
   name: yup
@@ -73,7 +69,9 @@ const TemplateSchema = yup.object().shape({
                 .of(
                   yup.object().shape({
                     variableId: yup.string().required(),
-                    targetValue: yup.string(),
+                    targetValue: yup
+                      .string()
+                      .required("O valor da variável é obrigatório"),
                   })
                 )
                 .min(1, "Pelo menos uma variável é obrigatória")
@@ -84,8 +82,8 @@ const TemplateSchema = yup.object().shape({
           .default([]),
       })
     )
-    .min(1, "Pelo menos um exercício é obrigatório")
     .required("Exercícios são obrigatórios")
+    .min(1, "Pelo menos um exercício é obrigatório")
     .default([]),
 });
 
@@ -122,11 +120,11 @@ const TemplatesModal = ({
     control,
     trigger,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
     setError,
     getValues,
   } = useForm<TemplateFormData>({
+    mode: "onChange",
     resolver: yupResolver(TemplateSchema),
     defaultValues: {
       name: template?.name || "",
@@ -219,10 +217,6 @@ const TemplatesModal = ({
     }
   };
 
-  const onExerciseChange = (exercises: SelectedExercise[]) => {
-    setValue("exercises", exercises);
-  };
-
   const handleStepOne = async () => {
     const isValid = await trigger("name");
 
@@ -232,6 +226,7 @@ const TemplatesModal = ({
   };
 
   const handleStepTwo = async () => {
+    await trigger("exercises");
     const exercises = getValues("exercises");
     if (!exercises.length) {
       return;
@@ -328,21 +323,11 @@ const TemplatesModal = ({
         </>
       ) : step === 2 ? (
         <>
-          <Suspense fallback={<div>Loading...</div>}>
-            <ExercisePicker
-              initialValues={getValues("exercises") as SelectedExercise[]}
-              onChange={onExerciseChange}
-              catsQueryRef={catsQueryRef}
-            />
-          </Suspense>
-          {errors.exercises && (
-            <Error
-              style={{ position: "unset", transform: "unset" }}
-              className="montserrat-bold"
-            >
-              {errors.exercises.message}
-            </Error>
-          )}
+          <ExercisePickerController
+            control={control}
+            controlName="exercises"
+            catsQueryRef={catsQueryRef}
+          />
           <ModalActions>
             <Button
               type="button"
@@ -362,21 +347,11 @@ const TemplatesModal = ({
         </>
       ) : (
         <>
-          <Suspense fallback={<div>Loading...</div>}>
-            <ExerciseConfiguration
-              initialValues={getValues("exercises") as SelectedExercise[]}
-              onChange={onExerciseChange}
-              exerciseVariablesRef={exerciseVariablesRef}
-            />
-          </Suspense>
-          {errors.exercises && (
-            <Error
-              style={{ position: "unset", transform: "unset" }}
-              className="montserrat-bold"
-            >
-              {errors.exercises.message}
-            </Error>
-          )}
+          <ExerciseConfigurationController
+            control={control}
+            controlName="exercises"
+            exerciseVariablesRef={exerciseVariablesRef}
+          />
           <ModalActions>
             <Button
               type="submit"

@@ -49,7 +49,7 @@ export type ExerciseSet = {
 
 type SetVariable = {
   variableId: string;
-  targetValue?: string;
+  targetValue: string;
 };
 
 export type SelectedExercise = {
